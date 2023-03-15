@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Praca_dyplomowa_27796_android</string>
+    <string name="username_text_label">Nazwa użytkownika</string>
+    <string name="password_text_label">Hasło</string>
+    <string name="name_text_label">Imię</string>
+    <string name="surname_text_label">Nazwisko</string>
+    <string name="passwordRepeat_text_label">Powtórz hasło</string>
+    <string name="login_button_text">Zaloguj</string>
+    <string name="register_button_text">Zarejestruj</string>
+    <string name="back_button_text">Wróć</string>
+    <string name="logout_button_text">Wyloguj</string>
+    <string name="login_error_info">Podano zły login lub hasło</string>
+    <string name="register_error_name_info">Wprowadzone imię jest niepoprawne</string>
+    <string name="register_error_surname_info">Wprowadzone nazwisko jest niepoprawne</string>
+    <string name="register_error_username_info">Wprowadzona nazwa użytkownika jest niepoprawna</string>
+    <string name="register_error_usernameExists_info">Podana nazwa użytkownika jest zajęta</string>
+    <string name="register_error_password_info">Hasło jest za słabe</string>
+    <string name="register_error_passwordReapeat_info">Hasło nie jest takie samo</string>
+
+</resources>
