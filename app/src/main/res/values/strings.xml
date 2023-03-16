@@ -16,5 +16,11 @@
     <string name="register_error_usernameExists_info">Podana nazwa użytkownika jest zajęta</string>
     <string name="register_error_password_info">Hasło jest za słabe</string>
     <string name="register_error_passwordReapeat_info">Hasło nie jest takie samo</string>
+    <string name="menu_item_jobs">Zlecenia</string>
+    <string name="menu_item_calendar">Kalendarz</string>
+    <string name="menu_item_profile">Profil</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
