@@ -4,6 +4,17 @@
     <string name="password_text_label">Hasło</string>
     <string name="name_text_label">Imię</string>
     <string name="surname_text_label">Nazwisko</string>
+    <string name="companyName_text_label">Firma</string>
+    <string name="street_text_label">Ulica</string>
+    <string name="postalCode_text_label">Kod pocztowy</string>
+    <string name="city_text_label">Miasto</string>
+    <string name="phoneNumber_text_label">Numer telefonu</string>
+    <string name="email_text_label">Email</string>
+    <string name="subject_text_label">Temat</string>
+    <string name="plannedDate_text_label">Planowana data wykonania</string>
+    <string name="timeSpent_text_label">Czas wykonywania</string>
+    <string name="note_text_label">Notatka</string>
+    <string name="isCompleted_text_label">Zakończone</string>
     <string name="passwordRepeat_text_label">Powtórz hasło</string>
     <string name="login_button_text">Zaloguj</string>
     <string name="register_button_text">Zarejestruj</string>
