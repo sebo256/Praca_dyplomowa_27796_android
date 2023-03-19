@@ -10,6 +10,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.praca.dyplomowa.android.R
+import com.praca.dyplomowa.android.api.request.JobRequest
 import com.praca.dyplomowa.android.api.response.UserGetAllResponse
 import com.praca.dyplomowa.android.api.response.UserGetAllResponseCollection
 import com.praca.dyplomowa.android.databinding.ActivityAddJobBinding
@@ -22,6 +23,13 @@ lateinit var viewModelAddJobs: AddJobsViewModel
 
 class AddJobActivity : AppCompatActivity() {
 
+    val datePicker = MaterialDatePicker.Builder.datePicker()
+        .setTitleText(R.string.datepicker_textfield_text)
+        .build()
+    val timePicker = MaterialTimePicker.Builder()
+        .setTimeFormat(TimeFormat.CLOCK_24H)
+        .setTitleText(R.string.timepicker_textfield_text)
+        .build()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddJobBinding.inflate(layoutInflater)
@@ -33,15 +41,6 @@ class AddJobActivity : AppCompatActivity() {
     }
 
     private fun setupForm(){
-        val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText(R.string.datepicker_textfield_text)
-            .build()
-        val timePicker = MaterialTimePicker.Builder()
-            .setTimeFormat(TimeFormat.CLOCK_24H)
-            .setTitleText(R.string.timepicker_textfield_text)
-            .build()
-
-
         binding.textFieldPlannedDateJobAddActivity.setOnClickListener { datePicker.show(supportFragmentManager, "plannedDate") }
         binding.textFieldPlannedTimeJobAddActivity.setOnClickListener { timePicker.show(supportFragmentManager, "plannedTime") }
 
@@ -64,15 +63,16 @@ class AddJobActivity : AppCompatActivity() {
         }
 
         binding.buttonSaveJobJobAddActivity.setOnClickListener {
-            val subject = binding.textFieldSubjectJobAddActivity.text.toString()
-            val name = binding.textFieldNameJobAddActivity.text.toString()
-            val surname = binding.textFieldSurnameJobAddActivity.text.toString()
-            val street = binding.textFieldStreetJobAddActivity.text.toString()
-            val city = binding.textFieldCityJobAddActivity.text.toString()
-            val timeSpent = binding.textFieldTimeSpentJobAddActivity.text.toString().toIntOrNull() ?: 0
-//            assignUsersDialog()
-            if(validateAddJobData(subject, name, surname, street, city, timeSpent)) {
-                addJob(timePicker, datePicker)
+
+            if(validateAddJobData(
+                    subject = binding.textFieldSubjectJobAddActivity.text.toString(),
+                    name = binding.textFieldNameJobAddActivity.text.toString(),
+                    surname = binding.textFieldSurnameJobAddActivity.text.toString(),
+                    street = binding.textFieldStreetJobAddActivity.text.toString(),
+                    city = binding.textFieldCityJobAddActivity.text.toString(),
+                    timeSpent = binding.textFieldTimeSpentJobAddActivity.text.toString().toIntOrNull() ?: 0
+                )) {
+                assignUsersDialog()
             }
         }
     }
@@ -133,36 +133,56 @@ class AddJobActivity : AppCompatActivity() {
         }
     }
 
-    private fun addJob(timePicker: MaterialTimePicker, datePicker: MaterialDatePicker<Long>){
-        val companyName = binding.textFieldCompanyNameJobAddActivity.text.toString()
-        val name = binding.textFieldNameJobAddActivity.text.toString()
-        val surname = binding.textFieldSurnameJobAddActivity.text.toString()
-        val street = binding.textFieldStreetJobAddActivity.text.toString()
-        val postalCode = binding.textFieldPostalCodeJobAddActivity.text.toString()
-        val city = binding.textFieldCityJobAddActivity.text.toString()
-        val phoneNumber = binding.textFieldPhoneNumberJobAddActivity.text.toString()
-        val email = binding.textFieldSubjectJobAddActivity.text.toString()
-        val subject = binding.textFieldSubjectJobAddActivity.text.toString()
-        val dateOfCreation = System.currentTimeMillis()
-        var plannedDate: Long? = null
-        if(!binding.textFieldPlannedTimeJobAddActivity.text.isNullOrBlank() && !binding.textFieldPlannedDateJobAddActivity.text.isNullOrBlank())
-            plannedDate = viewModelAddJobs.calculatePlannedDate(datePicker.selection!!, timePicker.hour, timePicker.minute)
-        val timeSpent = binding.textFieldTimeSpentJobAddActivity.text.toString().toIntOrNull() ?: 0
-        val note = binding.textFieldNoteJobAddActivity.text.toString()
-        val isCompleted = binding.checkboxIsCompletedJobAddActivity.isChecked
-        val createdBy = SessionManager.getCurrentUserId(baseContext)
+    private fun addJob(){
         viewModelAddJobs.jobResult.observe(this){
             print(it)
         }
-        viewModelAddJobs.addJob(companyName, name, surname, street, postalCode, city, phoneNumber, email, subject, dateOfCreation, plannedDate, timeSpent, note, isCompleted, createdBy!!)
+        viewModelAddJobs.addJob(getAllDataFromForm())
     }
 
-//    fun assignUsersDialog(){
-//        MaterialAlertDialogBuilder(applicationContext)
-//            .setTitle(R.string.dialog_text_title)
-//            .setPositiveButton(R.string.save_button_text) {dialog, which ->
-//                finish()
-//            }
-//            .show()
-//    }
+    fun getPlannedDate(): Long?{
+        var plannedDate: Long? = null
+        return if(!binding.textFieldPlannedTimeJobAddActivity.text.isNullOrBlank() && !binding.textFieldPlannedDateJobAddActivity.text.isNullOrBlank()) {
+            plannedDate = viewModelAddJobs.calculatePlannedDate(datePicker.selection!!, timePicker.hour, timePicker.minute)
+            plannedDate
+        }else {
+            plannedDate
+        }
+    }
+
+    fun getAllDataFromForm() =
+        JobRequest(
+            companyName = binding.textFieldCompanyNameJobAddActivity.text.toString(),
+            name = binding.textFieldNameJobAddActivity.text.toString(),
+            surname = binding.textFieldSurnameJobAddActivity.text.toString(),
+            street = binding.textFieldStreetJobAddActivity.text.toString(),
+            postalCode = binding.textFieldPostalCodeJobAddActivity.text.toString(),
+            city = binding.textFieldCityJobAddActivity.text.toString(),
+            phoneNumber = binding.textFieldPhoneNumberJobAddActivity.text.toString(),
+            email = binding.textFieldSubjectJobAddActivity.text.toString(),
+            subject = binding.textFieldSubjectJobAddActivity.text.toString(),
+            dateOfCreation = System.currentTimeMillis(),
+            plannedDate = getPlannedDate(),
+            timeSpent = binding.textFieldTimeSpentJobAddActivity.text.toString().toIntOrNull() ?: 0,
+            note = binding.textFieldNoteJobAddActivity.text.toString(),
+            isCompleted = binding.checkboxIsCompletedJobAddActivity.isChecked,
+            createdBy = SessionManager.getCurrentUserId(this)!!
+        )
+
+    fun assignUsersDialog(){
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.dialog_text_title)
+            .setMessage(R.string.dialog_message_title)
+            .setPositiveButton(R.string.dialog_positive_title) {dialog, which ->
+                addJob()
+                finish()
+            }
+            .setNeutralButton(R.string.dialog_neutral_title) {dialog, which ->
+                println("Dodaj pracowników")
+            }
+            .setNegativeButton(R.string.dialog_negative_title) {dialog, which ->
+                dialog.dismiss()
+            }
+            .show()
+    }
 }

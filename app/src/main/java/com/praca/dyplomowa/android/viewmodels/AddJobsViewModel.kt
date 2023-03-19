@@ -20,26 +20,11 @@ class AddJobsViewModel(application: Application): AndroidViewModel(application) 
     val jobRepository = JobRepository(application.baseContext)
     val jobResult: MutableLiveData<JobResponse> = MutableLiveData()
 
-    fun addJob(companyName: String, name: String, surname: String, street: String, postalCode: String, city: String, phoneNumber: String, email: String, subject: String, dateOfCreation: Long, plannedDate: Long?, timeSpent: Int, note: String, isCompleted: Boolean, createdBy: String){
-        jobRepository.addJob(JobRequest(
-            companyName = companyName,
-            name = name,
-            surname = surname,
-            street = street,
-            postalCode = postalCode,
-            city = city,
-            phoneNumber = phoneNumber,
-            email = email,
-            subject = subject,
-            dateOfCreation = dateOfCreation,
-            plannedDate = plannedDate,
-            timeSpent = timeSpent,
-            note = note,
-            isCompleted = isCompleted,
-            createdBy = createdBy
-        )).subscribeOn(Schedulers.io())
-          .observeOn(AndroidSchedulers.mainThread())
-          .subscribe(getAddedJobListObserverRx())
+    fun addJob(jobRequest: JobRequest){
+        jobRepository.addJob(jobRequest = jobRequest)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(getAddedJobListObserverRx())
     }
 
     private fun getAddedJobListObserverRx(): SingleObserver<Response<JobResponse>> {
@@ -59,8 +44,6 @@ class AddJobsViewModel(application: Application): AndroidViewModel(application) 
 
         }
     }
-
-
 
 
     fun calculatePlannedDate(date: Long, hour: Int, minutes: Int): Long =

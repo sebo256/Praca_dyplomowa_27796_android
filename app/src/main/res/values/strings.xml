@@ -43,6 +43,10 @@
     <string name="timepicker_colon">:</string>
     <string name="checkbox_text_label">Wykonano</string>
     <string name="dialog_text_title">Przydziel pracowników</string>
+    <string name="dialog_message_title">Czy chcesz zapisać? Możesz również przydzielić pracowników</string>
+    <string name="dialog_positive_title">Zapisz</string>
+    <string name="dialog_neutral_title">Przydziel</string>
+    <string name="dialog_negative_title">Wróć</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
