@@ -48,6 +48,10 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
                 context = getApplication<Application>().applicationContext,
                 token = t.headers().get("Set-Cookie")
             )
+            SessionManager.saveCurrentUserUsername(
+                context = getApplication<Application>().applicationContext,
+                id = t.body()?.username
+            )
             loginResult.postValue(t.body())
         }
 

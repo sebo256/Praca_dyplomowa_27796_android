@@ -36,7 +36,6 @@ class JobsViewModel(application: Application): AndroidViewModel(application) {
 
             override fun onSuccess(t: Response<JobGetAllResponseCollection>) {
                 jobResult.postValue(t.body())
-                println("test")
             }
         }
     }

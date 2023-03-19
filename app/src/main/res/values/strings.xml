@@ -12,14 +12,21 @@
     <string name="email_text_label">Email</string>
     <string name="subject_text_label">Temat</string>
     <string name="plannedDate_text_label">Planowana data wykonania</string>
-    <string name="timeSpent_text_label">Czas wykonywania</string>
+    <string name="plannedTime_text_label">Planowany czas wykonania</string>
     <string name="note_text_label">Notatka</string>
     <string name="isCompleted_text_label">Zakończone</string>
     <string name="passwordRepeat_text_label">Powtórz hasło</string>
+    <string name="timeSpent_text_label">Czas pracy</string>
+    <string name="required_text_label">wymagane</string>
+    <string name="optional_text_label">opcjonalne</string>
     <string name="login_button_text">Zaloguj</string>
     <string name="register_button_text">Zarejestruj</string>
     <string name="back_button_text">Wróć</string>
     <string name="logout_button_text">Wyloguj</string>
+    <string name="save_button_text">Zapisz</string>
+    <string name="continue_button_text">Dalej</string>
+    <string name="datepicker_textfield_text">Wybierz datę</string>
+    <string name="timepicker_textfield_text">Wybierz czas</string>
     <string name="login_error_info">Podano zły login lub hasło</string>
     <string name="register_error_name_info">Wprowadzone imię jest niepoprawne</string>
     <string name="register_error_surname_info">Wprowadzone nazwisko jest niepoprawne</string>
@@ -27,9 +34,15 @@
     <string name="register_error_usernameExists_info">Podana nazwa użytkownika jest zajęta</string>
     <string name="register_error_password_info">Hasło jest za słabe</string>
     <string name="register_error_passwordReapeat_info">Hasło nie jest takie samo</string>
+    <string name="error_empty_info">Pole nie może być puste</string>
+    <string name="error_timeSpentZero_info">Podany błędny czas</string>
+    <string name="error_name_surname_validator_info">Wprowadzono niepoprawne dane</string>
     <string name="menu_item_jobs">Zlecenia</string>
     <string name="menu_item_calendar">Kalendarz</string>
     <string name="menu_item_profile">Profil</string>
+    <string name="timepicker_colon">:</string>
+    <string name="checkbox_text_label">Wykonano</string>
+    <string name="dialog_text_title">Przydziel pracowników</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

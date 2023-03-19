@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.api.response.JobGetAllResponseCollection
 import com.praca.dyplomowa.android.databinding.FragmentJobsViewBinding
+import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.JobsViewModel
 import com.praca.dyplomowa.android.views.adapters.JobAdapter
 
