@@ -48,4 +48,34 @@ class AddJobsViewModel(application: Application): AndroidViewModel(application) 
 
     fun calculatePlannedDate(date: Long, hour: Int, minutes: Int): Long =
         (date) + ((hour * 3600000) + (minutes * 60000))
+
+
+    //TODO Na później do pobierania userów
+//    val userRepository = UserRepository(application.baseContext)
+//    val userResult: MutableLiveData<UserGetAllResponseCollection> = MutableLiveData()
+//
+//    fun getUsers(){
+//        userRepository.getUsers()
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe(getAllUsersListObserverRx())
+//    }
+//
+//    private fun getAllUsersListObserverRx(): SingleObserver<Response<UserGetAllResponseCollection>>{
+//        return object : SingleObserver<Response<UserGetAllResponseCollection>> {
+//
+//            override fun onError(e: Throwable) {
+//                TODO("Not yet implemented")
+//            }
+//
+//            override fun onSubscribe(d: Disposable) {
+//                //Loading
+//            }
+//
+//            override fun onSuccess(t: Response<UserGetAllResponseCollection>) {
+//                userResult.postValue(t.body())
+//            }
+//
+//        }
+//    }
 }

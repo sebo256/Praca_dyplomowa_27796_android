@@ -1,7 +1,6 @@
 package com.praca.dyplomowa.android.views
 
 import android.content.DialogInterface
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
@@ -141,17 +140,6 @@ class AddJobActivity : AppCompatActivity() {
         viewModelAddJobs.addJob(getAllDataFromForm())
     }
 
-    private fun addJobAndGoToJobApplyTo(){
-        viewModelAddJobs.jobResult.observe(this){
-            print(it)
-            val intent = Intent(this, JobApplyToActivityView::class.java)
-            intent.putExtra("newJobId",it.id)
-            startActivity(intent)
-            finish()
-        }
-        viewModelAddJobs.addJob(getAllDataFromForm())
-    }
-
     fun getPlannedDate(): Long?{
         var plannedDate: Long? = null
         return if(!binding.textFieldPlannedTimeJobAddActivity.text.isNullOrBlank() && !binding.textFieldPlannedDateJobAddActivity.text.isNullOrBlank()) {
@@ -190,7 +178,7 @@ class AddJobActivity : AppCompatActivity() {
                 finish()
             }
             .setNeutralButton(R.string.dialog_neutral_title) {dialog, which ->
-                addJobAndGoToJobApplyTo()
+                println("Dodaj pracowników")
             }
             .setNegativeButton(R.string.dialog_negative_title) {dialog, which ->
                 dialog.dismiss()

@@ -41,6 +41,7 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         }
 
         getJobs()
+        println(jobList.toString())
         return view
     }
 
@@ -53,6 +54,8 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
             binding.recyclerViewJob.adapter = JobAdapter(jobList)
         }
         viewModelJobs.getJobs()
+
+
     }
 
 

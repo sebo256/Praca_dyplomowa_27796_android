@@ -1,7 +1,9 @@
 package com.praca.dyplomowa.android.api
 
 import android.content.Context
-import com.praca.dyplomowa.android.api.request.*
+import com.praca.dyplomowa.android.api.request.JobRequest
+import com.praca.dyplomowa.android.api.request.LoginRequest
+import com.praca.dyplomowa.android.api.request.RegistrationRequest
 import com.praca.dyplomowa.android.api.response.*
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Response
@@ -24,14 +26,8 @@ interface PDyplomowaAPI {
     @POST("job")
     fun addJob(@Body jobRequest: JobRequest): Single<Response<JobResponse>>
 
-    @POST("job/addJobApplyTo")
-    fun addJobApplyTo(@Body jobApplyToRequest: JobApplyToRequest): Single<Response<JobResponse>>
-
     @GET("job")
     fun getJobs(): Single<Response<JobGetAllResponseCollection>>
-
-    @GET("job/getById")
-    fun getJobById(@Body jobGetByIdRequest: JobGetByIdRequest): Single<Response<JobGetAllResponse>>
 
     @GET("user")
     fun getUsers(): Single<Response<UserGetAllResponseCollection>>
