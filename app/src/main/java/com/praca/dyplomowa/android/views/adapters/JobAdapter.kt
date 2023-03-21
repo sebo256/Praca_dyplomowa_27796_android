@@ -1,19 +1,16 @@
 package com.praca.dyplomowa.android.views.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.api.response.JobGetAllResponseCollection
-import com.praca.dyplomowa.android.databinding.FragmentJobsViewBinding
 import com.praca.dyplomowa.android.databinding.RecyclerJobsItemLayoutBinding
-
-
 
 class JobAdapter(private var data: ArrayList<JobGetAllResponseCollection>) :
     RecyclerView.Adapter<JobAdapter.ViewHolder>() {
+
+    var selectedJobId: MutableLiveData<String> = MutableLiveData()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val binding = RecyclerJobsItemLayoutBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
@@ -37,7 +34,7 @@ class JobAdapter(private var data: ArrayList<JobGetAllResponseCollection>) :
 
         init {
             binding.recyclerItem.setOnClickListener{
-                println(data.get(0).collection.elementAt(adapterPosition).id)
+                selectedJobId.postValue(data.get(0).collection.elementAt(adapterPosition).id)
             }
         }
     }
