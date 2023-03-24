@@ -9,10 +9,11 @@ import com.praca.dyplomowa.android.databinding.ActivityLoginViewBinding
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.LoginViewModel
 
+
+class LoginActivityView : AppCompatActivity() {
     private lateinit var binding: ActivityLoginViewBinding
     lateinit var viewModelLogin: LoginViewModel
 
-class LoginActivityView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginViewBinding.inflate(layoutInflater)

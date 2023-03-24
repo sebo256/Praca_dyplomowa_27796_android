@@ -12,12 +12,13 @@ import kotlinx.coroutines.processNextEventInCurrentThread
 import okhttp3.internal.notifyAll
 import okhttp3.internal.wait
 
-private lateinit var binding: ActivityJobApplyToViewBinding
-private lateinit var jobApplyToAdapter: JobApplyToAdapter
-lateinit var viewModelJobApplyToViewModel: JobApplyToViewModel
+
 
 
 class JobApplyToActivityView : AppCompatActivity() {
+    private lateinit var binding: ActivityJobApplyToViewBinding
+    private lateinit var jobApplyToAdapter: JobApplyToAdapter
+    lateinit var viewModelJobApplyToViewModel: JobApplyToViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityJobApplyToViewBinding.inflate(layoutInflater)
@@ -25,20 +26,29 @@ class JobApplyToActivityView : AppCompatActivity() {
 
         viewModelJobApplyToViewModel = ViewModelProvider(this).get(JobApplyToViewModel::class.java)
         binding.recyclewViewJobApplyTo.layoutManager = LinearLayoutManager(this)
-        getUsers()
+        getJobAppliedTo()
+//        getUsers()
 
         binding.buttonSaveJobApplyTo.setOnClickListener {
             applyJobTo()
         }
     }
 
-    fun getUsers(){
+    fun getUsers(appliedUsers: Collection<String>){
         viewModelJobApplyToViewModel.userResult.observe(this){
             print(it)
-            jobApplyToAdapter = JobApplyToAdapter(it)
+            jobApplyToAdapter = JobApplyToAdapter(data = it, appliedUsers = appliedUsers)
             binding.recyclewViewJobApplyTo.adapter = jobApplyToAdapter
         }
         viewModelJobApplyToViewModel.getUsers()
+    }
+
+    fun getJobAppliedTo(){
+        viewModelJobApplyToViewModel.jobAppliedToRequestResult.observe(this){
+            print(it)
+            getUsers(it.jobAppliedTo)
+        }
+        viewModelJobApplyToViewModel.getJobAppliedTo(intent.getStringExtra("newJobId")!!)
     }
 
     fun applyJobTo(){

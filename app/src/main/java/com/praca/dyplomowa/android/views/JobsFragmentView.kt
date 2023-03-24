@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.api.response.JobGetAllResponseCollection
 import com.praca.dyplomowa.android.databinding.FragmentJobsViewBinding
+import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.JobsViewModel
 import com.praca.dyplomowa.android.views.adapters.JobAdapter
@@ -38,6 +39,7 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         binding.buttonAddJobJobFragment.setOnClickListener{
             val intent = Intent(requireContext(), AddJobActivity::class.java)
             startActivity(intent)
+
         }
 
         getJobs()
@@ -50,9 +52,17 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         viewModelJobs.jobResult.observe(requireActivity()){
             println(it)
             jobList.add(it)
-            binding.recyclerViewJob.adapter = JobAdapter(jobList)
+            binding.recyclerViewJob.adapter = JobAdapter(jobList, recyclerViewUtilsInterface)
         }
         viewModelJobs.getJobs()
+    }
+
+    private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object : RecyclerViewUtilsInterface {
+        override fun onClick(string: String) {
+            val intent = Intent(requireContext(), AddJobActivity::class.java)
+            intent.putExtra("jobObjectId",string)
+            startActivity(intent)
+        }
     }
 
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.praca.dyplomowa.android.api.repository.JobRepository
 import com.praca.dyplomowa.android.api.repository.UserRepository
+import com.praca.dyplomowa.android.api.request.JobAppliedToResponse
 import com.praca.dyplomowa.android.api.request.JobApplyToRequest
 import com.praca.dyplomowa.android.api.response.JobResponse
 import com.praca.dyplomowa.android.api.response.UserGetAllResponseCollection
@@ -20,6 +21,7 @@ class JobApplyToViewModel(application: Application): AndroidViewModel(applicatio
     val userRepository = UserRepository(application.baseContext)
     val jobRepository = JobRepository(application.baseContext)
     val userResult: MutableLiveData<UserGetAllResponseCollection> = MutableLiveData()
+    val jobAppliedToRequestResult: MutableLiveData<JobAppliedToResponse> = MutableLiveData()
     val jobResult: MutableLiveData<JobResponse> = MutableLiveData()
 
 
@@ -28,6 +30,13 @@ class JobApplyToViewModel(application: Application): AndroidViewModel(applicatio
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(getAllUsersListObserverRx())
+    }
+
+    fun getJobAppliedTo(objectId: String){
+        jobRepository.getJobAplliedTo(objectId = objectId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(getJobAppliedToObserverRx())
     }
 
     fun addJobApplyTo(objectId: String, jobAppliedTo: Collection<String>){
@@ -54,6 +63,23 @@ class JobApplyToViewModel(application: Application): AndroidViewModel(applicatio
                 userResult.postValue(t.body())
             }
 
+        }
+    }
+
+    private fun getJobAppliedToObserverRx(): SingleObserver<Response<JobAppliedToResponse>> {
+        return object : SingleObserver<Response<JobAppliedToResponse>> {
+
+            override fun onError(e: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                //lodaing
+            }
+
+            override fun onSuccess(t: Response<JobAppliedToResponse>) {
+                jobAppliedToRequestResult.postValue(t.body())
+            }
         }
     }
 

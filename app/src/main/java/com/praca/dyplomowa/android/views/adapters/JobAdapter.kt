@@ -6,11 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.praca.dyplomowa.android.api.response.JobGetAllResponseCollection
 import com.praca.dyplomowa.android.databinding.RecyclerJobsItemLayoutBinding
+import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 
-class JobAdapter(private var data: ArrayList<JobGetAllResponseCollection>) :
+class JobAdapter(
+    private var data: ArrayList<JobGetAllResponseCollection>,
+    private var recyclerViewUtilsInterface: RecyclerViewUtilsInterface
+) :
     RecyclerView.Adapter<JobAdapter.ViewHolder>() {
-
-    var selectedJobId: MutableLiveData<String> = MutableLiveData()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val binding = RecyclerJobsItemLayoutBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
@@ -24,6 +26,10 @@ class JobAdapter(private var data: ArrayList<JobGetAllResponseCollection>) :
         viewHolder.binding.textViewRecyclerJobSurname.text = data.get(0).collection.elementAt(position).name
         viewHolder.binding.textViewRecyclerJobCity.text = data.get(0).collection.elementAt(position).city
         viewHolder.binding.textViewRecyclerJobStreet.text = data.get(0).collection.elementAt(position).street
+
+        viewHolder.binding.recyclerItem.setOnClickListener {
+            recyclerViewUtilsInterface.onClick(data.get(0).collection.elementAt(position).id)
+        }
     }
 
     override fun getItemCount() =
@@ -34,7 +40,8 @@ class JobAdapter(private var data: ArrayList<JobGetAllResponseCollection>) :
 
         init {
             binding.recyclerItem.setOnClickListener{
-                selectedJobId.postValue(data.get(0).collection.elementAt(adapterPosition).id)
+
+                println(data.get(0).collection.elementAt(adapterPosition).id)
             }
         }
     }

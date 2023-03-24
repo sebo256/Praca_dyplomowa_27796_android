@@ -1,6 +1,7 @@
 package com.praca.dyplomowa.android.api.request
 
-data class JobRequest(
+data class JobRequestUpdate(
+    val objectId: String,
     val companyName: String?,
     val name: String,
     val surname: String,
@@ -11,10 +12,8 @@ data class JobRequest(
     val email: String?,
     val subject: String,
     val jobType: String,
-    val dateOfCreation: Long,
     val plannedDate: Long?,
     val timeSpent: Int,
     val note: String?,
     val isCompleted: Boolean,
-    val createdBy: String
 )

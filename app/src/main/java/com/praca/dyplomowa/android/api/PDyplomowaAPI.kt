@@ -5,10 +5,7 @@ import com.praca.dyplomowa.android.api.request.*
 import com.praca.dyplomowa.android.api.response.*
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface PDyplomowaAPI {
 
@@ -24,17 +21,23 @@ interface PDyplomowaAPI {
     @POST("job")
     fun addJob(@Body jobRequest: JobRequest): Single<Response<JobResponse>>
 
-    @POST("job/addJobApplyTo")
-    fun addJobApplyTo(@Body jobApplyToRequest: JobApplyToRequest): Single<Response<JobResponse>>
-
     @GET("job")
     fun getJobs(): Single<Response<JobGetAllResponseCollection>>
 
-    @GET("job/getById")
-    fun getJobById(@Body jobGetByIdRequest: JobGetByIdRequest): Single<Response<JobGetAllResponse>>
+    @GET("job/getById/{objectId}")
+    fun getJobById(@Path("objectId") objectId: String): Single<Response<JobGetAllResponse>>
+
+    @GET("job/getById/jobAppliedTo/{objectId}")
+    fun getJobAplliedTo(@Path("objectId") objectId: String): Single<Response<JobAppliedToResponse>>
 
     @GET("user")
     fun getUsers(): Single<Response<UserGetAllResponseCollection>>
+
+    @PUT("job/addJobApplyTo")
+    fun addJobApplyTo(@Body jobApplyToRequest: JobApplyToRequest): Single<Response<JobResponse>>
+
+    @PUT("job")
+    fun updateJob(@Body jobRequestUpdate: JobRequestUpdate): Single<Response<JobResponse>>
 
     companion object {
         fun getApi(context: Context): PDyplomowaAPI{

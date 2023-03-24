@@ -7,10 +7,9 @@ import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.ActivityRegisterViewBinding
 import com.praca.dyplomowa.android.viewmodels.RegisterViewModel
 
+class RegisterActivityView : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterViewBinding
     lateinit var viewModelRegister: RegisterViewModel
-
-class RegisterActivityView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterViewBinding.inflate(layoutInflater)

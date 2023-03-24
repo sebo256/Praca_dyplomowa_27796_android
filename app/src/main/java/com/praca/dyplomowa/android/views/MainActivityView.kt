@@ -6,9 +6,8 @@ import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.ActivityMainViewBinding
 import com.praca.dyplomowa.android.utils.SessionManager
 
-private lateinit var binding: ActivityMainViewBinding
-
 class MainActivityView : AppCompatActivity() {
+    private lateinit var binding: ActivityMainViewBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainViewBinding.inflate(layoutInflater)
