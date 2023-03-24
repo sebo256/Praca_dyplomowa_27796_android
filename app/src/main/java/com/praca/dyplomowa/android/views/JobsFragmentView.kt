@@ -9,10 +9,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.praca.dyplomowa.android.R
-import com.praca.dyplomowa.android.api.response.JobGetAllResponseCollection
+import com.praca.dyplomowa.android.api.response.JobGetAllResponse
 import com.praca.dyplomowa.android.databinding.FragmentJobsViewBinding
 import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
-import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.JobsViewModel
 import com.praca.dyplomowa.android.views.adapters.JobAdapter
 
@@ -21,7 +20,8 @@ lateinit var viewModelJobs: JobsViewModel
 class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
     private var _binding: FragmentJobsViewBinding? = null
     private val binding get() = _binding!!
-    private var jobList = ArrayList<JobGetAllResponseCollection>()
+    var jobList: MutableList<JobGetAllResponse> = mutableListOf()
+    private lateinit var jobAdapter: JobAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,26 +35,32 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         val view = binding.root
 
         binding.recyclerViewJob.layoutManager = LinearLayoutManager(requireContext())
+        jobAdapter = JobAdapter(recyclerViewUtilsInterface)
+        binding.recyclerViewJob.adapter = jobAdapter
 
         binding.buttonAddJobJobFragment.setOnClickListener{
             val intent = Intent(requireContext(), AddJobActivity::class.java)
             startActivity(intent)
-
         }
 
-        getJobs()
+        setObserverForJobRequestJobs()
         return view
     }
 
-    fun getJobs(){
+    fun setObserverForJobRequestJobs(){
 
         viewModelJobs = ViewModelProvider(requireActivity()).get(JobsViewModel::class.java)
         viewModelJobs.jobResult.observe(requireActivity()){
-            println(it)
-            jobList.add(it)
-            binding.recyclerViewJob.adapter = JobAdapter(jobList, recyclerViewUtilsInterface)
+            println(it.collection)
+            jobList = (it.collection.toMutableList())
+            jobAdapter.setupData(it.collection.toMutableList())
         }
+
+    }
+
+    fun getJobsAndUpdateRecyclerData(){
         viewModelJobs.getJobs()
+        jobAdapter.setupData(jobList)
     }
 
     private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object : RecyclerViewUtilsInterface {
@@ -63,6 +69,11 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
             intent.putExtra("jobObjectId",string)
             startActivity(intent)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getJobsAndUpdateRecyclerData()
     }
 
 

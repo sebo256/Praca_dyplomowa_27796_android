@@ -27,7 +27,6 @@ class JobApplyToActivityView : AppCompatActivity() {
         viewModelJobApplyToViewModel = ViewModelProvider(this).get(JobApplyToViewModel::class.java)
         binding.recyclewViewJobApplyTo.layoutManager = LinearLayoutManager(this)
         getJobAppliedTo()
-//        getUsers()
 
         binding.buttonSaveJobApplyTo.setOnClickListener {
             applyJobTo()

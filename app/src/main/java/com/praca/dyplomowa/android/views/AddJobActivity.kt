@@ -187,6 +187,7 @@ class AddJobActivity : AppCompatActivity() {
     private fun addOrUpdateJob(){
         viewModelAddJobs.jobResult.observe(this) {
             print(it)
+            finish()
         }
         when(checkIfIntentIsNull()){
             true -> viewModelAddJobs.addJob(getAllDataFromForm())
@@ -256,7 +257,7 @@ class AddJobActivity : AppCompatActivity() {
             postalCode = binding.textFieldPostalCodeJobAddActivity.text.toString(),
             city = binding.textFieldCityJobAddActivity.text.toString(),
             phoneNumber = binding.textFieldPhoneNumberJobAddActivity.text.toString(),
-            email = binding.textFieldSubjectJobAddActivity.text.toString(),
+            email = binding.textFieldEmailJobAddActivity.text.toString(),
             subject = binding.textFieldSubjectJobAddActivity.text.toString(),
             jobType = binding.textFieldDropdownJobTypeJobAddActivity.text.toString(),
             plannedDate = getPlannedDate(),
@@ -271,7 +272,6 @@ class AddJobActivity : AppCompatActivity() {
             .setMessage(R.string.dialog_message_title)
             .setPositiveButton(R.string.dialog_positive_title) {dialog, which ->
                 addOrUpdateJob()
-                finish()
             }
             .setNeutralButton(R.string.dialog_neutral_title) {dialog, which ->
                 addOrUpdateJobAndGoToJobApplyTo()
