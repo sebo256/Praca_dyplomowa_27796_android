@@ -52,6 +52,10 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
                 context = getApplication<Application>().applicationContext,
                 id = t.body()?.username
             )
+            SessionManager.saveIsAdmin(
+                context = getApplication<Application>().applicationContext,
+                isAdmin = t.body()?.roles!!.contains("ROLE_ADMIN")
+            )
             loginResult.postValue(t.body())
         }
 

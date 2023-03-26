@@ -29,4 +29,8 @@ class JobRepository(val context: Context) {
     fun updateJob(jobRequestUpdate: JobRequestUpdate): Single<Response<JobResponse>> =
         PDyplomowaAPI.getApi(context).updateJob(jobRequestUpdate = jobRequestUpdate)
 
+    fun deleteJob(objectId: String): Single<Response<JobResponse>> =
+        PDyplomowaAPI.getApi(context).deleteJob(objectId = objectId)
+
+
 }

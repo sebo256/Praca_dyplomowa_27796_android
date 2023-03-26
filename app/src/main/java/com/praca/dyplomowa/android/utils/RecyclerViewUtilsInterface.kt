@@ -4,4 +4,6 @@ import android.view.View
 
 interface RecyclerViewUtilsInterface {
     fun onClick(string: String)
+
+    fun onLongClick(string: String)
 }

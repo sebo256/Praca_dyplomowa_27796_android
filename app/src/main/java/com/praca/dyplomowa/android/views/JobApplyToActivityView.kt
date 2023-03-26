@@ -47,7 +47,7 @@ class JobApplyToActivityView : AppCompatActivity() {
             print(it)
             getUsers(it.jobAppliedTo)
         }
-        viewModelJobApplyToViewModel.getJobAppliedTo(intent.getStringExtra("newJobId")!!)
+        viewModelJobApplyToViewModel.getJobAppliedTo(intent.getStringExtra("jobId")!!)
     }
 
     fun applyJobTo(){
@@ -55,7 +55,7 @@ class JobApplyToActivityView : AppCompatActivity() {
             finish()
         }
         viewModelJobApplyToViewModel.addJobApplyTo(
-            objectId = intent.getStringExtra("newJobId")!!,
+            objectId = intent.getStringExtra("jobId")!!,
             jobAppliedTo = jobApplyToAdapter.getCheckedUsers()
         )
     }

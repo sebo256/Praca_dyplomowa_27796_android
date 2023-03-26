@@ -28,7 +28,7 @@ class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
         val view = binding.root
 
         binding.buttonLogoutMainActivity.setOnClickListener {
-            SessionManager.clearSharedPrefs(requireActivity().applicationContext)
+            SessionManager.clearSharedPrefsTest(requireActivity().applicationContext)
             goToLogin()
         }
         return view

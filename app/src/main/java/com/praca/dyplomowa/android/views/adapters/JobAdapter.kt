@@ -20,17 +20,6 @@ class JobAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-//        viewHolder.binding.textViewRecyclerJobSubject.text = data.elementAt(position).subject
-//        viewHolder.binding.textViewRecyclerJobCompanyName.text = data.elementAt(position).companyName
-//        viewHolder.binding.textViewRecyclerJobName.text = data.elementAt(position).name
-//        viewHolder.binding.textViewRecyclerJobSurname.text = data.elementAt(position).name
-//        viewHolder.binding.textViewRecyclerJobCity.text = data.elementAt(position).city
-//        viewHolder.binding.textViewRecyclerJobStreet.text = data.elementAt(position).street
-//
-//        viewHolder.binding.recyclerItem.setOnClickListener {
-//            recyclerViewUtilsInterface.onClick(data.elementAt(position).id)
-//        }
-
         viewHolder.binding.textViewRecyclerJobSubject.text = dataDiffer.currentList.elementAt(position).subject
         viewHolder.binding.textViewRecyclerJobCompanyName.text = dataDiffer.currentList.elementAt(position).companyName
         viewHolder.binding.textViewRecyclerJobName.text = dataDiffer.currentList.elementAt(position).name
@@ -40,6 +29,10 @@ class JobAdapter(
 
         viewHolder.binding.recyclerItem.setOnClickListener {
             recyclerViewUtilsInterface.onClick(dataDiffer.currentList.elementAt(position).id)
+        }
+        viewHolder.binding.recyclerItem.setOnLongClickListener {
+            recyclerViewUtilsInterface.onLongClick(dataDiffer.currentList.elementAt(position).id)
+            true
         }
 
     }

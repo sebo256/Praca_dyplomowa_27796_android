@@ -199,7 +199,7 @@ class AddJobActivity : AppCompatActivity() {
         viewModelAddJobs.jobResult.observe(this){
             print(it)
             val intent = Intent(this, JobApplyToActivityView::class.java)
-            intent.putExtra("newJobId",it.id)
+            intent.putExtra("jobId",it.id)
             startActivity(intent)
             finish()
         }
@@ -270,13 +270,13 @@ class AddJobActivity : AppCompatActivity() {
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.dialog_text_title)
             .setMessage(R.string.dialog_message_title)
-            .setPositiveButton(R.string.dialog_positive_title) {dialog, which ->
+            .setPositiveButton(R.string.dialog_addjob_positive_title) { dialog, which ->
                 addOrUpdateJob()
             }
-            .setNeutralButton(R.string.dialog_neutral_title) {dialog, which ->
+            .setNeutralButton(R.string.dialog_addjob_neutral_title) { dialog, which ->
                 addOrUpdateJobAndGoToJobApplyTo()
             }
-            .setNegativeButton(R.string.dialog_negative_title) {dialog, which ->
+            .setNegativeButton(R.string.dialog_addjob_negative_title) { dialog, which ->
                 dialog.dismiss()
             }
             .show()

@@ -39,6 +39,9 @@ interface PDyplomowaAPI {
     @PUT("job")
     fun updateJob(@Body jobRequestUpdate: JobRequestUpdate): Single<Response<JobResponse>>
 
+    @DELETE("job/{objectId}")
+    fun deleteJob(@Path("objectId") objectId: String): Single<Response<JobResponse>>
+
     companion object {
         fun getApi(context: Context): PDyplomowaAPI{
             return ApiClient.getInstance(context).create(PDyplomowaAPI::class.java)

@@ -45,9 +45,14 @@
     <string name="checkbox_text_label">Wykonano</string>
     <string name="dialog_text_title">Przydziel pracowników</string>
     <string name="dialog_message_title">Czy chcesz zapisać? Możesz również przydzielić pracowników</string>
-    <string name="dialog_positive_title">Zapisz</string>
-    <string name="dialog_neutral_title">Przydziel</string>
-    <string name="dialog_negative_title">Wróć</string>
+    <string name="dialog_addjob_positive_title">Zapisz</string>
+    <string name="dialog_addjob_neutral_title">Przydziel</string>
+    <string name="dialog_addjob_negative_title">Wróć</string>
+    <string name="dialog_joblist_negative_title">Usuń zlecenie</string>
+    <string name="dialog_joblist_positive_title">Przydziel pracowników</string>
+    <string name="dialog_joblist_neutral_title">Wróć</string>
+    <string name="dialog_joblist_text_title">Wybierz</string>
+    <string name="dialog_joblist_text_message">Wybierz co chcesz zrobić</string>
     <string-array name="job_types_dropdown">
         <item>Budowa</item>
         <item>Remont</item>
