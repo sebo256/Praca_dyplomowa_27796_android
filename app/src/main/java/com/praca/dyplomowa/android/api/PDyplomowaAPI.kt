@@ -18,6 +18,9 @@ interface PDyplomowaAPI {
     @POST("auth/register")
     fun register(@Body registrationRequest: RegistrationRequest): Single<Response<RegistrationResponse>>
 
+    @POST("/auth/refreshtoken")
+    fun refreshToken(@Header("Cookie")token: String): Single<Response<RefreshTokenResponse>>
+
     @POST("job")
     fun addJob(@Body jobRequest: JobRequest): Single<Response<JobResponse>>
 

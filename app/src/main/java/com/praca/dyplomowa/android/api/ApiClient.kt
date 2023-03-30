@@ -3,7 +3,8 @@ package com.praca.dyplomowa.android.api
 import android.content.Context
 import com.praca.dyplomowa.android.utils.Constants
 import com.praca.dyplomowa.android.utils.SessionManager
-import okhttp3.OkHttpClient
+import okhttp3.*
+import okhttp3.internal.wait
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
@@ -19,6 +20,14 @@ object ApiClient {
 
         var okHttpClient = OkHttpClient
             .Builder()
+            .authenticator { route, response ->
+                if (response.code == 401) {
+                    SessionManager.refreshToken(token = SessionManager.getRefreshToken(context)!!, context = context)
+                    response.request.newBuilder().removeHeader("Authorization").addHeader("Authorization", "Bearer ${SessionManager.getAccessToken(context)}").build()
+                } else {
+                    response.request
+                }
+            }
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(httpLoggingInterceptor)
@@ -45,6 +54,7 @@ object ApiClient {
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
 
         return retrofit
     }

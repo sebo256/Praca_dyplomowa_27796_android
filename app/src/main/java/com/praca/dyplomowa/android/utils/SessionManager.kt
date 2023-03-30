@@ -1,11 +1,18 @@
 package com.praca.dyplomowa.android.utils
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import androidx.security.crypto.MasterKeys
-import com.praca.dyplomowa.android.R
+import com.praca.dyplomowa.android.api.repository.UserRepository
+import com.praca.dyplomowa.android.api.response.RefreshTokenResponse
+import com.praca.dyplomowa.android.views.LoginActivityView
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.SingleObserver
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import retrofit2.Response
 
 object SessionManager {
 
@@ -51,10 +58,46 @@ object SessionManager {
     fun getBooleanSharedPrefs(context: Context, key: String): Boolean =
         getEncryptedSharedPrefs(context).getBoolean(key,false)
 
-    fun clearSharedPrefsTest(context: Context) =
+    fun clearSharedPrefs(context: Context) =
         getEncryptedSharedPrefs(context).edit().clear().apply()
 
+    fun refreshToken(token: String, context: Context){
+        val userRepository = UserRepository(context)
+        userRepository.refreshToken(token)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .blockingSubscribe(getNewAccessTokenUsingRefreshObserverRX(context))
+    }
 
+    private fun getNewAccessTokenUsingRefreshObserverRX(context: Context): SingleObserver<Response<RefreshTokenResponse>> {
+        return object : SingleObserver<Response<RefreshTokenResponse>> {
+
+            override fun onError(e: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                //Loading
+            }
+
+            override fun onSuccess(t: Response<RefreshTokenResponse>) {
+                if(t.body()!!.status){
+                    saveAccessToken(
+                        context = context,
+                        token = t.body()?.token
+                    )
+                }else{
+                    clearSharedPrefs(context)
+                    val intent = Intent(context, LoginActivityView::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                    context.startActivity(intent)
+                }
+
+            }
+
+        }
+    }
 
 //    fun saveStringSharedPrefs(context: Context, key: String, value: String?){
 //        val sharedPrefsEditor = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE).edit()

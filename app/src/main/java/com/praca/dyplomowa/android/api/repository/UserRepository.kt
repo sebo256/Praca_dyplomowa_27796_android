@@ -4,10 +4,7 @@ import android.content.Context
 import com.praca.dyplomowa.android.api.PDyplomowaAPI
 import com.praca.dyplomowa.android.api.request.LoginRequest
 import com.praca.dyplomowa.android.api.request.RegistrationRequest
-import com.praca.dyplomowa.android.api.response.LoginResponse
-import com.praca.dyplomowa.android.api.response.RegistrationResponse
-import com.praca.dyplomowa.android.api.response.UserGetAllResponse
-import com.praca.dyplomowa.android.api.response.UserGetAllResponseCollection
+import com.praca.dyplomowa.android.api.response.*
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Response
 
@@ -21,5 +18,8 @@ class UserRepository(val context: Context) {
 
     fun getUsers(): Single<Response<UserGetAllResponseCollection>> =
         PDyplomowaAPI.getApi(context).getUsers()
+
+    fun refreshToken(token: String): Single<Response<RefreshTokenResponse>> =
+        PDyplomowaAPI.getApi(context).refreshToken(token = token)
 
 }

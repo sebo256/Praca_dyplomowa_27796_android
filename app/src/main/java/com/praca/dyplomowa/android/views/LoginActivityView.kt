@@ -18,16 +18,26 @@ class LoginActivityView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModelLogin = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         val token = SessionManager.getAccessToken(this)
         if(!token.isNullOrBlank()){
-            goToHome()
+            refreshAccessToken()
         }
 
         binding.buttonLoginLoginActivity.setOnClickListener { loginUser() }
 
         binding.buttonRegisterLoginActivity.setOnClickListener { startActivity(Intent(this, RegisterActivityView::class.java)) }
 
+    }
+
+    private fun refreshAccessToken(){
+        viewModelLogin.refreshToken(SessionManager.getRefreshToken(this)!!)
+        viewModelLogin.refreshTokenResultBool.observe(this) {
+            if(it){
+                goToHome()
+            }
+        }
     }
 
     private fun goToHome() {
@@ -40,7 +50,6 @@ class LoginActivityView : AppCompatActivity() {
         val username = binding.textFieldUsernameLoginActivity.text.toString()
         val password = binding.textFieldPasswordLoginActivity.text.toString()
         if (username.length in 3..19 && password.length in 8..30) {
-            viewModelLogin = ViewModelProvider(this).get(LoginViewModel::class.java)
             viewModelLogin.loginResult.observe(this) {
                 if (it != null) {
                     println(it)

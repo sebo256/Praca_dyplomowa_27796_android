@@ -1,12 +1,14 @@
 package com.praca.dyplomowa.android.viewmodels
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.praca.dyplomowa.android.api.repository.UserRepository
 import com.praca.dyplomowa.android.api.request.LoginRequest
 import com.praca.dyplomowa.android.api.response.LoginResponse
+import com.praca.dyplomowa.android.api.response.RefreshTokenResponse
 import com.praca.dyplomowa.android.utils.SessionManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
@@ -19,12 +21,20 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
 
     val userRepository = UserRepository(application.baseContext)
     val loginResult: MutableLiveData<LoginResponse> = MutableLiveData()
+    val refreshTokenResultBool: MutableLiveData<Boolean> = MutableLiveData()
 
     fun loginUser(username: String, password: String) {
         userRepository.login(LoginRequest(username = username, password = password))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(getLoginListObserverRx())
+    }
+
+    fun refreshToken(token: String){
+        userRepository.refreshToken(token)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(getNewAccessTokenUsingRefreshObserverRX())
 
     }
 
@@ -59,6 +69,35 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
             loginResult.postValue(t.body())
         }
 
+
+        }
+    }
+
+    private fun getNewAccessTokenUsingRefreshObserverRX(): SingleObserver<Response<RefreshTokenResponse>> {
+        return object : SingleObserver<Response<RefreshTokenResponse>> {
+
+            override fun onError(e: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                //Loading
+            }
+
+            override fun onSuccess(t: Response<RefreshTokenResponse>) {
+                if(t.body()!!.status){
+                    SessionManager.saveAccessToken(
+                        context = getApplication<Application>().applicationContext,
+                        token = t.body()?.token
+                    )
+                    refreshTokenResultBool.value = true
+                }else{
+                    SessionManager.clearSharedPrefs(getApplication<Application>().applicationContext)
+                    refreshTokenResultBool.value = false
+                }
+
+
+            }
 
         }
     }
