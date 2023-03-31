@@ -110,7 +110,10 @@ class AddJobActivity : AppCompatActivity() {
         binding.textFieldPlannedDateJobAddActivity.setText(viewModelAddJobs.calculateSimpleDateFromLong(dateLong))
         binding.textFieldPlannedTimeJobAddActivity.setText(String.format("%02d:%02d",dateHour, dateMinute))
         binding.checkboxIsCompletedJobAddActivity.isChecked = jobGetAllResponse.isCompleted
-        if ( binding.checkboxIsCompletedJobAddActivity.isChecked) binding.textFieldTimeSpentJobAddActivity.setText(jobGetAllResponse.timeSpent)
+        if ( binding.checkboxIsCompletedJobAddActivity.isChecked || jobGetAllResponse.isCompleted) {
+            binding.textFieldTimeSpentJobAddActivity.isEnabled = true
+            binding.textFieldTimeSpentJobAddActivity.setText(jobGetAllResponse.timeSpent.toString())
+        }
         setupForm()
     }
 
