@@ -27,11 +27,17 @@ interface PDyplomowaAPI {
     @GET("job")
     fun getJobs(): Single<Response<JobGetAllResponseCollection>>
 
+    @GET("job/getDatesAndInfo")
+    fun getJobDatesAndInfo(): Single<Response<JobGetDatesAndInfoResponseCollection>>
+
     @GET("job/getById/{objectId}")
     fun getJobById(@Path("objectId") objectId: String): Single<Response<JobGetAllResponse>>
 
     @GET("job/getById/jobAppliedTo/{objectId}")
     fun getJobAplliedTo(@Path("objectId") objectId: String): Single<Response<JobAppliedToResponse>>
+
+    @GET("job/getByLongDateBetween/?")
+    fun getJobByLongDateBetween(@Query("startLong") startLong: Long, @Query("endLong") endLong: Long): Single<JobGetAllResponseCollection>
 
     @GET("user")
     fun getUsers(): Single<Response<UserGetAllResponseCollection>>

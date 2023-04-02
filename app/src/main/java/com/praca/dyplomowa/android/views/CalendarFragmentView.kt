@@ -1,60 +1,161 @@
 package com.praca.dyplomowa.android.views
 
+import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.praca.dyplomowa.android.R
+import android.widget.TextView
+import androidx.core.view.children
+import androidx.lifecycle.ViewModelProvider
+import com.kizitonwose.calendar.core.*
+import com.kizitonwose.calendar.view.MonthDayBinder
+import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
+import com.praca.dyplomowa.android.api.response.JobGetDatesAndInfoResponse
+import com.praca.dyplomowa.android.databinding.FragmentCalendarViewBinding
+import com.praca.dyplomowa.android.utils.CalendarViewContainersUtilsInterface
+import com.praca.dyplomowa.android.viewmodels.CalendarViewModel
+import com.praca.dyplomowa.android.views.calendarContainers.DayViewContainer
+import com.praca.dyplomowa.android.views.calendarContainers.MonthViewContainer
+import java.time.DayOfWeek
+import java.time.Instant
+import java.time.YearMonth
+import java.time.ZoneId
+import java.time.format.TextStyle
+import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+lateinit var viewModelCalendar: CalendarViewModel
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CalendarFragmentView.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CalendarFragmentView : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentCalendarViewBinding? = null
+    private val binding get() = _binding!!
+    var jobDatesAndInfoList: MutableList<JobGetDatesAndInfoResponse> = mutableListOf()
+    val currentMonth = YearMonth.now()
+    val startMonth = currentMonth.minusMonths(100)  // Adjust as needed
+    val endMonth = currentMonth.plusMonths(100)  // Adjust as needed
+    val firstDayOfWeek = firstDayOfWeekFromLocale() // Available from the library
+    val daysOfWeek: List<DayOfWeek> = daysOfWeek(firstDayOfWeek)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calendar_view, container, false)
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
+        _binding = FragmentCalendarViewBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        viewModelCalendar = ViewModelProvider(requireActivity()).get(CalendarViewModel::class.java)
+        setObserverForGetJobGetDatesAndInfoResponse()
+        setObserverForGetJobByLongDateBetween()
+
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CalendarFragmentView.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CalendarFragmentView().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    fun checkIfDarkModeIsOn() =
+        resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+
+    fun setObserverForGetJobGetDatesAndInfoResponse(){
+        viewModelCalendar.jobDatesAndInfoResult.observe(viewLifecycleOwner){
+            jobDatesAndInfoList = it.collection.toMutableList()
+            setupCalendar(binding)
+        }
+        viewModelCalendar.getJobDatesAndInfo()
+    }
+
+    fun setObserverForGetJobByLongDateBetween(){
+        viewModelCalendar.jobResult.observe(viewLifecycleOwner){
+            println(it)
+            parentFragmentManager.beginTransaction()
+                .add(android.R.id.content, CalendarJobListFragment.newInstance(it))
+                .addToBackStack(null)
+                .commit()
+        }
+
+    }
+
+    private val calendarViewContainersUtilsInterface: CalendarViewContainersUtilsInterface = object : CalendarViewContainersUtilsInterface {
+        override fun onClick(startLong: Long, endLong: Long) {
+            viewModelCalendar.getJobByLongDateBetween(startLong, endLong)
+
+        }
+    }
+
+    fun setupCalendar(binding: FragmentCalendarViewBinding){
+        binding.calendarView.setup(startMonth, endMonth, daysOfWeek.first())
+        binding.calendarView.scrollToMonth(currentMonth)
+        setupCalendarDayBinder(binding)
+        setupCalendarMonthBinder(binding)
+
+
+        binding.calendarView.monthScrollListener = {
+            val date = binding.calendarView.findFirstVisibleMonth()?.yearMonth
+            binding.textViewYearCalendarFragment.text = date!!.month.getDisplayName(TextStyle.FULL_STANDALONE, resources.configuration.locales.get(0)) +
+                    " " +
+                    date.year.toString()
+        }
+
+    }
+
+    private fun setupCalendarDayBinder(binding: FragmentCalendarViewBinding) {
+        binding.calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
+
+            override fun create(view: View) = DayViewContainer(view, calendarViewContainersUtilsInterface)
+            override fun bind(container: DayViewContainer, data: CalendarDay) {
+                container.dates = data
+                container.textView.text = data.date.dayOfMonth.toString()
+                container.jobDot.visibility = View.INVISIBLE
+
+                jobDatesAndInfoList.forEach {
+                    if(data.date == Instant.ofEpochMilli(it.plannedDate!!).atZone(ZoneId.systemDefault()).toLocalDate()){
+                        container.jobDot.visibility = View.VISIBLE
+                    }
+                }
+
+                if(checkIfDarkModeIsOn()){
+                    when(data.position == DayPosition.MonthDate){
+                        true -> container.textView.setTextColor(Color.WHITE)
+                        false -> container.textView.setTextColor(Color.GRAY)
+                    }
+                }else{
+                    when(data.position == DayPosition.MonthDate){
+                        true -> container.textView.setTextColor(Color.BLACK)
+                        false -> container.textView.setTextColor(Color.GRAY)
+                    }
+                }
+
+            }
+        }
+    }
+
+    private fun setupCalendarMonthBinder(binding: FragmentCalendarViewBinding) {
+        binding.calendarView.monthHeaderBinder = object : MonthHeaderFooterBinder<MonthViewContainer>{
+            override fun create(view: View) = MonthViewContainer(view)
+            override fun bind(container: MonthViewContainer, data: CalendarMonth) {
+                if(container.titlesContainer.tag == null) {
+                    container.titlesContainer.tag = data.yearMonth
+                    container.titlesContainer.children.map { it as TextView }
+                        .forEachIndexed { index, textView ->
+                            val dayOfWeek = daysOfWeek.elementAt(index)
+                            val title = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+                            textView.text = title
+                        }
+
                 }
             }
+        }
     }
+
+    override fun onResume() {
+        super.onResume()
+        parentFragmentManager.popBackStack()
+    }
+
 }
+

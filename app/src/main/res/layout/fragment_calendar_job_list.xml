@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutCalendarJobListFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    tools:context=".views.CalendarJobListFragment">
+
+
+    <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recyclerViewCalendarJobListFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:listitem="@layout/recycler_jobs_item_layout" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.praca.dyplomowa.android.api.request
+package com.praca.dyplomowa.android.api.response
 
 data class JobAppliedToResponse(
     val id: String,

@@ -4,8 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.praca.dyplomowa.android.api.repository.JobRepository
-import com.praca.dyplomowa.android.api.repository.UserRepository
-import com.praca.dyplomowa.android.api.request.JobGetByIdRequest
 import com.praca.dyplomowa.android.api.request.JobRequest
 import com.praca.dyplomowa.android.api.request.JobRequestUpdate
 import com.praca.dyplomowa.android.api.response.*
@@ -13,14 +11,9 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import okhttp3.internal.format
 import retrofit2.Response
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class AddJobsViewModel(application: Application): AndroidViewModel(application) {
 
@@ -118,10 +111,6 @@ class AddJobsViewModel(application: Application): AndroidViewModel(application) 
 
     fun calculateMinutesFromLong(date: Long): Int =
         SimpleDateFormat("mm").format(date).toString().toInt()
-
-    fun calculateTimeFromRequest(timeLong: Long) {
-//        var calendar = Calendar.getInstance().setTimeInMillis(timeLong)
-    }
 
 
 }

@@ -52,7 +52,7 @@ class JobAdapter(
         init {
             binding.recyclerItem.setOnClickListener{
 
-                println(dataDiffer.currentList.elementAt(adapterPosition).id)
+                println(dataDiffer.currentList.elementAt(absoluteAdapterPosition).id)
             }
         }
     }

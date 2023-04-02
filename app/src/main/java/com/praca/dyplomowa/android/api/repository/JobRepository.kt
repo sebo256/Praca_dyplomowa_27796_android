@@ -3,16 +3,18 @@ package com.praca.dyplomowa.android.api.repository
 import android.content.Context
 import com.praca.dyplomowa.android.api.PDyplomowaAPI
 import com.praca.dyplomowa.android.api.request.*
-import com.praca.dyplomowa.android.api.response.JobGetAllResponse
-import com.praca.dyplomowa.android.api.response.JobGetAllResponseCollection
-import com.praca.dyplomowa.android.api.response.JobResponse
+import com.praca.dyplomowa.android.api.response.*
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Response
+import retrofit2.http.Query
 
 class JobRepository(val context: Context) {
 
     fun getJobs(): Single<Response<JobGetAllResponseCollection>> =
         PDyplomowaAPI.getApi(context).getJobs()
+
+    fun getJobDatesAndInfo(): Single<Response<JobGetDatesAndInfoResponseCollection>> =
+        PDyplomowaAPI.getApi(context).getJobDatesAndInfo()
 
     fun getJobById(objectId: String): Single<Response<JobGetAllResponse>> =
         PDyplomowaAPI.getApi(context).getJobById(objectId = objectId)
@@ -25,6 +27,9 @@ class JobRepository(val context: Context) {
 
     fun addJobApplyTo(jobApplyToRequest: JobApplyToRequest): Single<Response<JobResponse>> =
         PDyplomowaAPI.getApi(context).addJobApplyTo(jobApplyToRequest = jobApplyToRequest)
+
+    fun getJobByLongDateBetween(startLong: Long, endLong: Long): Single<JobGetAllResponseCollection> =
+        PDyplomowaAPI.getApi(context).getJobByLongDateBetween(startLong = startLong, endLong = endLong)
 
     fun updateJob(jobRequestUpdate: JobRequestUpdate): Single<Response<JobResponse>> =
         PDyplomowaAPI.getApi(context).updateJob(jobRequestUpdate = jobRequestUpdate)
