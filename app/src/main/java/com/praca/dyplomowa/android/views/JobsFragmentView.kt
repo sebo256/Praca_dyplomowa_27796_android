@@ -22,7 +22,7 @@ lateinit var viewModelJobs: JobsViewModel
 class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
     private var _binding: FragmentJobsViewBinding? = null
     private val binding get() = _binding!!
-    var jobList: MutableList<JobGetAllResponse> = mutableListOf()
+    var jobList: MutableList<JobGetAllResponse>? = mutableListOf()
     private lateinit var jobAdapter: JobAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,27 +36,29 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         _binding = FragmentJobsViewBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        viewModelJobs = ViewModelProvider(requireActivity()).get(JobsViewModel::class.java)
+        setObserverForGetJobRequestJobs()
+        setObserverForDeleteJob()
+
+
         binding.recyclerViewJob.layoutManager = LinearLayoutManager(requireContext())
         jobAdapter = JobAdapter(recyclerViewUtilsInterface)
         binding.recyclerViewJob.adapter = jobAdapter
 
-        viewModelJobs = ViewModelProvider(requireActivity()).get(JobsViewModel::class.java)
+
 
         binding.buttonAddJobJobFragment.setOnClickListener{
             val intent = Intent(requireContext(), AddJobActivity::class.java)
             startActivity(intent)
         }
 
-        setObserverForGetJobRequestJobs()
-        setObserverForDeleteJob()
         return view
     }
 
     fun setObserverForGetJobRequestJobs(){
         viewModelJobs.jobResult.observe(viewLifecycleOwner){
             println(it.collection)
-            jobList = (it.collection.toMutableList())
-            jobAdapter.setupData(it.collection.toMutableList())
+            jobAdapter.setupData(it.collection.toList())
         }
 
     }
@@ -64,12 +66,9 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
     fun setObserverForDeleteJob(){
         viewModelJobs.jobDeleteResult.observe(viewLifecycleOwner){
             println(it)
-        }
-    }
+            viewModelJobs.getJobs()
 
-    fun getJobsAndUpdateRecyclerData(){
-        viewModelJobs.getJobs()
-        jobAdapter.setupData(jobList)
+        }
     }
 
     private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object : RecyclerViewUtilsInterface {
@@ -93,7 +92,6 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
                 }
                 .setNegativeButton(R.string.dialog_joblist_negative_title) { dialog, which ->
                     viewModelJobs.deleteJob(string)
-                    getJobsAndUpdateRecyclerData()
                 }
 
             if(!SessionManager.getIsAdmin(requireContext())) {
@@ -105,7 +103,7 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
 
     override fun onResume() {
         super.onResume()
-        getJobsAndUpdateRecyclerData()
+        viewModelJobs.getJobs()
     }
 
 }

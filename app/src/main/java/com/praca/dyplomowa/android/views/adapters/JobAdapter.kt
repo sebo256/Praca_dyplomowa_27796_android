@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.api.response.JobGetAllResponse
@@ -30,11 +31,12 @@ class JobAdapter(
         viewHolder.binding.textViewRecyclerJobCity.text = dataDiffer.currentList.elementAt(position).city
         viewHolder.binding.textViewRecyclerJobStreet.text = dataDiffer.currentList.elementAt(position).street
 
+
         viewHolder.binding.recyclerItem.setOnClickListener {
-            recyclerViewUtilsInterface.onClick(dataDiffer.currentList.elementAt(position).id)
+            recyclerViewUtilsInterface.onClick(dataDiffer.currentList.elementAt(viewHolder.bindingAdapterPosition).id)
         }
         viewHolder.binding.recyclerItem.setOnLongClickListener {
-            recyclerViewUtilsInterface.onLongClick(dataDiffer.currentList.elementAt(position).id)
+            recyclerViewUtilsInterface.onLongClick(dataDiffer.currentList.elementAt(viewHolder.bindingAdapterPosition).id)
             true
         }
 
@@ -52,12 +54,12 @@ class JobAdapter(
         init {
             binding.recyclerItem.setOnClickListener{
 
-                println(dataDiffer.currentList.elementAt(absoluteAdapterPosition).id)
+                println(dataDiffer.currentList.elementAt(bindingAdapterPosition).id)
             }
         }
     }
 
-    fun setupData(data: MutableList<JobGetAllResponse>) =
+    fun setupData(data: List<JobGetAllResponse>) =
         dataDiffer.submitList(data)
 
     private val diffUtil = object : DiffUtil.ItemCallback<JobGetAllResponse>() {
@@ -75,5 +77,7 @@ class JobAdapter(
             return oldItem == newItem
         }
     }
+
     val dataDiffer = AsyncListDiffer(this, diffUtil)
+
 }

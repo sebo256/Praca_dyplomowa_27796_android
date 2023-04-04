@@ -12,17 +12,18 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import retrofit2.Response
 
-class JobsViewModel(application: Application): AndroidViewModel(application) {
+class CalendarJobListViewModel(application: Application): AndroidViewModel(application) {
 
     val jobRepository = JobRepository(application.baseContext)
     val jobResult: MutableLiveData<JobGetAllResponseCollection> = MutableLiveData()
     val jobDeleteResult: MutableLiveData<JobResponse> = MutableLiveData()
 
-    fun getJobs(){
-        jobRepository.getJobs()
+
+    fun getJobByLongDateBetween(startLong: Long, endLong: Long){
+        jobRepository.getJobByLongDateBetween(startLong = startLong, endLong = endLong)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(getAllJobsListObserverRx())
+            .subscribe(getJobByLongDateBetweenListObserverRx())
     }
 
     fun deleteJob(objectId: String){
@@ -32,8 +33,8 @@ class JobsViewModel(application: Application): AndroidViewModel(application) {
             .subscribe(deleteJobObserverRx())
     }
 
-    private fun getAllJobsListObserverRx(): SingleObserver<Response<JobGetAllResponseCollection>>{
-        return object : SingleObserver<Response<JobGetAllResponseCollection>> {
+    private fun getJobByLongDateBetweenListObserverRx(): SingleObserver<JobGetAllResponseCollection> {
+        return object : SingleObserver<JobGetAllResponseCollection> {
 
             override fun onError(e: Throwable) {
                 TODO("Not yet implemented")
@@ -43,27 +44,27 @@ class JobsViewModel(application: Application): AndroidViewModel(application) {
                 //Loading
             }
 
-            override fun onSuccess(t: Response<JobGetAllResponseCollection>) {
-                jobResult.postValue(t.body())
+            override fun onSuccess(t: JobGetAllResponseCollection) {
+                jobResult.postValue(t)
             }
         }
     }
 
     private fun deleteJobObserverRx(): SingleObserver<Response<JobResponse>>{
-         return object : SingleObserver<Response<JobResponse>> {
+        return object : SingleObserver<Response<JobResponse>> {
 
-             override fun onError(e: Throwable) {
-                 TODO("Not yet implemented")
-             }
+            override fun onError(e: Throwable) {
+                TODO("Not yet implemented")
+            }
 
-             override fun onSubscribe(d: Disposable) {
-                 //Loading
-             }
+            override fun onSubscribe(d: Disposable) {
+                //Loading
+            }
 
-             override fun onSuccess(t: Response<JobResponse>) {
-                 jobDeleteResult.postValue(t.body())
-             }
-         }
+            override fun onSuccess(t: Response<JobResponse>) {
+                jobDeleteResult.postValue(t.body())
+            }
+        }
     }
 
 }

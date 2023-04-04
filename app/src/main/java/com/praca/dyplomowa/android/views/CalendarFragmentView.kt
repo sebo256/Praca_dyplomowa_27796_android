@@ -1,5 +1,6 @@
 package com.praca.dyplomowa.android.views
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
@@ -9,13 +10,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.children
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import com.google.gson.Gson
 import com.kizitonwose.calendar.core.*
 import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
+import com.praca.dyplomowa.android.CalendarJobListView
 import com.praca.dyplomowa.android.api.response.JobGetDatesAndInfoResponse
 import com.praca.dyplomowa.android.databinding.FragmentCalendarViewBinding
 import com.praca.dyplomowa.android.utils.CalendarViewContainersUtilsInterface
+import com.praca.dyplomowa.android.utils.DateRange
 import com.praca.dyplomowa.android.viewmodels.CalendarViewModel
 import com.praca.dyplomowa.android.views.calendarContainers.DayViewContainer
 import com.praca.dyplomowa.android.views.calendarContainers.MonthViewContainer
@@ -33,9 +38,9 @@ class CalendarFragmentView : Fragment() {
     private val binding get() = _binding!!
     var jobDatesAndInfoList: MutableList<JobGetDatesAndInfoResponse> = mutableListOf()
     val currentMonth = YearMonth.now()
-    val startMonth = currentMonth.minusMonths(100)  // Adjust as needed
-    val endMonth = currentMonth.plusMonths(100)  // Adjust as needed
-    val firstDayOfWeek = firstDayOfWeekFromLocale() // Available from the library
+    val startMonth = currentMonth.minusMonths(60)
+    val endMonth = currentMonth.plusMonths(60)
+    val firstDayOfWeek = firstDayOfWeekFromLocale()
     val daysOfWeek: List<DayOfWeek> = daysOfWeek(firstDayOfWeek)
 
 
@@ -53,7 +58,7 @@ class CalendarFragmentView : Fragment() {
 
         viewModelCalendar = ViewModelProvider(requireActivity()).get(CalendarViewModel::class.java)
         setObserverForGetJobGetDatesAndInfoResponse()
-        setObserverForGetJobByLongDateBetween()
+//        setObserverForGetJobByLongDateBetween()
 
         return view
     }
@@ -69,21 +74,29 @@ class CalendarFragmentView : Fragment() {
         viewModelCalendar.getJobDatesAndInfo()
     }
 
-    fun setObserverForGetJobByLongDateBetween(){
-        viewModelCalendar.jobResult.observe(viewLifecycleOwner){
-            println(it)
-            parentFragmentManager.beginTransaction()
-                .add(android.R.id.content, CalendarJobListFragment.newInstance(it))
-                .addToBackStack(null)
-                .commit()
-        }
-
-    }
+//    fun setObserverForGetJobByLongDateBetween(){
+//        viewModelCalendar.jobResult.observe(viewLifecycleOwner){
+//            println(it)
+////            parentFragmentManager.beginTransaction()
+////                .add(android.R.id.content, CalendarJobListFragment.newInstance(it))
+////                .addToBackStack(null)
+////                .commit()
+//        }
+//
+//    }
 
     private val calendarViewContainersUtilsInterface: CalendarViewContainersUtilsInterface = object : CalendarViewContainersUtilsInterface {
         override fun onClick(startLong: Long, endLong: Long) {
-            viewModelCalendar.getJobByLongDateBetween(startLong, endLong)
+//            viewModelCalendar.getJobByLongDateBetween(startLong, endLong)
+//            parentFragmentManager.beginTransaction()
+//                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//                .add(android.R.id.content, CalendarJobListFragment.newInstance(DateRange(startLong = startLong, endLong = endLong)))
+//                .addToBackStack(null)
+//                .commit()
 
+            val intent = Intent(requireContext(), CalendarJobListView::class.java)
+            intent.putExtra("dateRange", Gson().toJson(DateRange(startLong = startLong, endLong = endLong)))
+            startActivity(intent)
         }
     }
 
@@ -111,7 +124,6 @@ class CalendarFragmentView : Fragment() {
                 container.dates = data
                 container.textView.text = data.date.dayOfMonth.toString()
                 container.jobDot.visibility = View.INVISIBLE
-
                 jobDatesAndInfoList.forEach {
                     if(data.date == Instant.ofEpochMilli(it.plannedDate!!).atZone(ZoneId.systemDefault()).toLocalDate()){
                         container.jobDot.visibility = View.VISIBLE
@@ -154,8 +166,10 @@ class CalendarFragmentView : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        parentFragmentManager.popBackStack()
+        viewModelCalendar.getJobDatesAndInfo()
+        setupCalendar(binding)
     }
+
 
 }
 

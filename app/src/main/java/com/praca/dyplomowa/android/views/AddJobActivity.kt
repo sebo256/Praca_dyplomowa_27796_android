@@ -187,6 +187,7 @@ class AddJobActivity : AppCompatActivity() {
         }
     }
 
+    //TODO Przy updejcie czas źle się oblicza i zwiększa czas, co powoduje dzień do przodu
     private fun addOrUpdateJob(){
         viewModelAddJobs.jobResult.observe(this) {
             print(it)
