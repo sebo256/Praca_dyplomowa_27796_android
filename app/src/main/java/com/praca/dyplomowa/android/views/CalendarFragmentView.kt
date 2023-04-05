@@ -10,13 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.children
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.kizitonwose.calendar.core.*
 import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
-import com.praca.dyplomowa.android.CalendarJobListView
 import com.praca.dyplomowa.android.api.response.JobGetDatesAndInfoResponse
 import com.praca.dyplomowa.android.databinding.FragmentCalendarViewBinding
 import com.praca.dyplomowa.android.utils.CalendarViewContainersUtilsInterface
@@ -24,10 +22,7 @@ import com.praca.dyplomowa.android.utils.DateRange
 import com.praca.dyplomowa.android.viewmodels.CalendarViewModel
 import com.praca.dyplomowa.android.views.calendarContainers.DayViewContainer
 import com.praca.dyplomowa.android.views.calendarContainers.MonthViewContainer
-import java.time.DayOfWeek
-import java.time.Instant
-import java.time.YearMonth
-import java.time.ZoneId
+import java.time.*
 import java.time.format.TextStyle
 import java.util.*
 
@@ -169,6 +164,8 @@ class CalendarFragmentView : Fragment() {
         viewModelCalendar.getJobDatesAndInfo()
         setupCalendar(binding)
     }
+
+
 
 
 }

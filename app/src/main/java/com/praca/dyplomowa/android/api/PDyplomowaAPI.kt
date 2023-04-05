@@ -27,6 +27,9 @@ interface PDyplomowaAPI {
     @GET("job")
     fun getJobs(): Single<Response<JobGetAllResponseCollection>>
 
+    @GET("job/getJobsForList")
+    fun getJobsForList(): Single<Response<JobGetForListResponseCollection>>
+
     @GET("job/getDatesAndInfo")
     fun getJobDatesAndInfo(): Single<Response<JobGetDatesAndInfoResponseCollection>>
 
@@ -36,11 +39,21 @@ interface PDyplomowaAPI {
     @GET("job/getById/jobAppliedTo/{objectId}")
     fun getJobAplliedTo(@Path("objectId") objectId: String): Single<Response<JobAppliedToResponse>>
 
+    @GET("job/getByUsername/getJobsAppliedToUserAndCheckCompletion/?")
+    fun getJobsAppliedToUserAndCheckCompleted(@Query("username") username: String, @Query("isCompleted") isCompleted: Boolean): Single<Response<JobGetForListResponseCollection>>
+
+    @GET("job/getByUsername/countJobsAppliedToUserAndCheckCompletion/?")
+    fun countJobsAppliedToUserAndCheckCompleted(@Query("username") username: String, @Query("isCompleted") isCompleted: Boolean): Single<Response<Long>>
+
     @GET("job/getByLongDateBetween/?")
     fun getJobByLongDateBetween(@Query("startLong") startLong: Long, @Query("endLong") endLong: Long): Single<JobGetAllResponseCollection>
 
     @GET("user")
     fun getUsers(): Single<Response<UserGetAllResponseCollection>>
+
+    @GET("user/{username}")
+    fun getUser(@Path("username") username: String): Single<Response<UserGetAllResponse>>
+
 
     @PUT("job/addJobApplyTo")
     fun addJobApplyTo(@Body jobApplyToRequest: JobApplyToRequest): Single<Response<JobResponse>>

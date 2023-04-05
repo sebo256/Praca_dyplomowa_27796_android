@@ -40,7 +40,7 @@ object SessionManager {
     fun getRefreshToken(context: Context): String? =
         getStringSharedPrefs(context, REFRESH_TOKEN)
 
-    fun getCurrentUserId(context: Context): String? =
+    fun getCurrentUserUsername(context: Context): String? =
         getStringSharedPrefs(context, CURRENT_USER_USERNAME)
 
     fun getIsAdmin(context: Context): Boolean =

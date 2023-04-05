@@ -248,7 +248,7 @@ class AddJobActivity : AppCompatActivity() {
             timeSpent = binding.textFieldTimeSpentJobAddActivity.text.toString().toIntOrNull() ?: 0,
             note = binding.textFieldNoteJobAddActivity.text.toString(),
             isCompleted = binding.checkboxIsCompletedJobAddActivity.isChecked,
-            createdBy = SessionManager.getCurrentUserId(this)!!
+            createdBy = SessionManager.getCurrentUserUsername(this)!!
         )
 
     fun getDataForUpdateJob() =

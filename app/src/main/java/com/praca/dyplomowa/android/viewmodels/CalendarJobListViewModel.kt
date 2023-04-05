@@ -11,6 +11,8 @@ import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CalendarJobListViewModel(application: Application): AndroidViewModel(application) {
 
@@ -67,4 +69,6 @@ class CalendarJobListViewModel(application: Application): AndroidViewModel(appli
         }
     }
 
+    fun calculateDate(dateLong: Long): String =
+        SimpleDateFormat("dd LLLL yyyy").format(Date(dateLong))
 }

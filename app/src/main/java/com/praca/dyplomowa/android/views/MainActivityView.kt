@@ -13,20 +13,20 @@ class MainActivityView : AppCompatActivity() {
         binding = ActivityMainViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, JobsFragmentView()).commit()
+        supportFragmentManager.beginTransaction().replace(binding.fragmentContainerMainActivityView.id, JobsFragmentView()).commit()
 
         binding.navigationBar.setOnItemSelectedListener { item ->
             when(item.itemId){
                 R.id.menu_item_1 -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragment_container, JobsFragmentView()).commit()
+                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainerMainActivityView.id, JobsFragmentView()).commit()
                     true
                 }
                 R.id.menu_item_2 -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragment_container, CalendarFragmentView()).commit()
+                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainerMainActivityView.id, CalendarFragmentView()).commit()
                     true
                 }
                 R.id.menu_item_3 -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragment_container, ProfileFragmentView()).commit()
+                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainerMainActivityView.id, ProfileFragmentView()).commit()
                     true
                 }
                 else -> false

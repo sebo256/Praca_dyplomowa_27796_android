@@ -19,6 +19,9 @@ class UserRepository(val context: Context) {
     fun getUsers(): Single<Response<UserGetAllResponseCollection>> =
         PDyplomowaAPI.getApi(context).getUsers()
 
+    fun getUser(username: String): Single<Response<UserGetAllResponse>> =
+        PDyplomowaAPI.getApi(context).getUser(username)
+
     fun refreshToken(token: String): Single<Response<RefreshTokenResponse>> =
         PDyplomowaAPI.getApi(context).refreshToken(token = token)
 

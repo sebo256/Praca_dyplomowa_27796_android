@@ -6,9 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.FragmentProfileViewBinding
 import com.praca.dyplomowa.android.utils.SessionManager
+import com.praca.dyplomowa.android.viewmodels.ProfileViewModel
+
+lateinit var viewModelProfile: ProfileViewModel
 
 class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
     private var _binding: FragmentProfileViewBinding? = null
@@ -27,16 +31,40 @@ class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
         _binding = FragmentProfileViewBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        viewModelProfile = ViewModelProvider(requireActivity()).get(ProfileViewModel::class.java)
+        setObserverForCountCompletedJobsAppliedToUserAndCompleted()
+        setObserverForCountTodoJobsAppliedToUserAndCompleted()
+        setObserverForGetUser()
+
         binding.buttonLogoutMainActivity.setOnClickListener {
             SessionManager.clearSharedPrefs(requireActivity().applicationContext)
             goToLogin()
         }
+
+
+
         return view
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    fun setObserverForCountCompletedJobsAppliedToUserAndCompleted(){
+        viewModelProfile.jobCompletedCountResult.observe(viewLifecycleOwner){
+            binding.textViewJobsCompletedNumberTextProfileFragmentView.setText(it.toString())
+        }
+        viewModelProfile.countCompletedJobsAppliedToUserAndCheckCompleted(SessionManager.getCurrentUserUsername(requireContext())!!)
+    }
+    fun setObserverForCountTodoJobsAppliedToUserAndCompleted(){
+        viewModelProfile.jobTodoCountResult.observe(viewLifecycleOwner){
+            binding.textViewJobsTodoNumberTextProfileFragmentView.setText(it.toString())
+        }
+        viewModelProfile.countTodoJobsAppliedToUserAndCheckCompleted(SessionManager.getCurrentUserUsername(requireContext())!!)
+    }
+
+    fun setObserverForGetUser(){
+        viewModelProfile.userResponse.observe(viewLifecycleOwner){
+            binding.textViewNameProfileFragmentView.setText(it.name)
+            binding.textViewSurnameProfileFragmentView.setText(it.surname)
+        }
+        viewModelProfile.getUser(SessionManager.getCurrentUserUsername(requireContext())!!)
     }
 
     private fun goToLogin() {

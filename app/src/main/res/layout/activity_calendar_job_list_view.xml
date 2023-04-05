@@ -5,12 +5,32 @@
     android:id="@+id/layoutCalendarJobListActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CalendarJobListView">
+    tools:context=".views.CalendarJobListView">
+
+    <TextView
+        android:id="@+id/textViewDateCalendarJobListActivityView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text=""
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewCalendarJobListActivity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCalendarJobListActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="86dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-53dp"
         tools:listitem="@layout/recycler_jobs_item_layout" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

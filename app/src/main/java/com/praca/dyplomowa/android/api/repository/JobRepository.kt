@@ -13,6 +13,9 @@ class JobRepository(val context: Context) {
     fun getJobs(): Single<Response<JobGetAllResponseCollection>> =
         PDyplomowaAPI.getApi(context).getJobs()
 
+    fun getJobsForList(): Single<Response<JobGetForListResponseCollection>> =
+        PDyplomowaAPI.getApi(context).getJobsForList()
+
     fun getJobDatesAndInfo(): Single<Response<JobGetDatesAndInfoResponseCollection>> =
         PDyplomowaAPI.getApi(context).getJobDatesAndInfo()
 
@@ -21,6 +24,12 @@ class JobRepository(val context: Context) {
 
     fun getJobAplliedTo(objectId: String): Single<Response<JobAppliedToResponse>> =
         PDyplomowaAPI.getApi(context).getJobAplliedTo(objectId = objectId)
+
+    fun getJobsAppliedToUserAndCheckCompleted(username: String, isCompleted: Boolean): Single<Response<JobGetForListResponseCollection>> =
+        PDyplomowaAPI.getApi(context).getJobsAppliedToUserAndCheckCompleted(username = username, isCompleted = isCompleted)
+
+    fun countJobsAppliedToUserAndCheckCompleted(username: String, isCompleted: Boolean): Single<Response<Long>> =
+        PDyplomowaAPI.getApi(context).countJobsAppliedToUserAndCheckCompleted(username = username, isCompleted = isCompleted)
 
     fun addJob(jobRequest: JobRequest): Single<Response<JobResponse>> =
         PDyplomowaAPI.getApi(context).addJob(jobRequest = jobRequest)

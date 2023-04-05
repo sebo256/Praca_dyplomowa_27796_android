@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".CalendarJobListView"
+            android:name=".views.CalendarJobListView"
             android:exported="false" />
         <activity
             android:name=".views.JobApplyToActivityView"

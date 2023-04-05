@@ -28,6 +28,10 @@
     <string name="continue_button_text">Dalej</string>
     <string name="datepicker_textfield_text">Wybierz datę</string>
     <string name="timepicker_textfield_text">Wybierz czas</string>
+    <string name="textview_text_jobs_completed">Liczba zakończonych zleceń:</string>
+    <string name="button_text_jobs_completed">Liczba zakończonych zleceń</string>
+    <string name="textview_text_jobs_todo">Liczba zleceń do wykonania:</string>
+    <string name="button_text_jobs_todo">Liczba zleceń do wykonania</string>
     <string name="login_error_info">Podano zły login lub hasło</string>
     <string name="register_error_name_info">Wprowadzone imię jest niepoprawne</string>
     <string name="register_error_surname_info">Wprowadzone nazwisko jest niepoprawne</string>
