@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.api.response.JobGetAllResponse
+import com.praca.dyplomowa.android.api.response.JobGetForListResponse
 import com.praca.dyplomowa.android.databinding.RecyclerJobsItemLayoutBinding
 import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 
@@ -59,20 +60,20 @@ class JobAdapter(
         }
     }
 
-    fun setupData(data: List<JobGetAllResponse>) =
+    fun setupData(data: List<JobGetForListResponse>) =
         dataDiffer.submitList(data)
 
-    private val diffUtil = object : DiffUtil.ItemCallback<JobGetAllResponse>() {
+    private val diffUtil = object : DiffUtil.ItemCallback<JobGetForListResponse>() {
         override fun areItemsTheSame(
-            oldItem: JobGetAllResponse,
-            newItem: JobGetAllResponse
+            oldItem: JobGetForListResponse,
+            newItem: JobGetForListResponse
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: JobGetAllResponse,
-            newItem: JobGetAllResponse
+            oldItem: JobGetForListResponse,
+            newItem: JobGetForListResponse
         ): Boolean {
             return oldItem == newItem
         }

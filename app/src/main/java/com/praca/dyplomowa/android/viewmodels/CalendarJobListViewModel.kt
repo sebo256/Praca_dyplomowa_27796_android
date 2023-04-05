@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.praca.dyplomowa.android.api.repository.JobRepository
 import com.praca.dyplomowa.android.api.response.JobGetAllResponseCollection
+import com.praca.dyplomowa.android.api.response.JobGetForListResponseCollection
 import com.praca.dyplomowa.android.api.response.JobResponse
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
@@ -17,7 +18,7 @@ import java.util.*
 class CalendarJobListViewModel(application: Application): AndroidViewModel(application) {
 
     val jobRepository = JobRepository(application.baseContext)
-    val jobResult: MutableLiveData<JobGetAllResponseCollection> = MutableLiveData()
+    val jobResult: MutableLiveData<JobGetForListResponseCollection> = MutableLiveData()
     val jobDeleteResult: MutableLiveData<JobResponse> = MutableLiveData()
 
 
@@ -35,8 +36,8 @@ class CalendarJobListViewModel(application: Application): AndroidViewModel(appli
             .subscribe(deleteJobObserverRx())
     }
 
-    private fun getJobByLongDateBetweenListObserverRx(): SingleObserver<JobGetAllResponseCollection> {
-        return object : SingleObserver<JobGetAllResponseCollection> {
+    private fun getJobByLongDateBetweenListObserverRx(): SingleObserver<JobGetForListResponseCollection> {
+        return object : SingleObserver<JobGetForListResponseCollection> {
 
             override fun onError(e: Throwable) {
                 TODO("Not yet implemented")
@@ -46,7 +47,7 @@ class CalendarJobListViewModel(application: Application): AndroidViewModel(appli
                 //Loading
             }
 
-            override fun onSuccess(t: JobGetAllResponseCollection) {
+            override fun onSuccess(t: JobGetForListResponseCollection) {
                 jobResult.postValue(t)
             }
         }

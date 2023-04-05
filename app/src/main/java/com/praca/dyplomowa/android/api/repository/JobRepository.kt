@@ -37,7 +37,7 @@ class JobRepository(val context: Context) {
     fun addJobApplyTo(jobApplyToRequest: JobApplyToRequest): Single<Response<JobResponse>> =
         PDyplomowaAPI.getApi(context).addJobApplyTo(jobApplyToRequest = jobApplyToRequest)
 
-    fun getJobByLongDateBetween(startLong: Long, endLong: Long): Single<JobGetAllResponseCollection> =
+    fun getJobByLongDateBetween(startLong: Long, endLong: Long): Single<JobGetForListResponseCollection> =
         PDyplomowaAPI.getApi(context).getJobByLongDateBetween(startLong = startLong, endLong = endLong)
 
     fun updateJob(jobRequestUpdate: JobRequestUpdate): Single<Response<JobResponse>> =

@@ -46,7 +46,7 @@ interface PDyplomowaAPI {
     fun countJobsAppliedToUserAndCheckCompleted(@Query("username") username: String, @Query("isCompleted") isCompleted: Boolean): Single<Response<Long>>
 
     @GET("job/getByLongDateBetween/?")
-    fun getJobByLongDateBetween(@Query("startLong") startLong: Long, @Query("endLong") endLong: Long): Single<JobGetAllResponseCollection>
+    fun getJobByLongDateBetween(@Query("startLong") startLong: Long, @Query("endLong") endLong: Long): Single<JobGetForListResponseCollection>
 
     @GET("user")
     fun getUsers(): Single<Response<UserGetAllResponseCollection>>

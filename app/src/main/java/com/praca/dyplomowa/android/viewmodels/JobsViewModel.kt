@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.praca.dyplomowa.android.api.repository.JobRepository
 import com.praca.dyplomowa.android.api.response.JobGetAllResponseCollection
+import com.praca.dyplomowa.android.api.response.JobGetForListResponseCollection
 import com.praca.dyplomowa.android.api.response.JobResponse
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
@@ -15,11 +16,11 @@ import retrofit2.Response
 class JobsViewModel(application: Application): AndroidViewModel(application) {
 
     val jobRepository = JobRepository(application.baseContext)
-    val jobResult: MutableLiveData<JobGetAllResponseCollection> = MutableLiveData()
+    val jobResult: MutableLiveData<JobGetForListResponseCollection> = MutableLiveData()
     val jobDeleteResult: MutableLiveData<JobResponse> = MutableLiveData()
 
     fun getJobs(){
-        jobRepository.getJobs()
+        jobRepository.getJobsForList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(getAllJobsListObserverRx())
@@ -32,8 +33,8 @@ class JobsViewModel(application: Application): AndroidViewModel(application) {
             .subscribe(deleteJobObserverRx())
     }
 
-    private fun getAllJobsListObserverRx(): SingleObserver<Response<JobGetAllResponseCollection>>{
-        return object : SingleObserver<Response<JobGetAllResponseCollection>> {
+    private fun getAllJobsListObserverRx(): SingleObserver<Response<JobGetForListResponseCollection>>{
+        return object : SingleObserver<Response<JobGetForListResponseCollection>> {
 
             override fun onError(e: Throwable) {
                 TODO("Not yet implemented")
@@ -43,7 +44,7 @@ class JobsViewModel(application: Application): AndroidViewModel(application) {
                 //Loading
             }
 
-            override fun onSuccess(t: Response<JobGetAllResponseCollection>) {
+            override fun onSuccess(t: Response<JobGetForListResponseCollection>) {
                 jobResult.postValue(t.body())
             }
         }
