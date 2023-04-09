@@ -4,29 +4,33 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.praca.dyplomowa.android.api.repository.JobRepository
-import com.praca.dyplomowa.android.api.response.JobGetAllResponseCollection
 import com.praca.dyplomowa.android.api.response.JobGetForListResponseCollection
 import com.praca.dyplomowa.android.api.response.JobResponse
+import com.praca.dyplomowa.android.api.response.ObjectId
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.util.*
 
-class CalendarJobListViewModel(application: Application): AndroidViewModel(application) {
+class ProfileJobListViewModel(application: Application): AndroidViewModel(application) {
 
     val jobRepository = JobRepository(application.baseContext)
     val jobResult: MutableLiveData<JobGetForListResponseCollection> = MutableLiveData()
     val jobDeleteResult: MutableLiveData<JobResponse> = MutableLiveData()
 
-
-    fun getJobByLongDateBetween(startLong: Long, endLong: Long){
-        jobRepository.getJobByLongDateBetween(startLong = startLong, endLong = endLong)
+    fun getCompletedJobsAppliedToUser(username: String){
+        jobRepository.getJobsAppliedToUserAndCheckCompleted(username = username, isCompleted = true)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(getJobByLongDateBetweenListObserverRx())
+            .subscribe(getCompletedJobsAppliedToUserListObserverRx())
+    }
+
+    fun getTodoJobsAppliedToUser(username: String){
+        jobRepository.getJobsAppliedToUserAndCheckCompleted(username = username, isCompleted = false)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(getTodoJobsAppliedToUserListObserverRx())
     }
 
     fun deleteJob(objectId: String){
@@ -36,8 +40,8 @@ class CalendarJobListViewModel(application: Application): AndroidViewModel(appli
             .subscribe(deleteJobObserverRx())
     }
 
-    private fun getJobByLongDateBetweenListObserverRx(): SingleObserver<JobGetForListResponseCollection> {
-        return object : SingleObserver<JobGetForListResponseCollection> {
+    private fun getCompletedJobsAppliedToUserListObserverRx(): SingleObserver<Response<JobGetForListResponseCollection>> {
+        return object : SingleObserver<Response<JobGetForListResponseCollection>> {
 
             override fun onError(e: Throwable) {
                 TODO("Not yet implemented")
@@ -47,13 +51,30 @@ class CalendarJobListViewModel(application: Application): AndroidViewModel(appli
                 //Loading
             }
 
-            override fun onSuccess(t: JobGetForListResponseCollection) {
-                jobResult.postValue(t)
+            override fun onSuccess(t: Response<JobGetForListResponseCollection>) {
+                jobResult.postValue(t.body())
             }
         }
     }
 
-    private fun deleteJobObserverRx(): SingleObserver<Response<JobResponse>>{
+    private fun getTodoJobsAppliedToUserListObserverRx(): SingleObserver<Response<JobGetForListResponseCollection>> {
+        return object : SingleObserver<Response<JobGetForListResponseCollection>> {
+
+            override fun onError(e: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                //Loading
+            }
+
+            override fun onSuccess(t: Response<JobGetForListResponseCollection>) {
+                jobResult.postValue(t.body())
+            }
+        }
+    }
+
+    private fun deleteJobObserverRx(): SingleObserver<Response<JobResponse>> {
         return object : SingleObserver<Response<JobResponse>> {
 
             override fun onError(e: Throwable) {
@@ -70,6 +91,4 @@ class CalendarJobListViewModel(application: Application): AndroidViewModel(appli
         }
     }
 
-    fun calculateDate(dateLong: Long): String =
-        SimpleDateFormat("dd LLLL yyyy").format(Date(dateLong))
 }

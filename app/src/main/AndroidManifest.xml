@@ -16,6 +16,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".views.ProfileTimeSpentListView"
+            android:exported="false" />
+        <activity
+            android:name=".views.ProfileJobListView"
+            android:exported="false" />
+        <activity
             android:name=".views.CalendarJobListView"
             android:exported="false" />
         <activity

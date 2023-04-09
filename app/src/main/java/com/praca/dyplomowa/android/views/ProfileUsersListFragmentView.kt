@@ -1,0 +1,75 @@
+package com.praca.dyplomowa.android.views
+
+import android.content.Intent
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.praca.dyplomowa.android.R
+import com.praca.dyplomowa.android.databinding.FragmentProfileUsersListViewBinding
+import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
+import com.praca.dyplomowa.android.utils.SessionManager
+import com.praca.dyplomowa.android.viewmodels.ProfileUsersListViewModel
+import com.praca.dyplomowa.android.views.adapters.ProfileUsersListAdapter
+
+lateinit var viewModelProfileUserList: ProfileUsersListViewModel
+
+class ProfileUsersListFragmentView : DialogFragment() {
+    private var _binding: FragmentProfileUsersListViewBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var usersAdapter: ProfileUsersListAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
+        _binding = FragmentProfileUsersListViewBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+
+        viewModelProfileUserList = ViewModelProvider(requireActivity()).get(ProfileUsersListViewModel::class.java)
+        setObserverForGetUsers()
+
+        binding.recyclewViewProfileUsersList.layoutManager = LinearLayoutManager(requireContext())
+        usersAdapter = ProfileUsersListAdapter(recyclerViewUtilsInterface)
+        binding.recyclewViewProfileUsersList.adapter = usersAdapter
+
+        return view
+    }
+
+    private fun setObserverForGetUsers(){
+        viewModelProfileUserList.userReponse.observe(viewLifecycleOwner){
+            println(it)
+            usersAdapter.setupData(it.collection.toList())
+        }
+        viewModelProfileUserList.getUsers()
+    }
+
+    private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object :
+        RecyclerViewUtilsInterface {
+        override fun onClick(string: String) {
+            val intent = Intent(requireContext(), ProfileTimeSpentListView::class.java)
+            intent.putExtra("username",string)
+            startActivity(intent)
+        }
+
+        override fun onLongClick(string: String) {
+            val intent = Intent(requireContext(), ProfileTimeSpentListView::class.java)
+            intent.putExtra("username",string)
+            startActivity(intent)
+        }
+    }
+
+}

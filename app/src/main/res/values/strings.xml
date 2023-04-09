@@ -30,8 +30,13 @@
     <string name="timepicker_textfield_text">Wybierz czas</string>
     <string name="textview_text_jobs_completed">Liczba zakończonych zleceń:</string>
     <string name="button_text_jobs_completed">Liczba zakończonych zleceń</string>
+    <string name="textview_list_jobs_completed">Zakończone zlecenia</string>
     <string name="textview_text_jobs_todo">Liczba zleceń do wykonania:</string>
     <string name="button_text_jobs_todo">Liczba zleceń do wykonania</string>
+    <string name="textview_list_jobs_todo">Zlecenia do wykonania</string>
+    <string name="textview_list_timeSpent">Godziny pracy w tym miesiącu:</string>
+    <string name="button_list_timeSpent">Godziny pracy</string>
+    <string name="button_list_timeSpentAdmin">Panel godzin pracy pracowników</string>
     <string name="login_error_info">Podano zły login lub hasło</string>
     <string name="register_error_name_info">Wprowadzone imię jest niepoprawne</string>
     <string name="register_error_surname_info">Wprowadzone nazwisko jest niepoprawne</string>

@@ -15,7 +15,6 @@ import com.praca.dyplomowa.android.databinding.RecyclerJobsItemLayoutBinding
 import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 
 class JobAdapter(
-//    private var data: MutableList<JobGetAllResponse>,
     private var recyclerViewUtilsInterface: RecyclerViewUtilsInterface
 ) : RecyclerView.Adapter<JobAdapter.ViewHolder>() {
 

@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".views.ProfileFragmentView">
 
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="15dp"
+        android:translationZ="10dp" />
+
     <Button
         android:id="@+id/buttonLogoutMainActivity"
         android:layout_width="wrap_content"
@@ -56,31 +63,10 @@
         android:layout_width="62dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="textView"
+        android:text="\?"
         android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewJobsCompletedTextProfileFragmentView"
         app:layout_constraintStart_toEndOf="@+id/textViewJobsCompletedTextProfileFragmentView" />
-
-    <TextView
-        android:id="@+id/textViewJobsTodoTextProfileFragmentView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
-        android:text="@string/textview_text_jobs_todo"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewJobsCompletedTextProfileFragmentView" />
-
-    <TextView
-        android:id="@+id/textViewJobsTodoNumberTextProfileFragmentView"
-        android:layout_width="62dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="textView"
-        android:textSize="16sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textViewJobsTodoTextProfileFragmentView"
-        app:layout_constraintStart_toEndOf="@+id/textViewJobsTodoTextProfileFragmentView" />
 
     <Button
         android:id="@+id/buttonJobsCompletedProfileFragmentView"
@@ -94,6 +80,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewJobsCompletedTextProfileFragmentView" />
 
+
+    <TextView
+        android:id="@+id/textViewJobsTodoTextProfileFragmentView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/textview_text_jobs_todo"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonJobsCompletedProfileFragmentView" />
+
+    <TextView
+        android:id="@+id/textViewJobsTodoNumberTextProfileFragmentView"
+        android:layout_width="62dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="\?"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textViewJobsTodoTextProfileFragmentView"
+        app:layout_constraintStart_toEndOf="@+id/textViewJobsTodoTextProfileFragmentView" />
+
     <Button
         android:id="@+id/buttonJobsTodoProfileFragmentView"
         android:layout_width="0dp"
@@ -105,4 +113,51 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewJobsTodoTextProfileFragmentView" />
+
+    <TextView
+        android:id="@+id/textViewJobsTimeSpentProfileFragmentView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/textview_list_timeSpent"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonJobsTodoProfileFragmentView" />
+
+    <TextView
+        android:id="@+id/textViewJobsTimeSpentNumberTextProfileFragmentView"
+        android:layout_width="62dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="\?"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textViewJobsTimeSpentProfileFragmentView"
+        app:layout_constraintStart_toEndOf="@+id/textViewJobsTimeSpentProfileFragmentView" />
+
+    <Button
+        android:id="@+id/buttonJobsTimeSpentProfileFragmentView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/button_list_timeSpent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewJobsTimeSpentProfileFragmentView" />
+
+    <Button
+        android:id="@+id/buttonJobsTimeSpentAdminProfileFragmentView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/button_list_timeSpentAdmin"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonJobsTimeSpentProfileFragmentView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

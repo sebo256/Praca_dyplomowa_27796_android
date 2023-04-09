@@ -33,16 +33,17 @@ class JobApplyToActivityView : AppCompatActivity() {
         }
     }
 
-    fun getUsers(appliedUsers: Collection<String>){
+    private fun getUsers(appliedUsers: Collection<String>){
         viewModelJobApplyToViewModel.userResult.observe(this){
             print(it)
-            jobApplyToAdapter = JobApplyToAdapter(data = it, appliedUsers = appliedUsers)
+            jobApplyToAdapter = JobApplyToAdapter(appliedUsers = appliedUsers)
             binding.recyclewViewJobApplyTo.adapter = jobApplyToAdapter
+            jobApplyToAdapter.setupData(it.collection.toList())
         }
         viewModelJobApplyToViewModel.getUsers()
     }
 
-    fun getJobAppliedTo(){
+    private fun getJobAppliedTo(){
         viewModelJobApplyToViewModel.jobAppliedToRequestResult.observe(this){
             print(it)
             getUsers(it.jobAppliedTo)
@@ -50,7 +51,7 @@ class JobApplyToActivityView : AppCompatActivity() {
         viewModelJobApplyToViewModel.getJobAppliedTo(intent.getStringExtra("jobId")!!)
     }
 
-    fun applyJobTo(){
+    private fun applyJobTo(){
         viewModelJobApplyToViewModel.jobResult.observe(this){
             finish()
         }

@@ -6,7 +6,6 @@ import com.praca.dyplomowa.android.api.request.*
 import com.praca.dyplomowa.android.api.response.*
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Response
-import retrofit2.http.Query
 
 class JobRepository(val context: Context) {
 
@@ -39,6 +38,12 @@ class JobRepository(val context: Context) {
 
     fun getJobByLongDateBetween(startLong: Long, endLong: Long): Single<JobGetForListResponseCollection> =
         PDyplomowaAPI.getApi(context).getJobByLongDateBetween(startLong = startLong, endLong = endLong)
+
+    fun getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted(startLong: Long, endLong: Long, username: String, isCompleted: Boolean): Single<Response<Int>> =
+        PDyplomowaAPI.getApi(context).getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted(startLong = startLong, endLong = endLong, username = username, isCompleted = isCompleted)
+
+    fun getAllTimeSpentForUserPerMonth(username: String): Single<Response<JobTimeSpentResponseCollection>> =
+        PDyplomowaAPI.getApi(context).getAllTimeSpentForUserPerMonth(username = username)
 
     fun updateJob(jobRequestUpdate: JobRequestUpdate): Single<Response<JobResponse>> =
         PDyplomowaAPI.getApi(context).updateJob(jobRequestUpdate = jobRequestUpdate)

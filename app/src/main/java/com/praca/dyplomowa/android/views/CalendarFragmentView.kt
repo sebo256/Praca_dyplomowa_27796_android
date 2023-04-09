@@ -32,7 +32,7 @@ class CalendarFragmentView : Fragment() {
     private var _binding: FragmentCalendarViewBinding? = null
     private val binding get() = _binding!!
     var jobDatesAndInfoList: MutableList<JobGetDatesAndInfoResponse> = mutableListOf()
-    val currentMonth = YearMonth.now()
+    var currentMonth = YearMonth.now()
     val startMonth = currentMonth.minusMonths(60)
     val endMonth = currentMonth.plusMonths(60)
     val firstDayOfWeek = firstDayOfWeekFromLocale()
@@ -69,26 +69,8 @@ class CalendarFragmentView : Fragment() {
         viewModelCalendar.getJobDatesAndInfo()
     }
 
-//    fun setObserverForGetJobByLongDateBetween(){
-//        viewModelCalendar.jobResult.observe(viewLifecycleOwner){
-//            println(it)
-////            parentFragmentManager.beginTransaction()
-////                .add(android.R.id.content, CalendarJobListFragment.newInstance(it))
-////                .addToBackStack(null)
-////                .commit()
-//        }
-//
-//    }
-
     private val calendarViewContainersUtilsInterface: CalendarViewContainersUtilsInterface = object : CalendarViewContainersUtilsInterface {
         override fun onClick(startLong: Long, endLong: Long) {
-//            viewModelCalendar.getJobByLongDateBetween(startLong, endLong)
-//            parentFragmentManager.beginTransaction()
-//                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-//                .add(android.R.id.content, CalendarJobListFragment.newInstance(DateRange(startLong = startLong, endLong = endLong)))
-//                .addToBackStack(null)
-//                .commit()
-
             val intent = Intent(requireContext(), CalendarJobListView::class.java)
             intent.putExtra("dateRange", Gson().toJson(DateRange(startLong = startLong, endLong = endLong)))
             startActivity(intent)
@@ -104,9 +86,11 @@ class CalendarFragmentView : Fragment() {
 
         binding.calendarView.monthScrollListener = {
             val date = binding.calendarView.findFirstVisibleMonth()?.yearMonth
+            currentMonth = binding.calendarView.findFirstVisibleMonth()?.yearMonth
             binding.textViewYearCalendarFragment.text = date!!.month.getDisplayName(TextStyle.FULL_STANDALONE, resources.configuration.locales.get(0)) +
                     " " +
                     date.year.toString()
+
         }
 
     }

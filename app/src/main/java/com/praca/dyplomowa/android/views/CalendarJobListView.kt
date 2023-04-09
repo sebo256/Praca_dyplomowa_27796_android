@@ -1,5 +1,6 @@
 package com.praca.dyplomowa.android.views
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
@@ -59,7 +60,6 @@ class CalendarJobListView : AppCompatActivity() {
     private fun setObserverForJobByLongDateBetween(){
         viewModelCalendarJobList.jobResult.observe(this){
             jobAdapter.setupData(it.collection.toList())
-            binding.recyclerViewCalendarJobListActivity.visibility = View.VISIBLE
         }
     }
 
@@ -73,20 +73,19 @@ class CalendarJobListView : AppCompatActivity() {
         viewModelCalendarJobList.getJobByLongDateBetween(startLong = dateRange.startLong, endLong = dateRange.endLong)
     }
 
-    private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object :
-        RecyclerViewUtilsInterface {
+    private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object : RecyclerViewUtilsInterface {
         override fun onClick(string: String) {
-            val intent = Intent(baseContext, AddJobActivity::class.java)
+            val intent = Intent(this@CalendarJobListView, AddJobActivity::class.java)
             intent.putExtra("jobObjectId",string)
             startActivity(intent)
         }
 
         override fun onLongClick(string: String) {
-            val materialDialog = MaterialAlertDialogBuilder(baseContext)
+            val materialDialog = MaterialAlertDialogBuilder(this@CalendarJobListView)
                 .setTitle(R.string.dialog_joblist_text_title)
                 .setMessage(R.string.dialog_joblist_text_message)
                 .setPositiveButton(R.string.dialog_joblist_positive_title) { dialog, which ->
-                    val intent = Intent(baseContext, JobApplyToActivityView::class.java)
+                    val intent = Intent(this@CalendarJobListView, JobApplyToActivityView::class.java)
                     intent.putExtra("jobId", string)
                     startActivity(intent)
                 }
@@ -97,12 +96,13 @@ class CalendarJobListView : AppCompatActivity() {
                     viewModelCalendarJobList.deleteJob(string)
                 }
 
-            if(!SessionManager.getIsAdmin(baseContext)) {
+            if(!SessionManager.getIsAdmin(this@CalendarJobListView)) {
                 materialDialog.setNegativeButton("") { dialog, which -> }
             }
             materialDialog.show()
         }
     }
+
     override fun onResume() {
         super.onResume()
         getJobsAndUpdateRecyclerData()
