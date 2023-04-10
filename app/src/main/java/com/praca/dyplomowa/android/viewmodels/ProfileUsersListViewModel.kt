@@ -15,23 +15,24 @@ class ProfileUsersListViewModel(application: Application): AndroidViewModel(appl
 
     val userRepository = UserRepository(application.baseContext)
     val userReponse: MutableLiveData<UserGetAllResponseCollection> = MutableLiveData()
+    val errorResult: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getUsers(){
         userRepository.getUsers()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(getUsersObserverRx())
     }
 
     private fun getUsersObserverRx(): SingleObserver<Response<UserGetAllResponseCollection>> {
         return object : SingleObserver<Response<UserGetAllResponseCollection>> {
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<UserGetAllResponseCollection>) {

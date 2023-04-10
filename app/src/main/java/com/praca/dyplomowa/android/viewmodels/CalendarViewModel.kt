@@ -16,12 +16,13 @@ class CalendarViewModel(application: Application): AndroidViewModel(application)
 
     val jobRepository = JobRepository(application.baseContext)
     val jobDatesAndInfoResult: MutableLiveData<JobGetDatesAndInfoResponseCollection> = MutableLiveData()
+    val errorResult: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getJobDatesAndInfo(){
         jobRepository.getJobDatesAndInfo()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(getJobDatesAndInfoListObserverRx())
     }
 
@@ -29,11 +30,11 @@ class CalendarViewModel(application: Application): AndroidViewModel(application)
         return object : SingleObserver<Response<JobGetDatesAndInfoResponseCollection>> {
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<JobGetDatesAndInfoResponseCollection>) {

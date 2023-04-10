@@ -14,6 +14,7 @@ import com.praca.dyplomowa.android.api.request.JobRequest
 import com.praca.dyplomowa.android.api.request.JobRequestUpdate
 import com.praca.dyplomowa.android.api.response.JobGetAllResponse
 import com.praca.dyplomowa.android.databinding.ActivityAddJobBinding
+import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.AddJobsViewModel
 
@@ -32,6 +33,7 @@ class AddJobActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModelAddJobs = ViewModelProvider(this).get(AddJobsViewModel::class.java)
+        setObserverForError()
 
         if(checkIfIntentIsNull()){
             setupForm()
@@ -200,6 +202,15 @@ class AddJobActivity : AppCompatActivity() {
             fillForm(it)
         }
         viewModelAddJobs.getJobById(intent.getStringExtra("jobObjectId")!!)
+    }
+
+    private fun setObserverForError() {
+        viewModelAddJobs.errorResult.observe(this){
+            if(it == true) {
+                ErrorDialogHandler(this)
+                viewModelAddJobs.errorResult.value = false
+            }
+        }
     }
 
     fun getAllDataFromForm() =

@@ -12,6 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.api.response.JobGetAllResponse
 import com.praca.dyplomowa.android.databinding.FragmentJobsViewBinding
+import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.JobsViewModel
@@ -25,14 +26,9 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
     var jobList: MutableList<JobGetAllResponse>? = mutableListOf()
     private lateinit var jobAdapter: JobAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onStart() {
         super.onStart()
-        viewModelJobs = ViewModelProvider(requireActivity()).get(JobsViewModel::class.java)
+
     }
 
 
@@ -43,10 +39,10 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         _binding = FragmentJobsViewBinding.inflate(inflater, container, false)
         val view = binding.root
 
-
-//        setObserverForGetJobRequestJobs()
-//        setObserverForDeleteJob()
-
+        viewModelJobs = ViewModelProvider(requireActivity()).get(JobsViewModel::class.java)
+        setObserverForGetJobRequestJobs()
+        setObserverForDeleteJob()
+        setObserverForError()
 
         binding.recyclerViewJob.layoutManager = LinearLayoutManager(requireContext())
         jobAdapter = JobAdapter(recyclerViewUtilsInterface)
@@ -79,6 +75,16 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
 
         }
     }
+
+    private fun setObserverForError() {
+        viewModelJobs.errorResult.observe(viewLifecycleOwner){
+            if(it == true) {
+                ErrorDialogHandler(requireContext())
+                viewModelJobs.errorResult.value = false
+            }
+        }
+    }
+
 
     private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object : RecyclerViewUtilsInterface {
         override fun onClick(string: String) {
@@ -114,5 +120,6 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         super.onResume()
         viewModelJobs.getJobs()
     }
+
 
 }

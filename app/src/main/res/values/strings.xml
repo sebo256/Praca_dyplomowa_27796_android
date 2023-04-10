@@ -62,6 +62,9 @@
     <string name="dialog_joblist_neutral_title">Wróć</string>
     <string name="dialog_joblist_text_title">Wybierz</string>
     <string name="dialog_joblist_text_message">Wybierz co chcesz zrobić</string>
+    <string name="dialog_error_text_title">Wystąpił błąd</string>
+    <string name="dialog_error_text_message">Wystąpił błąd, sprawdź swoje połączenie z internetem i spróbuj ponownie. Jeśli problem wciąż występuje skontaktuj się z administratorem</string>
+    <string name="dialog_error_positive_title">OK</string>
     <string-array name="job_types_dropdown">
         <item>Budowa</item>
         <item>Remont</item>

@@ -17,6 +17,7 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
 
     val userRepository = UserRepository(application.baseContext)
     val registerResult: MutableLiveData<RegistrationResponse> = MutableLiveData()
+    val errorResult: MutableLiveData<Boolean> = MutableLiveData()
 
     fun registerUser(username: String, password: String, name: String, surname: String){
         userRepository.register(RegistrationRequest(
@@ -26,7 +27,7 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
             surname = surname
           )).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(getRegisterListObserverRx())
 
     }
@@ -35,11 +36,11 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
         return object : SingleObserver<Response<RegistrationResponse>> {
 
             override fun onError(e: Throwable) {
-                Log.e("e","Error $e")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<RegistrationResponse>) {

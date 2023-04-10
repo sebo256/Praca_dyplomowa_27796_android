@@ -16,12 +16,13 @@ class ProfileTimeSpentListViewModel(application: Application): AndroidViewModel(
 
     val jobRepository = JobRepository(application.baseContext)
     val jobTimeSpentResult: MutableLiveData<JobTimeSpentResponseCollection> = MutableLiveData()
+    val errorResult: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getAllTimeSpentForUserPerMonth(username: String){
         jobRepository.getAllTimeSpentForUserPerMonth(username = username)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(getAllTimeSpentForUserPerMonthObserverRx())
     }
 
@@ -29,11 +30,11 @@ class ProfileTimeSpentListViewModel(application: Application): AndroidViewModel(
         return object : SingleObserver<Response<JobTimeSpentResponseCollection>> {
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<JobTimeSpentResponseCollection>) {

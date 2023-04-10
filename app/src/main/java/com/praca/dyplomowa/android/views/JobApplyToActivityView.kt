@@ -6,6 +6,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.praca.dyplomowa.android.databinding.ActivityJobApplyToViewBinding
+import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.viewmodels.JobApplyToViewModel
 import com.praca.dyplomowa.android.views.adapters.JobApplyToAdapter
 import kotlinx.coroutines.processNextEventInCurrentThread
@@ -26,10 +27,11 @@ class JobApplyToActivityView : AppCompatActivity() {
 
         viewModelJobApplyToViewModel = ViewModelProvider(this).get(JobApplyToViewModel::class.java)
         binding.recyclewViewJobApplyTo.layoutManager = LinearLayoutManager(this)
-        getJobAppliedTo()
+        setObserverForError()
+        setObserverForGetJobAppliedTo()
 
         binding.buttonSaveJobApplyTo.setOnClickListener {
-            applyJobTo()
+            setObserverForApplyJobTo()
         }
     }
 
@@ -43,7 +45,7 @@ class JobApplyToActivityView : AppCompatActivity() {
         viewModelJobApplyToViewModel.getUsers()
     }
 
-    private fun getJobAppliedTo(){
+    private fun setObserverForGetJobAppliedTo(){
         viewModelJobApplyToViewModel.jobAppliedToRequestResult.observe(this){
             print(it)
             getUsers(it.jobAppliedTo)
@@ -51,7 +53,7 @@ class JobApplyToActivityView : AppCompatActivity() {
         viewModelJobApplyToViewModel.getJobAppliedTo(intent.getStringExtra("jobId")!!)
     }
 
-    private fun applyJobTo(){
+    private fun setObserverForApplyJobTo(){
         viewModelJobApplyToViewModel.jobResult.observe(this){
             finish()
         }
@@ -60,6 +62,16 @@ class JobApplyToActivityView : AppCompatActivity() {
             jobAppliedTo = jobApplyToAdapter.getCheckedUsers()
         )
     }
+
+    private fun setObserverForError() {
+        viewModelJobApplyToViewModel.errorResult.observe(this){
+            if(it == true) {
+                ErrorDialogHandler(this)
+                viewModelJobApplyToViewModel.errorResult.value = false
+            }
+        }
+    }
+
 
 
 }

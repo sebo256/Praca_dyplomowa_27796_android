@@ -23,13 +23,13 @@ class JobApplyToViewModel(application: Application): AndroidViewModel(applicatio
     val userResult: MutableLiveData<UserGetAllResponseCollection> = MutableLiveData()
     val jobAppliedToRequestResult: MutableLiveData<JobAppliedToResponse> = MutableLiveData()
     val jobResult: MutableLiveData<JobResponse> = MutableLiveData()
-
+    val errorResult: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getUsers(){
         userRepository.getUsers()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(getAllUsersListObserverRx())
     }
 
@@ -37,7 +37,7 @@ class JobApplyToViewModel(application: Application): AndroidViewModel(applicatio
         jobRepository.getJobAplliedTo(objectId = objectId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(getJobAppliedToObserverRx())
     }
 
@@ -47,7 +47,7 @@ class JobApplyToViewModel(application: Application): AndroidViewModel(applicatio
             jobAppliedTo = jobAppliedTo
         ))  .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(usersJobApplyToListObserverRx())
     }
 
@@ -55,11 +55,11 @@ class JobApplyToViewModel(application: Application): AndroidViewModel(applicatio
         return object : SingleObserver<Response<UserGetAllResponseCollection>> {
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<UserGetAllResponseCollection>) {
@@ -73,11 +73,11 @@ class JobApplyToViewModel(application: Application): AndroidViewModel(applicatio
         return object : SingleObserver<Response<JobAppliedToResponse>> {
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //lodaing
+
             }
 
             override fun onSuccess(t: Response<JobAppliedToResponse>) {
@@ -90,11 +90,11 @@ class JobApplyToViewModel(application: Application): AndroidViewModel(applicatio
         return object : SingleObserver<Response<JobResponse>> {
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<JobResponse>) {

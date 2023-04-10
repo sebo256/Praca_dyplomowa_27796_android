@@ -3,6 +3,7 @@ package com.praca.dyplomowa.android.utils
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.praca.dyplomowa.android.api.repository.UserRepository
@@ -66,7 +67,6 @@ object SessionManager {
         userRepository.refreshToken(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(1)
             .blockingSubscribe(getNewAccessTokenUsingRefreshObserverRX(context))
     }
 
@@ -74,7 +74,7 @@ object SessionManager {
         return object : SingleObserver<Response<RefreshTokenResponse>> {
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                Log.e("e", "Error $e")
             }
 
             override fun onSubscribe(d: Disposable) {

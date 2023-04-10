@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.ActivityRegisterViewBinding
+import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.viewmodels.RegisterViewModel
 
 class RegisterActivityView : AppCompatActivity() {
@@ -14,19 +15,28 @@ class RegisterActivityView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        viewModelRegister = ViewModelProvider(this).get(RegisterViewModel::class.java)
+        setObserverForError()
         binding.buttonRegisterRegisterActivity.setOnClickListener { registerUser() }
 
         binding.buttonBackRegisterActivity.setOnClickListener { finish() }
     }
 
-    fun registerUser(){
+    private fun setObserverForError() {
+        viewModelRegister.errorResult.observe(this){
+            if(it == true) {
+                ErrorDialogHandler(this)
+                viewModelRegister.errorResult.value = false
+            }
+        }
+    }
+
+    private fun registerUser(){
         val username = binding.textFieldUsernameRegisterActivity.text.toString()
         val password = binding.textFieldPasswordRegisterActivity.text.toString()
         val name = binding.textFieldNameRegisterActivity.text.toString()
         val surname = binding.textFieldSurnameRegisterActivity.text.toString()
         if(validateRegistrationData(username, password, name, surname)){
-            viewModelRegister = ViewModelProvider(this).get(RegisterViewModel::class.java)
             viewModelRegister.registerResult.observe(this) {
                 if(it.account == null){
                     binding.textFieldLayoutUsernameRegisterActivity.error = getString(R.string.register_error_usernameExists_info)
@@ -38,7 +48,7 @@ class RegisterActivityView : AppCompatActivity() {
         }
     }
 
-    fun validateRegistrationData(username: String, password: String, name: String, surname: String): Boolean{
+    private fun validateRegistrationData(username: String, password: String, name: String, surname: String): Boolean{
         val PASSWORD_PATTERN = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%]).{8,30}\$".toRegex()
         val USERNAME_PATTERN = "^[a-zA-Z0-9._-]{4,}\$".toRegex()
         val NAME_PATTERN = "[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}['-]{0,2}[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}['-]{0,2}[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}".toRegex()

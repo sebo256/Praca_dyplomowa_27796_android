@@ -20,13 +20,14 @@ class CalendarJobListViewModel(application: Application): AndroidViewModel(appli
     val jobRepository = JobRepository(application.baseContext)
     val jobResult: MutableLiveData<JobGetForListResponseCollection> = MutableLiveData()
     val jobDeleteResult: MutableLiveData<JobResponse> = MutableLiveData()
+    val errorResult: MutableLiveData<Boolean> = MutableLiveData()
 
 
     fun getJobByLongDateBetween(startLong: Long, endLong: Long){
         jobRepository.getJobByLongDateBetween(startLong = startLong, endLong = endLong)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(getJobByLongDateBetweenListObserverRx())
     }
 
@@ -34,7 +35,7 @@ class CalendarJobListViewModel(application: Application): AndroidViewModel(appli
         jobRepository.deleteJob(objectId = objectId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(deleteJobObserverRx())
     }
 
@@ -42,11 +43,11 @@ class CalendarJobListViewModel(application: Application): AndroidViewModel(appli
         return object : SingleObserver<JobGetForListResponseCollection> {
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: JobGetForListResponseCollection) {
@@ -59,11 +60,11 @@ class CalendarJobListViewModel(application: Application): AndroidViewModel(appli
         return object : SingleObserver<Response<JobResponse>> {
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<JobResponse>) {

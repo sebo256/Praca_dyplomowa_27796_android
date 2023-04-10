@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.FragmentProfileViewBinding
+import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.ProfileViewModel
 
@@ -43,6 +44,7 @@ class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
         }
 
         viewModelProfile = ViewModelProvider(requireActivity()).get(ProfileViewModel::class.java)
+        setObserverForError()
         setObserverForCountCompletedJobsAppliedToUser()
         setObserverForCountTodoJobsAppliedToUser()
         setObserverForGetUser()
@@ -102,6 +104,16 @@ class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
             endLong = viewModelProfile.getCurrentMonthEndLong(),
             username = SessionManager.getCurrentUserUsername(requireContext())!!)
     }
+
+    private fun setObserverForError() {
+        viewModelProfile.errorResult.observe(viewLifecycleOwner){
+            if(it == true) {
+                ErrorDialogHandler(requireContext())
+                viewModelProfile.errorResult.value = false
+            }
+        }
+    }
+
 
 
     private fun goToJobsList(title: String) {

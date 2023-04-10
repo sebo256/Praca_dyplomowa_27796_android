@@ -22,12 +22,13 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
     val userRepository = UserRepository(application.baseContext)
     val loginResult: MutableLiveData<LoginResponse> = MutableLiveData()
     val refreshTokenResultBool: MutableLiveData<Boolean> = MutableLiveData()
+    val errorResult: MutableLiveData<Boolean> = MutableLiveData()
 
     fun loginUser(username: String, password: String) {
         userRepository.login(LoginRequest(username = username, password = password))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(getLoginListObserverRx())
     }
 
@@ -35,7 +36,7 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
         userRepository.refreshToken(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(getNewAccessTokenUsingRefreshObserverRX())
 
     }
@@ -44,11 +45,11 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
         return object : SingleObserver<Response<LoginResponse>> {
 
         override fun onError(e: Throwable) {
-            Log.e("e", "Error $e")
+            errorResult.postValue(true)
         }
 
         override fun onSubscribe(d: Disposable) {
-            //Loading
+
         }
 
         override fun onSuccess(t: Response<LoginResponse>) {
@@ -79,11 +80,11 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
         return object : SingleObserver<Response<RefreshTokenResponse>> {
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<RefreshTokenResponse>) {

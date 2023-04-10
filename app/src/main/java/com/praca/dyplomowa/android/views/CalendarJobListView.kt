@@ -14,6 +14,7 @@ import com.google.gson.Gson
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.ActivityCalendarJobListViewBinding
 import com.praca.dyplomowa.android.utils.DateRange
+import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.CalendarJobListViewModel
@@ -38,6 +39,7 @@ class CalendarJobListView : AppCompatActivity() {
         viewModelCalendarJobList = ViewModelProvider(this).get(CalendarJobListViewModel::class.java)
         setObserverForJobByLongDateBetween()
         setObserverForDeleteJob()
+        setObserverForError()
 
         binding.textViewDateCalendarJobListActivityView.setText(viewModelCalendarJobList.calculateDate(dateRange.startLong+1))
         binding.recyclerViewCalendarJobListActivity.layoutManager = LinearLayoutManager(this)
@@ -69,6 +71,16 @@ class CalendarJobListView : AppCompatActivity() {
             getJobsAndUpdateRecyclerData()
         }
     }
+
+    private fun setObserverForError() {
+        viewModelCalendarJobList.errorResult.observe(this){
+            if(it == true) {
+                ErrorDialogHandler(this)
+                viewModelCalendarJobList.errorResult.value = false
+            }
+        }
+    }
+
 
     private fun getJobsAndUpdateRecyclerData(){
         viewModelCalendarJobList.getJobByLongDateBetween(startLong = dateRange.startLong, endLong = dateRange.endLong)

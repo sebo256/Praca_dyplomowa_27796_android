@@ -23,12 +23,13 @@ class ProfileViewModel(application: Application): AndroidViewModel(application) 
     val jobTodoCountResult: MutableLiveData<Long> = MutableLiveData()
     val jobTimeSpentResult: MutableLiveData<Int> = MutableLiveData()
     val userResponse: MutableLiveData<UserGetAllResponse> = MutableLiveData()
+    val errorResult: MutableLiveData<Boolean> = MutableLiveData()
 
     fun countCompletedJobsAppliedToUser(username: String){
         jobRepository.countJobsAppliedToUserAndCheckCompleted(username = username, isCompleted = true)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(getCountCompletedJobsAppliedToUserObserverRx())
     }
 
@@ -36,7 +37,7 @@ class ProfileViewModel(application: Application): AndroidViewModel(application) 
         jobRepository.countJobsAppliedToUserAndCheckCompleted(username = username, isCompleted = false)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(getCountTodoJobsAppliedToUserObserverRx())
     }
 
@@ -44,7 +45,7 @@ class ProfileViewModel(application: Application): AndroidViewModel(application) 
         userRepository.getUser(username = username)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(getUserObserverRx())
     }
 
@@ -52,18 +53,18 @@ class ProfileViewModel(application: Application): AndroidViewModel(application) 
         jobRepository.getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted(startLong = startLong, endLong = endLong, username = username, isCompleted = true)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompletedObserverRx())
     }
 
     private fun getCountCompletedJobsAppliedToUserObserverRx(): SingleObserver<Response<Long>> {
         return object : SingleObserver<Response<Long>> {
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<Long>) {
@@ -76,11 +77,11 @@ class ProfileViewModel(application: Application): AndroidViewModel(application) 
     private fun getCountTodoJobsAppliedToUserObserverRx(): SingleObserver<Response<Long>> {
         return object : SingleObserver<Response<Long>> {
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<Long>) {
@@ -94,11 +95,11 @@ class ProfileViewModel(application: Application): AndroidViewModel(application) 
         return object : SingleObserver<Response<UserGetAllResponse>> {
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<UserGetAllResponse>) {
@@ -111,11 +112,11 @@ class ProfileViewModel(application: Application): AndroidViewModel(application) 
         return object : SingleObserver<Response<Int>> {
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<Int>) {

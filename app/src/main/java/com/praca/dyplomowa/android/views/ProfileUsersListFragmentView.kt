@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.FragmentProfileUsersListViewBinding
+import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.ProfileUsersListViewModel
@@ -42,6 +43,7 @@ class ProfileUsersListFragmentView : DialogFragment() {
 
         viewModelProfileUserList = ViewModelProvider(requireActivity()).get(ProfileUsersListViewModel::class.java)
         setObserverForGetUsers()
+        setObserverForError()
 
         binding.recyclewViewProfileUsersList.layoutManager = LinearLayoutManager(requireContext())
         usersAdapter = ProfileUsersListAdapter(recyclerViewUtilsInterface)
@@ -56,6 +58,15 @@ class ProfileUsersListFragmentView : DialogFragment() {
             usersAdapter.setupData(it.collection.toList())
         }
         viewModelProfileUserList.getUsers()
+    }
+
+    private fun setObserverForError() {
+        viewModelProfileUserList.errorResult.observe(viewLifecycleOwner){
+            if(it == true) {
+                ErrorDialogHandler(requireContext())
+                viewModelProfileUserList.errorResult.value = false
+            }
+        }
     }
 
     private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object :

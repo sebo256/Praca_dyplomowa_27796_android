@@ -19,6 +19,7 @@ import com.praca.dyplomowa.android.api.response.JobGetDatesAndInfoResponse
 import com.praca.dyplomowa.android.databinding.FragmentCalendarViewBinding
 import com.praca.dyplomowa.android.utils.CalendarViewContainersUtilsInterface
 import com.praca.dyplomowa.android.utils.DateRange
+import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.viewmodels.CalendarViewModel
 import com.praca.dyplomowa.android.views.calendarContainers.DayViewContainer
 import com.praca.dyplomowa.android.views.calendarContainers.MonthViewContainer
@@ -54,6 +55,7 @@ class CalendarFragmentView : Fragment() {
 
         viewModelCalendar = ViewModelProvider(requireActivity()).get(CalendarViewModel::class.java)
         setObserverForGetJobGetDatesAndInfoResponse()
+        setObserverForError()
 //        setObserverForGetJobByLongDateBetween()
 
         return view
@@ -69,6 +71,16 @@ class CalendarFragmentView : Fragment() {
         }
         viewModelCalendar.getJobDatesAndInfo()
     }
+
+    private fun setObserverForError() {
+        viewModelCalendar.errorResult.observe(viewLifecycleOwner){
+            if(it == true) {
+                ErrorDialogHandler(requireContext())
+                viewModelCalendar.errorResult.value = false
+            }
+        }
+    }
+
 
     private val calendarViewContainersUtilsInterface: CalendarViewContainersUtilsInterface = object : CalendarViewContainersUtilsInterface {
         override fun onClick(startLong: Long, endLong: Long) {

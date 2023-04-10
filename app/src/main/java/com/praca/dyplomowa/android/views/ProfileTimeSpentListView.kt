@@ -10,6 +10,7 @@ import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.api.response.JobTimeSpentResponse
 import com.praca.dyplomowa.android.databinding.ActivityProfileTimeSpentListViewBinding
 import com.praca.dyplomowa.android.utils.DatesForTimeSpent
+import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.ProfileTimeSpentListViewModel
@@ -37,6 +38,7 @@ class ProfileTimeSpentListView : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModelProfileTimeSpentList = ViewModelProvider(this).get(ProfileTimeSpentListViewModel::class.java)
+        setObserverForError()
         setObserverForGetAllTimeSpentForUserPerMonth()
 
         binding.recyclerTimeSpent.layoutManager = LinearLayoutManager(this)
@@ -56,6 +58,15 @@ class ProfileTimeSpentListView : AppCompatActivity() {
         when(intent.getStringExtra("username") == null){
             true -> viewModelProfileTimeSpentList.getAllTimeSpentForUserPerMonth(SessionManager.getCurrentUserUsername(this)!!)
             false -> viewModelProfileTimeSpentList.getAllTimeSpentForUserPerMonth(intent.getStringExtra("username")!!)
+        }
+    }
+
+    private fun setObserverForError() {
+        viewModelProfileTimeSpentList.errorResult.observe(this){
+            if(it == true) {
+                ErrorDialogHandler(this)
+                viewModelProfileTimeSpentList.errorResult.value = false
+            }
         }
     }
 }

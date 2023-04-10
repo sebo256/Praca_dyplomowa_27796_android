@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.ActivityProfileJobListViewBinding
+import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.ProfileJobListViewModel
@@ -26,6 +27,7 @@ class ProfileJobListView : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModelProfileJobList = ViewModelProvider(this).get(ProfileJobListViewModel::class.java)
+        setObserverForError()
         setObserverForGetCompletedJobsAppliedToUser()
         setObserverForGetTodoJobsAppliedToUser()
         setObserverForDeleteJob()
@@ -52,6 +54,15 @@ class ProfileJobListView : AppCompatActivity() {
     private fun setObserverForDeleteJob(){
         viewModelProfileJobList.jobDeleteResult.observe(this){
             getJobsAndUpdateRecyclerData()
+        }
+    }
+
+    private fun setObserverForError() {
+        viewModelProfileJobList.errorResult.observe(this){
+            if(it == true) {
+                ErrorDialogHandler(this)
+                viewModelProfileJobList.errorResult.value = false
+            }
         }
     }
 

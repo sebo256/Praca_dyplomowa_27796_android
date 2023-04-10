@@ -18,12 +18,13 @@ class ProfileJobListViewModel(application: Application): AndroidViewModel(applic
     val jobRepository = JobRepository(application.baseContext)
     val jobResult: MutableLiveData<JobGetForListResponseCollection> = MutableLiveData()
     val jobDeleteResult: MutableLiveData<JobResponse> = MutableLiveData()
+    val errorResult: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getCompletedJobsAppliedToUser(username: String){
         jobRepository.getJobsAppliedToUserAndCheckCompleted(username = username, isCompleted = true)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(getCompletedJobsAppliedToUserListObserverRx())
     }
 
@@ -31,7 +32,7 @@ class ProfileJobListViewModel(application: Application): AndroidViewModel(applic
         jobRepository.getJobsAppliedToUserAndCheckCompleted(username = username, isCompleted = false)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(getTodoJobsAppliedToUserListObserverRx())
     }
 
@@ -39,7 +40,7 @@ class ProfileJobListViewModel(application: Application): AndroidViewModel(applic
         jobRepository.deleteJob(objectId = objectId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(2)
+            .retry(1)
             .subscribe(deleteJobObserverRx())
     }
 
@@ -47,11 +48,11 @@ class ProfileJobListViewModel(application: Application): AndroidViewModel(applic
         return object : SingleObserver<Response<JobGetForListResponseCollection>> {
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<JobGetForListResponseCollection>) {
@@ -64,11 +65,11 @@ class ProfileJobListViewModel(application: Application): AndroidViewModel(applic
         return object : SingleObserver<Response<JobGetForListResponseCollection>> {
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<JobGetForListResponseCollection>) {
@@ -81,11 +82,11 @@ class ProfileJobListViewModel(application: Application): AndroidViewModel(applic
         return object : SingleObserver<Response<JobResponse>> {
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<JobResponse>) {

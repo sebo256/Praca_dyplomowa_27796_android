@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.ActivityLoginViewBinding
+import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.LoginViewModel
 
@@ -19,7 +20,7 @@ class LoginActivityView : AppCompatActivity() {
         binding = ActivityLoginViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModelLogin = ViewModelProvider(this).get(LoginViewModel::class.java)
-
+        setObserverForError()
         val token = SessionManager.getAccessToken(this)
         if(!token.isNullOrBlank()){
             refreshAccessToken()
@@ -64,4 +65,14 @@ class LoginActivityView : AppCompatActivity() {
             viewModelLogin.loginUser(username = username, password = password)
         }
     }
+
+    private fun setObserverForError() {
+        viewModelLogin.errorResult.observe(this){
+            if(it == true) {
+                ErrorDialogHandler(this)
+                viewModelLogin.errorResult.value = false
+            }
+        }
+    }
+
 }
