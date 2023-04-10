@@ -26,6 +26,7 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
             surname = surname
           )).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(getRegisterListObserverRx())
 
     }

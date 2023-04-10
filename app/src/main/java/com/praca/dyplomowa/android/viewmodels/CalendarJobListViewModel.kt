@@ -26,6 +26,7 @@ class CalendarJobListViewModel(application: Application): AndroidViewModel(appli
         jobRepository.getJobByLongDateBetween(startLong = startLong, endLong = endLong)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(getJobByLongDateBetweenListObserverRx())
     }
 
@@ -33,6 +34,7 @@ class CalendarJobListViewModel(application: Application): AndroidViewModel(appli
         jobRepository.deleteJob(objectId = objectId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(deleteJobObserverRx())
     }
 

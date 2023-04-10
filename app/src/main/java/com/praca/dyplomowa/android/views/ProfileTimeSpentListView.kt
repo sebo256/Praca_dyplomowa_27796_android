@@ -23,11 +23,11 @@ import java.time.format.DateTimeFormatterBuilder
 import java.time.format.TextStyle
 import java.util.*
 
-lateinit var viewModelProfileTimeSpentList: ProfileTimeSpentListViewModel
 
 class ProfileTimeSpentListView : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileTimeSpentListViewBinding
+    private lateinit var viewModelProfileTimeSpentList: ProfileTimeSpentListViewModel
     private lateinit var timeSpentAdapter: ProfileTimeSpentAdapter
     private var list: MutableList<JobTimeSpentResponse> = mutableListOf()
 

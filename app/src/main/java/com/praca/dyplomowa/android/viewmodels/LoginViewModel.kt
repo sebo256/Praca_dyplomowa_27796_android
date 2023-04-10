@@ -27,6 +27,7 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
         userRepository.login(LoginRequest(username = username, password = password))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(getLoginListObserverRx())
     }
 
@@ -34,6 +35,7 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
         userRepository.refreshToken(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(getNewAccessTokenUsingRefreshObserverRX())
 
     }

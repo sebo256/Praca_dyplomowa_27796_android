@@ -16,11 +16,12 @@ import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.JobsViewModel
 import com.praca.dyplomowa.android.views.adapters.JobAdapter
-private lateinit var viewModelJobs: JobsViewModel
+
 class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
 
     private var _binding: FragmentJobsViewBinding? = null
     private val binding get() = _binding!!
+    private lateinit var viewModelJobs: JobsViewModel
     var jobList: MutableList<JobGetAllResponse>? = mutableListOf()
     private lateinit var jobAdapter: JobAdapter
 
@@ -29,6 +30,12 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModelJobs = ViewModelProvider(requireActivity()).get(JobsViewModel::class.java)
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,9 +43,9 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         _binding = FragmentJobsViewBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        viewModelJobs = ViewModelProvider(requireActivity()).get(JobsViewModel::class.java)
-        setObserverForGetJobRequestJobs()
-        setObserverForDeleteJob()
+
+//        setObserverForGetJobRequestJobs()
+//        setObserverForDeleteJob()
 
 
         binding.recyclerViewJob.layoutManager = LinearLayoutManager(requireContext())
@@ -48,8 +55,10 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
 
 
         binding.buttonAddJobJobFragment.setOnClickListener{
+
             val intent = Intent(requireContext(), AddJobActivity::class.java)
             startActivity(intent)
+
         }
 
         return view

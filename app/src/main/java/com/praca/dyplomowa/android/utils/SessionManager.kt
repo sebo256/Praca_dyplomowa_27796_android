@@ -66,6 +66,7 @@ object SessionManager {
         userRepository.refreshToken(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(1)
             .blockingSubscribe(getNewAccessTokenUsingRefreshObserverRX(context))
     }
 
@@ -77,7 +78,7 @@ object SessionManager {
             }
 
             override fun onSubscribe(d: Disposable) {
-                //Loading
+
             }
 
             override fun onSuccess(t: Response<RefreshTokenResponse>) {

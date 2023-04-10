@@ -13,11 +13,11 @@ import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.ProfileJobListViewModel
 import com.praca.dyplomowa.android.views.adapters.JobAdapter
 
-lateinit var viewModelProfileJobList: ProfileJobListViewModel
 
 class ProfileJobListView : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileJobListViewBinding
+    private lateinit var viewModelProfileJobList: ProfileJobListViewModel
     private lateinit var jobAdapter: JobAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,7 +83,7 @@ class ProfileJobListView : AppCompatActivity() {
                     dialog.dismiss()
                 }
                 .setNegativeButton(R.string.dialog_joblist_negative_title) { dialog, which ->
-                    viewModelCalendarJobList.deleteJob(string)
+                    viewModelProfileJobList.deleteJob(string)
                 }
 
             if(!SessionManager.getIsAdmin(this@ProfileJobListView)) {

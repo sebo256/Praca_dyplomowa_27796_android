@@ -25,6 +25,7 @@ class AddJobsViewModel(application: Application): AndroidViewModel(application) 
         jobRepository.addJob(jobRequest = jobRequest)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(getAddedJobListObserverRx())
     }
 
@@ -32,6 +33,7 @@ class AddJobsViewModel(application: Application): AndroidViewModel(application) 
         jobRepository.getJobById(objectId = objectId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(getJobByIdObserverRx())
     }
 
@@ -39,6 +41,7 @@ class AddJobsViewModel(application: Application): AndroidViewModel(application) 
         jobRepository.updateJob(jobRequestUpdate = jobRequestUpdate)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(updateJobObserverRx())
     }
 

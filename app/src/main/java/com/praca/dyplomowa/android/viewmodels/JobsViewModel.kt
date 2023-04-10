@@ -23,6 +23,7 @@ class JobsViewModel(application: Application): AndroidViewModel(application) {
         jobRepository.getJobsForList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(getAllJobsListObserverRx())
     }
 
@@ -30,6 +31,7 @@ class JobsViewModel(application: Application): AndroidViewModel(application) {
         jobRepository.deleteJob(objectId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(deleteJobObserverRx())
     }
 
@@ -37,11 +39,12 @@ class JobsViewModel(application: Application): AndroidViewModel(application) {
         return object : SingleObserver<Response<JobGetForListResponseCollection>> {
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                println("@@@@@@@@@")
             }
 
             override fun onSubscribe(d: Disposable) {
                 //Loading
+                println("asd")
             }
 
             override fun onSuccess(t: Response<JobGetForListResponseCollection>) {

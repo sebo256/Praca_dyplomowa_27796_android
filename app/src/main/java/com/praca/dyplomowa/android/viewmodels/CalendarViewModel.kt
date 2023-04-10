@@ -21,6 +21,7 @@ class CalendarViewModel(application: Application): AndroidViewModel(application)
         jobRepository.getJobDatesAndInfo()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(getJobDatesAndInfoListObserverRx())
     }
 

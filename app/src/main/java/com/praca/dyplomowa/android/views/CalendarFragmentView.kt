@@ -26,11 +26,12 @@ import java.time.*
 import java.time.format.TextStyle
 import java.util.*
 
-lateinit var viewModelCalendar: CalendarViewModel
+
 
 class CalendarFragmentView : Fragment() {
     private var _binding: FragmentCalendarViewBinding? = null
     private val binding get() = _binding!!
+    private lateinit var viewModelCalendar: CalendarViewModel
     var jobDatesAndInfoList: MutableList<JobGetDatesAndInfoResponse> = mutableListOf()
     var currentMonth = YearMonth.now()
     val startMonth = currentMonth.minusMonths(60)

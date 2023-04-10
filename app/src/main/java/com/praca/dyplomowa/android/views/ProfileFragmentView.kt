@@ -13,11 +13,12 @@ import com.praca.dyplomowa.android.databinding.FragmentProfileViewBinding
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.ProfileViewModel
 
-lateinit var viewModelProfile: ProfileViewModel
+
 
 class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
     private var _binding: FragmentProfileViewBinding? = null
     private val binding get() = _binding!!
+    private lateinit var viewModelProfile: ProfileViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

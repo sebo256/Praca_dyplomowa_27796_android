@@ -28,6 +28,7 @@ class ProfileViewModel(application: Application): AndroidViewModel(application) 
         jobRepository.countJobsAppliedToUserAndCheckCompleted(username = username, isCompleted = true)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(getCountCompletedJobsAppliedToUserObserverRx())
     }
 
@@ -35,6 +36,7 @@ class ProfileViewModel(application: Application): AndroidViewModel(application) 
         jobRepository.countJobsAppliedToUserAndCheckCompleted(username = username, isCompleted = false)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(getCountTodoJobsAppliedToUserObserverRx())
     }
 
@@ -42,6 +44,7 @@ class ProfileViewModel(application: Application): AndroidViewModel(application) 
         userRepository.getUser(username = username)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(getUserObserverRx())
     }
 
@@ -49,6 +52,7 @@ class ProfileViewModel(application: Application): AndroidViewModel(application) 
         jobRepository.getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted(startLong = startLong, endLong = endLong, username = username, isCompleted = true)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompletedObserverRx())
     }
 

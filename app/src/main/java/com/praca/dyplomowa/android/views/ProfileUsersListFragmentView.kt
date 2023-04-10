@@ -18,11 +18,12 @@ import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.ProfileUsersListViewModel
 import com.praca.dyplomowa.android.views.adapters.ProfileUsersListAdapter
 
-lateinit var viewModelProfileUserList: ProfileUsersListViewModel
+
 
 class ProfileUsersListFragmentView : DialogFragment() {
     private var _binding: FragmentProfileUsersListViewBinding? = null
     private val binding get() = _binding!!
+    private lateinit var viewModelProfileUserList: ProfileUsersListViewModel
     private lateinit var usersAdapter: ProfileUsersListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {

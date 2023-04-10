@@ -23,6 +23,7 @@ class ProfileJobListViewModel(application: Application): AndroidViewModel(applic
         jobRepository.getJobsAppliedToUserAndCheckCompleted(username = username, isCompleted = true)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(getCompletedJobsAppliedToUserListObserverRx())
     }
 
@@ -30,6 +31,7 @@ class ProfileJobListViewModel(application: Application): AndroidViewModel(applic
         jobRepository.getJobsAppliedToUserAndCheckCompleted(username = username, isCompleted = false)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(getTodoJobsAppliedToUserListObserverRx())
     }
 
@@ -37,6 +39,7 @@ class ProfileJobListViewModel(application: Application): AndroidViewModel(applic
         jobRepository.deleteJob(objectId = objectId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(deleteJobObserverRx())
     }
 

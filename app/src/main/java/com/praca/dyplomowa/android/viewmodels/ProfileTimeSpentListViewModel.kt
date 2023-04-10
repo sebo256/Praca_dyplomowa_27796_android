@@ -15,13 +15,13 @@ import retrofit2.Response
 class ProfileTimeSpentListViewModel(application: Application): AndroidViewModel(application) {
 
     val jobRepository = JobRepository(application.baseContext)
-    val jobPlannedDateResult: MutableLiveData<JobPlannedDateResponse> = MutableLiveData()
     val jobTimeSpentResult: MutableLiveData<JobTimeSpentResponseCollection> = MutableLiveData()
 
     fun getAllTimeSpentForUserPerMonth(username: String){
         jobRepository.getAllTimeSpentForUserPerMonth(username = username)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .retry(2)
             .subscribe(getAllTimeSpentForUserPerMonthObserverRx())
     }
 

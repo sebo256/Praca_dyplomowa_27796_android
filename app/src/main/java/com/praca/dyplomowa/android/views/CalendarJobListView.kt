@@ -19,11 +19,12 @@ import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.CalendarJobListViewModel
 import com.praca.dyplomowa.android.views.adapters.JobAdapter
 
-lateinit var viewModelCalendarJobList: CalendarJobListViewModel
+
 
 class CalendarJobListView : AppCompatActivity() {
 
     private lateinit var binding: ActivityCalendarJobListViewBinding
+    private lateinit var viewModelCalendarJobList: CalendarJobListViewModel
     private lateinit var jobAdapter: JobAdapter
     private lateinit var dateRange: DateRange
 
