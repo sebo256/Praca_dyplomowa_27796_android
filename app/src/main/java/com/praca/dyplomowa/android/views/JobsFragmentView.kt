@@ -16,14 +16,14 @@ import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.JobsViewModel
 import com.praca.dyplomowa.android.views.adapters.JobAdapter
-
-lateinit var viewModelJobs: JobsViewModel
-
+private lateinit var viewModelJobs: JobsViewModel
 class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
+
     private var _binding: FragmentJobsViewBinding? = null
     private val binding get() = _binding!!
     var jobList: MutableList<JobGetAllResponse>? = mutableListOf()
     private lateinit var jobAdapter: JobAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

@@ -22,16 +22,9 @@ class AddJobActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddJobBinding
     lateinit var viewModelAddJobs: AddJobsViewModel
     private var dateLong: Long? = null
-    private var dateHour: Int? = 0
-    private var dateMinute: Int? = 0
     val datePicker = MaterialDatePicker.Builder.datePicker()
         .setTitleText(R.string.datepicker_textfield_text)
         .build()
-    val timePicker = MaterialTimePicker.Builder()
-        .setTimeFormat(TimeFormat.CLOCK_24H)
-        .setTitleText(R.string.timepicker_textfield_text)
-        .build()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,18 +45,10 @@ class AddJobActivity : AppCompatActivity() {
         binding.textFieldPlannedDateJobAddActivity.setOnClickListener {
             datePicker.show(supportFragmentManager, "plannedDate")
         }
-        binding.textFieldPlannedTimeJobAddActivity.setOnClickListener {
-            timePicker.show(supportFragmentManager, "plannedTime")
-        }
 
         datePicker.addOnPositiveButtonClickListener {
             binding.textFieldPlannedDateJobAddActivity.setText(viewModelAddJobs.calculateSimpleDateFromLong(datePicker.selection!!))
             dateLong = datePicker.selection
-        }
-        timePicker.addOnPositiveButtonClickListener {
-            binding.textFieldPlannedTimeJobAddActivity.setText(String.format("%02d:%02d",timePicker.hour, timePicker.minute))
-            dateHour = timePicker.hour
-            dateMinute = timePicker.minute
         }
 
         binding.checkboxIsCompletedJobAddActivity.setOnCheckedChangeListener { compoundButton, isChecked ->
@@ -94,8 +79,6 @@ class AddJobActivity : AppCompatActivity() {
 
     private fun fillForm(jobGetAllResponse: JobGetAllResponse){
         dateLong = jobGetAllResponse.plannedDate
-        dateHour = viewModelAddJobs.calculateHourFromLong(jobGetAllResponse.plannedDate)
-        dateMinute = viewModelAddJobs.calculateMinutesFromLong(jobGetAllResponse.plannedDate)
         binding.textFieldSubjectJobAddActivity.setText(jobGetAllResponse.subject)
         binding.textFieldDropdownJobTypeJobAddActivity.setText(jobGetAllResponse.jobType, false)
         binding.textFieldCompanyNameJobAddActivity.setText(jobGetAllResponse.companyName)
@@ -108,7 +91,6 @@ class AddJobActivity : AppCompatActivity() {
         binding.textFieldEmailJobAddActivity.setText(jobGetAllResponse.email)
         binding.textFieldNoteJobAddActivity.setText(jobGetAllResponse.note)
         binding.textFieldPlannedDateJobAddActivity.setText(viewModelAddJobs.calculateSimpleDateFromLong(dateLong))
-        binding.textFieldPlannedTimeJobAddActivity.setText(String.format("%02d:%02d",dateHour, dateMinute))
         binding.checkboxIsCompletedJobAddActivity.isChecked = jobGetAllResponse.isCompleted
         if ( binding.checkboxIsCompletedJobAddActivity.isChecked || jobGetAllResponse.isCompleted) {
             binding.textFieldTimeSpentJobAddActivity.isEnabled = true
@@ -187,7 +169,6 @@ class AddJobActivity : AppCompatActivity() {
         }
     }
 
-    //TODO Przy updejcie czas źle się oblicza i zwiększa czas, co powoduje dzień do przodu
     private fun addOrUpdateJob(){
         viewModelAddJobs.jobResult.observe(this) {
             print(it)
@@ -221,16 +202,6 @@ class AddJobActivity : AppCompatActivity() {
         viewModelAddJobs.getJobById(intent.getStringExtra("jobObjectId")!!)
     }
 
-    fun getPlannedDate(): Long?{
-        var plannedDate: Long? = null
-        return if(!binding.textFieldPlannedDateJobAddActivity.text.isNullOrBlank()) {
-            plannedDate = viewModelAddJobs.calculatePlannedDate(dateLong!!, dateHour!!, dateMinute!!)
-            plannedDate
-        }else {
-            plannedDate
-        }
-    }
-
     fun getAllDataFromForm() =
         JobRequest(
             companyName = binding.textFieldCompanyNameJobAddActivity.text.toString(),
@@ -244,7 +215,7 @@ class AddJobActivity : AppCompatActivity() {
             subject = binding.textFieldSubjectJobAddActivity.text.toString(),
             jobType = binding.textFieldDropdownJobTypeJobAddActivity.text.toString(),
             dateOfCreation = System.currentTimeMillis(),
-            plannedDate = getPlannedDate(),
+            plannedDate = dateLong,
             timeSpent = binding.textFieldTimeSpentJobAddActivity.text.toString().toIntOrNull() ?: 0,
             note = binding.textFieldNoteJobAddActivity.text.toString(),
             isCompleted = binding.checkboxIsCompletedJobAddActivity.isChecked,
@@ -264,7 +235,7 @@ class AddJobActivity : AppCompatActivity() {
             email = binding.textFieldEmailJobAddActivity.text.toString(),
             subject = binding.textFieldSubjectJobAddActivity.text.toString(),
             jobType = binding.textFieldDropdownJobTypeJobAddActivity.text.toString(),
-            plannedDate = getPlannedDate(),
+            plannedDate = dateLong,
             timeSpent = binding.textFieldTimeSpentJobAddActivity.text.toString().toIntOrNull() ?: 0,
             note = binding.textFieldNoteJobAddActivity.text.toString(),
             isCompleted = binding.checkboxIsCompletedJobAddActivity.isChecked,

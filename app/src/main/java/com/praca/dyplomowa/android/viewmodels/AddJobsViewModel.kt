@@ -94,10 +94,6 @@ class AddJobsViewModel(application: Application): AndroidViewModel(application) 
         }
     }
 
-
-    fun calculatePlannedDate(date: Long, hour: Int, minutes: Int): Long =
-        (date) + ((hour * 3600000) + (minutes * 60000))
-
     fun calculateSimpleDateFromLong(date: Long?): String {
         return if(date!! > 0) {
             SimpleDateFormat("dd.MM.yyyy").format(Date(date))
@@ -105,12 +101,5 @@ class AddJobsViewModel(application: Application): AndroidViewModel(application) 
             ""
         }
     }
-
-    fun calculateHourFromLong(date: Long): Int =
-        SimpleDateFormat("HH").format(date).toString().toInt()
-
-    fun calculateMinutesFromLong(date: Long): Int =
-        SimpleDateFormat("mm").format(date).toString().toInt()
-
-
+    
 }
