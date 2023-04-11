@@ -2,16 +2,11 @@ package com.praca.dyplomowa.android.views.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.praca.dyplomowa.android.R
-import com.praca.dyplomowa.android.api.response.JobGetForListResponse
 import com.praca.dyplomowa.android.api.response.JobTimeSpentResponse
 import com.praca.dyplomowa.android.databinding.RecyclerProfileTimeSpentLayoutBinding
-import com.praca.dyplomowa.android.utils.DatesForTimeSpent
-import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter

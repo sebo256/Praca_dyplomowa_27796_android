@@ -14,6 +14,7 @@ import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import retrofit2.Response
+import kotlin.system.exitProcess
 
 object SessionManager {
 
@@ -91,29 +92,14 @@ object SessionManager {
                     clearSharedPrefs(context)
                     val intent = Intent(context, LoginActivityView::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                     context.startActivity(intent)
+                    exitProcess(0)
                 }
 
             }
 
         }
     }
-
-//    fun saveStringSharedPrefs(context: Context, key: String, value: String?){
-//        val sharedPrefsEditor = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE).edit()
-//        sharedPrefsEditor.putString(key, value).apply()
-//    }
-//
-//    fun getStringSharedPrefs(context: Context, key: String): String?{
-//        val sharedPrefs = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
-//        return sharedPrefs.getString(key, null)
-//    }
-//
-//    fun clearSharedPrefs(context: Context){
-//        val sharedPrefsEditor = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE).edit()
-//        sharedPrefsEditor.clear().apply()
-//    }
 
     fun getEncryptedSharedPrefs(context: Context): SharedPreferences{
         val masterKey: MasterKey = MasterKey.Builder(context)

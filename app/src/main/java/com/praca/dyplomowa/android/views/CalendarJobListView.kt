@@ -1,11 +1,9 @@
 package com.praca.dyplomowa.android.views
 
-import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +17,6 @@ import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.CalendarJobListViewModel
 import com.praca.dyplomowa.android.views.adapters.JobAdapter
-
 
 
 class CalendarJobListView : AppCompatActivity() {

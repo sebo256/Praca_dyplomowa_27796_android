@@ -1,7 +1,7 @@
 package com.praca.dyplomowa.android.views
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.ActivityRegisterViewBinding

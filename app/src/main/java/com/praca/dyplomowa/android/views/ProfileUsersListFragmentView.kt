@@ -2,23 +2,17 @@ package com.praca.dyplomowa.android.views
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.FragmentProfileUsersListViewBinding
 import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
-import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.ProfileUsersListViewModel
 import com.praca.dyplomowa.android.views.adapters.ProfileUsersListAdapter
-
 
 
 class ProfileUsersListFragmentView : DialogFragment() {

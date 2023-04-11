@@ -2,7 +2,9 @@ package com.praca.dyplomowa.android.api.repository
 
 import android.content.Context
 import com.praca.dyplomowa.android.api.PDyplomowaAPI
-import com.praca.dyplomowa.android.api.request.*
+import com.praca.dyplomowa.android.api.request.JobApplyToRequest
+import com.praca.dyplomowa.android.api.request.JobRequest
+import com.praca.dyplomowa.android.api.request.JobRequestUpdate
 import com.praca.dyplomowa.android.api.response.*
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Response

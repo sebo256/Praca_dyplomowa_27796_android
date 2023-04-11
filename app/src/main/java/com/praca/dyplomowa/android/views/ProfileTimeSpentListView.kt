@@ -1,28 +1,15 @@
 package com.praca.dyplomowa.android.views
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.api.response.JobTimeSpentResponse
 import com.praca.dyplomowa.android.databinding.ActivityProfileTimeSpentListViewBinding
-import com.praca.dyplomowa.android.utils.DatesForTimeSpent
 import com.praca.dyplomowa.android.utils.ErrorDialogHandler
-import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.ProfileTimeSpentListViewModel
 import com.praca.dyplomowa.android.views.adapters.ProfileTimeSpentAdapter
-import java.time.Instant
-import java.time.LocalDate
-import java.time.YearMonth
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeFormatterBuilder
-import java.time.format.TextStyle
-import java.util.*
 
 
 class ProfileTimeSpentListView : AppCompatActivity() {

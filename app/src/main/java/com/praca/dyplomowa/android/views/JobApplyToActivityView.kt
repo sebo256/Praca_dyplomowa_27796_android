@@ -1,19 +1,13 @@
 package com.praca.dyplomowa.android.views
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.praca.dyplomowa.android.databinding.ActivityJobApplyToViewBinding
 import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.viewmodels.JobApplyToViewModel
 import com.praca.dyplomowa.android.views.adapters.JobApplyToAdapter
-import kotlinx.coroutines.processNextEventInCurrentThread
-import okhttp3.internal.notifyAll
-import okhttp3.internal.wait
-
-
 
 
 class JobApplyToActivityView : AppCompatActivity() {

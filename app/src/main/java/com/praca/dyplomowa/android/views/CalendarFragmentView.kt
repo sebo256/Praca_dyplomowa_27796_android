@@ -4,12 +4,12 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.children
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.kizitonwose.calendar.core.*
@@ -23,10 +23,12 @@ import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.viewmodels.CalendarViewModel
 import com.praca.dyplomowa.android.views.calendarContainers.DayViewContainer
 import com.praca.dyplomowa.android.views.calendarContainers.MonthViewContainer
-import java.time.*
+import java.time.DayOfWeek
+import java.time.Instant
+import java.time.YearMonth
+import java.time.ZoneId
 import java.time.format.TextStyle
 import java.util.*
-
 
 
 class CalendarFragmentView : Fragment() {

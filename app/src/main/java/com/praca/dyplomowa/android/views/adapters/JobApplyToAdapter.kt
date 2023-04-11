@@ -5,9 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.praca.dyplomowa.android.api.response.JobTimeSpentResponse
 import com.praca.dyplomowa.android.api.response.UserGetAllResponse
-import com.praca.dyplomowa.android.api.response.UserGetAllResponseCollection
 import com.praca.dyplomowa.android.databinding.RecyclerJobApplyToLayoutBinding
 
 class JobApplyToAdapter

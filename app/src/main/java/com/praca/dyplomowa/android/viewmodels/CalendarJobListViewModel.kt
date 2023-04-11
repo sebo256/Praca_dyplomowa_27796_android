@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.praca.dyplomowa.android.api.repository.JobRepository
-import com.praca.dyplomowa.android.api.response.JobGetAllResponseCollection
 import com.praca.dyplomowa.android.api.response.JobGetForListResponseCollection
 import com.praca.dyplomowa.android.api.response.JobResponse
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers

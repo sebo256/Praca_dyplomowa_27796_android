@@ -6,7 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import com.praca.dyplomowa.android.api.repository.JobRepository
 import com.praca.dyplomowa.android.api.request.JobRequest
 import com.praca.dyplomowa.android.api.request.JobRequestUpdate
-import com.praca.dyplomowa.android.api.response.*
+import com.praca.dyplomowa.android.api.response.JobGetAllResponse
+import com.praca.dyplomowa.android.api.response.JobResponse
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
@@ -85,11 +86,11 @@ class AddJobsViewModel(application: Application): AndroidViewModel(application) 
         return object : SingleObserver<Response<JobResponse>> {
 
             override fun onError(e: Throwable) {
-
+                errorResult.postValue(true)
             }
 
             override fun onSubscribe(d: Disposable) {
-                errorResult.postValue(true)
+
             }
 
             override fun onSuccess(t: Response<JobResponse>) {

@@ -1,8 +1,6 @@
 package com.praca.dyplomowa.android.viewmodels
 
 import android.app.Application
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.praca.dyplomowa.android.api.repository.UserRepository
@@ -15,7 +13,6 @@ import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import retrofit2.Response
-import java.util.*
 
 class LoginViewModel(application: Application): AndroidViewModel(application) {
 

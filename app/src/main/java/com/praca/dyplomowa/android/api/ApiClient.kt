@@ -3,8 +3,7 @@ package com.praca.dyplomowa.android.api
 import android.content.Context
 import com.praca.dyplomowa.android.utils.Constants
 import com.praca.dyplomowa.android.utils.SessionManager
-import okhttp3.*
-import okhttp3.internal.wait
+import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory

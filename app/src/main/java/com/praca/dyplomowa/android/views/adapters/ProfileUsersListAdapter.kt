@@ -2,14 +2,10 @@ package com.praca.dyplomowa.android.views.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.praca.dyplomowa.android.R
-import com.praca.dyplomowa.android.api.response.JobGetForListResponse
 import com.praca.dyplomowa.android.api.response.UserGetAllResponse
-import com.praca.dyplomowa.android.databinding.RecyclerJobsItemLayoutBinding
 import com.praca.dyplomowa.android.databinding.RecyclerProfileUsersListLayoutBinding
 import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 

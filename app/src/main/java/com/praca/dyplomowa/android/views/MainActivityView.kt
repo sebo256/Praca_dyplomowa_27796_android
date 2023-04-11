@@ -1,10 +1,9 @@
 package com.praca.dyplomowa.android.views
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.ActivityMainViewBinding
-import com.praca.dyplomowa.android.utils.SessionManager
 
 class MainActivityView : AppCompatActivity() {
     private lateinit var binding: ActivityMainViewBinding

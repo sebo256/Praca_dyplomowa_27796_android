@@ -2,15 +2,12 @@ package com.praca.dyplomowa.android.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.praca.dyplomowa.android.api.repository.JobRepository
-import com.praca.dyplomowa.android.api.response.JobGetAllResponseCollection
 import com.praca.dyplomowa.android.api.response.JobGetForListResponseCollection
 import com.praca.dyplomowa.android.api.response.JobResponse
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import retrofit2.Response
