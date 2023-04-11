@@ -12,6 +12,7 @@
     <color name="background_dark">#1C1C1C</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
     <color name="seed">#00b4c8</color>
     <color name="md_theme_light_primary">#006875</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
