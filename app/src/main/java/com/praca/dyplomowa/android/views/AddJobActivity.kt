@@ -171,7 +171,6 @@ class AddJobActivity : AppCompatActivity() {
 
     private fun addOrUpdateJob(){
         viewModelAddJobs.jobResult.observe(this) {
-            print(it)
             finish()
         }
         when(checkIfIntentIsNull()){
@@ -182,7 +181,6 @@ class AddJobActivity : AppCompatActivity() {
 
     private fun addOrUpdateJobAndGoToJobApplyTo(){
         viewModelAddJobs.jobResult.observe(this){
-            print(it)
             val intent = Intent(this, JobApplyToActivityView::class.java)
             intent.putExtra("jobId",it.id)
             startActivity(intent)

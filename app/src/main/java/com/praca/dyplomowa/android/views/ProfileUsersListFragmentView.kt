@@ -48,7 +48,6 @@ class ProfileUsersListFragmentView : DialogFragment() {
 
     private fun setObserverForGetUsers(){
         viewModelProfileUserList.userReponse.observe(viewLifecycleOwner){
-            println(it)
             usersAdapter.setupData(it.collection.toList())
         }
         viewModelProfileUserList.getUsers()

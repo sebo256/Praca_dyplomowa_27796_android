@@ -53,7 +53,6 @@ class LoginActivityView : AppCompatActivity() {
         if (username.length in 3..19 && password.length in 8..30) {
             viewModelLogin.loginResult.observe(this) {
                 if (it != null) {
-                    println(it)
                     goToHome()
                 } else {
                     binding.textFieldLayoutUsernameLoginActivity.error =

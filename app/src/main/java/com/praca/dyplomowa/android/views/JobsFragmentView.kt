@@ -62,7 +62,6 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
 
     fun setObserverForGetJobRequestJobs(){
         viewModelJobs.jobResult.observe(viewLifecycleOwner){
-            println(it.collection)
             jobAdapter.setupData(it.collection.toList())
         }
 
@@ -70,7 +69,6 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
 
     fun setObserverForDeleteJob(){
         viewModelJobs.jobDeleteResult.observe(viewLifecycleOwner){
-            println(it)
             viewModelJobs.getJobs()
 
         }

@@ -36,10 +36,7 @@ class ProfileUsersListAdapter(
     inner class ViewHolder(val binding: RecyclerProfileUsersListLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.recyclerProfileUsersListItem.setOnClickListener{
 
-                println(dataDiffer.currentList.elementAt(bindingAdapterPosition).id)
-            }
         }
     }
 

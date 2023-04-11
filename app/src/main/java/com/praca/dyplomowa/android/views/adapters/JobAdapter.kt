@@ -59,10 +59,7 @@ class JobAdapter(
     inner class ViewHolder(val binding: RecyclerJobsItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.recyclerItem.setOnClickListener{
 
-                println(dataDiffer.currentList.elementAt(bindingAdapterPosition).id)
-            }
         }
     }
 
