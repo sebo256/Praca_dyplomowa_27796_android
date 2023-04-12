@@ -6,6 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".views.JobsFragmentView">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textFieldLayoutSearchJobJobFragment"
+        style="?attr/textInputFilledStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/search_text_label"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textFieldTextSearchJobJobFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="text"
+            android:imeOptions="actionSearch"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/buttonSearchJobJobFragment"
+        style="?attr/floatingActionButtonSmallStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="?android:attr/actionModeWebSearchDrawable"
+        app:fabCustomSize="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonAddJobJobFragment"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/buttonAddJobJobFragment"
         style="?attr/floatingActionButtonSmallStyle"
@@ -16,11 +49,18 @@
         app:fabCustomSize="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_button_add" />
+        app:srcCompat="@android:drawable/ic_input_add" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewJob"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFieldLayoutSearchJobJobFragment"
+        app:layout_constraintVertical_bias="1.0"
         tools:listitem="@layout/recycler_jobs_item_layout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

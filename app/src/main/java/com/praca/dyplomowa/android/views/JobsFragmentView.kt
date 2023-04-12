@@ -1,14 +1,22 @@
 package com.praca.dyplomowa.android.views
 
+import android.animation.Animator
+import android.animation.Animator.AnimatorListener
+import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.os.Bundle
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.ExpandableListView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.search.SearchBar
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.api.response.JobGetAllResponse
 import com.praca.dyplomowa.android.databinding.FragmentJobsViewBinding
@@ -23,8 +31,10 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
     private var _binding: FragmentJobsViewBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModelJobs: JobsViewModel
-    var jobList: MutableList<JobGetAllResponse>? = mutableListOf()
     private lateinit var jobAdapter: JobAdapter
+
+    var jobList: MutableList<JobGetAllResponse>? = mutableListOf()
+
 
     override fun onStart() {
         super.onStart()
@@ -44,6 +54,8 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         setObserverForDeleteJob()
         setObserverForError()
 
+
+
         binding.recyclerViewJob.layoutManager = LinearLayoutManager(requireContext())
         jobAdapter = JobAdapter(recyclerViewUtilsInterface)
         binding.recyclerViewJob.adapter = jobAdapter
@@ -51,11 +63,30 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
 
 
         binding.buttonAddJobJobFragment.setOnClickListener{
-
             val intent = Intent(requireContext(), AddJobActivity::class.java)
             startActivity(intent)
-
         }
+
+        binding.buttonSearchJobJobFragment.setOnClickListener {
+            TransitionManager.beginDelayedTransition(binding.root)
+            when(binding.textFieldLayoutSearchJobJobFragment.visibility == View.GONE){
+                true -> binding.textFieldLayoutSearchJobJobFragment.visibility = View.VISIBLE
+                false -> hideSearchBarAndShowFullList()
+            }
+        }
+
+        binding.textFieldTextSearchJobJobFragment.setOnEditorActionListener { textView, actionId, keyEvent ->
+            if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                jobAdapter.filter.filter(binding.textFieldTextSearchJobJobFragment.text)
+            }
+            true
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                hideSearchBarAndShowFullList()
+            }
+        })
 
         return view
     }
@@ -70,7 +101,6 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
     fun setObserverForDeleteJob(){
         viewModelJobs.jobDeleteResult.observe(viewLifecycleOwner){
             viewModelJobs.getJobs()
-
         }
     }
 
@@ -83,6 +113,11 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         }
     }
 
+    private fun hideSearchBarAndShowFullList(){
+        jobAdapter.filter.filter("")
+        binding.textFieldTextSearchJobJobFragment.setText("")
+        binding.textFieldLayoutSearchJobJobFragment.visibility = View.GONE
+    }
 
     private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object : RecyclerViewUtilsInterface {
         override fun onClick(string: String) {
@@ -118,6 +153,8 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         super.onResume()
         viewModelJobs.getJobs()
     }
+
+
 
 
 }

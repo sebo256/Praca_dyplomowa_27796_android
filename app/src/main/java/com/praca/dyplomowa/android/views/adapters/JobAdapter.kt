@@ -3,6 +3,8 @@ package com.praca.dyplomowa.android.views.adapters
 import android.content.res.Configuration
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -14,7 +16,9 @@ import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 
 class JobAdapter(
     private var recyclerViewUtilsInterface: RecyclerViewUtilsInterface
-) : RecyclerView.Adapter<JobAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<JobAdapter.ViewHolder>(), Filterable {
+
+    private var actualFullList: List<JobGetForListResponse> = mutableListOf()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val binding = RecyclerJobsItemLayoutBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
@@ -23,6 +27,7 @@ class JobAdapter(
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.binding.textViewRecyclerJobSubject.text = dataDiffer.currentList.elementAt(position).subject
+        viewHolder.binding.textViewRecyclerJobType.text = dataDiffer.currentList.elementAt(position).jobType
         viewHolder.binding.textViewRecyclerJobCompanyName.text = dataDiffer.currentList.elementAt(position).companyName
         viewHolder.binding.textViewRecyclerJobName.text = dataDiffer.currentList.elementAt(position).name
         viewHolder.binding.textViewRecyclerJobSurname.text = dataDiffer.currentList.elementAt(position).surname
@@ -53,6 +58,32 @@ class JobAdapter(
 
     }
 
+    override fun getFilter(): Filter = searchingFilter
+
+    private val searchingFilter = object : Filter() {
+        override fun performFiltering(p0: CharSequence?): FilterResults {
+            val filteringList = mutableListOf<JobGetForListResponse>()
+            if(p0.isNullOrEmpty()){
+                filteringList.addAll(actualFullList)
+            } else {
+                val charsToFind = p0.toString().lowercase().trim()
+                actualFullList.forEach {
+                    if(it.subject.lowercase().contains(charsToFind)){
+                        filteringList.add(it)
+                    }
+                }
+
+            }
+            val searchingResult = FilterResults()
+            searchingResult.values = filteringList
+            return searchingResult
+        }
+
+        override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+            dataDiffer.submitList(p1?.values as MutableList<JobGetForListResponse>)
+        }
+    }
+
     override fun getItemCount() =
         dataDiffer.currentList.size
 
@@ -63,8 +94,10 @@ class JobAdapter(
         }
     }
 
-    fun setupData(data: List<JobGetForListResponse>) =
+    fun setupData(data: List<JobGetForListResponse>) {
+        actualFullList = data.toMutableList()
         dataDiffer.submitList(data)
+    }
 
     private val diffUtil = object : DiffUtil.ItemCallback<JobGetForListResponse>() {
         override fun areItemsTheSame(

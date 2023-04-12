@@ -3,6 +3,7 @@ package com.praca.dyplomowa.android.api.response
 data class JobGetForListResponse(
     val id: String,
     val subject: String,
+    val jobType: String,
     val companyName: String?,
     val name: String,
     val surname: String,

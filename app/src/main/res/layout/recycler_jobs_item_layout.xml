@@ -21,18 +21,45 @@
         android:gravity="center_vertical"
         android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/textViewRecyclerJobSubject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:ellipsize="end"
+            android:maxEms="11"
             android:maxLines="1"
             android:text="Temat"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/textViewRecyclerJobType"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:ellipsize="end"
+            android:gravity="right"
+            android:maxLines="1"
+            android:text="Typ zlecenia"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+    <TextView
             android:id="@+id/textViewRecyclerJobCompanyName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -40,6 +67,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="Nazwa firmy" />
+
+    </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
