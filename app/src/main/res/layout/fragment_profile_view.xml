@@ -6,12 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".views.ProfileFragmentView">
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="15dp"
-        android:translationZ="10dp" />
 
     <Button
         android:id="@+id/buttonLogoutMainActivity"

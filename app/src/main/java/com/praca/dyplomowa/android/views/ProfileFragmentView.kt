@@ -29,7 +29,6 @@ class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
         container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
         _binding = FragmentProfileViewBinding.inflate(inflater, container, false)
-        val view = binding.root
 
         if(SessionManager.getIsAdmin(requireContext())) {
             binding.buttonJobsTimeSpentAdminProfileFragmentView.visibility = View.VISIBLE
@@ -70,7 +69,7 @@ class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
 
 
 
-        return view
+        return binding.root
     }
 
     private fun setObserverForCountCompletedJobsAppliedToUser(){

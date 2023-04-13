@@ -32,10 +32,6 @@ class ProfileTimeSpentListView : AppCompatActivity() {
         timeSpentAdapter = ProfileTimeSpentAdapter()
         binding.recyclerTimeSpent.adapter = timeSpentAdapter
 
-
-
-
-
     }
 
     private fun setObserverForGetAllTimeSpentForUserPerMonth(){

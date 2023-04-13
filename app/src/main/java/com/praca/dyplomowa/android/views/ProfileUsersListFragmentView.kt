@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.praca.dyplomowa.android.databinding.FragmentProfileUsersListViewBinding
@@ -15,7 +15,7 @@ import com.praca.dyplomowa.android.viewmodels.ProfileUsersListViewModel
 import com.praca.dyplomowa.android.views.adapters.ProfileUsersListAdapter
 
 
-class ProfileUsersListFragmentView : DialogFragment() {
+class ProfileUsersListFragmentView : Fragment() {
     private var _binding: FragmentProfileUsersListViewBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModelProfileUserList: ProfileUsersListViewModel
@@ -26,13 +26,12 @@ class ProfileUsersListFragmentView : DialogFragment() {
 
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+        savedInstanceState: Bundle?
+    ): View? {
         _binding = FragmentProfileUsersListViewBinding.inflate(inflater, container, false)
-        val view = binding.root
 
 
         viewModelProfileUserList = ViewModelProvider(requireActivity()).get(ProfileUsersListViewModel::class.java)
@@ -43,7 +42,7 @@ class ProfileUsersListFragmentView : DialogFragment() {
         usersAdapter = ProfileUsersListAdapter(recyclerViewUtilsInterface)
         binding.recyclewViewProfileUsersList.adapter = usersAdapter
 
-        return view
+        return binding.root
     }
 
     private fun setObserverForGetUsers(){

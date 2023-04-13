@@ -1,26 +1,24 @@
 package com.praca.dyplomowa.android.views
 
-import android.animation.Animator
-import android.animation.Animator.AnimatorListener
-import android.animation.AnimatorListenerAdapter
-import android.content.Intent
 import android.os.Bundle
 import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.ExpandableListView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager.OnBackStackChangedListener
+import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.search.SearchBar
 import com.praca.dyplomowa.android.R
-import com.praca.dyplomowa.android.api.response.JobGetAllResponse
 import com.praca.dyplomowa.android.databinding.FragmentJobsViewBinding
 import com.praca.dyplomowa.android.utils.ErrorDialogHandler
+import com.praca.dyplomowa.android.utils.FragmentNavigationUtils
 import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.JobsViewModel
@@ -33,38 +31,42 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
     private lateinit var viewModelJobs: JobsViewModel
     private lateinit var jobAdapter: JobAdapter
 
-    var jobList: MutableList<JobGetAllResponse>? = mutableListOf()
-
-
-    override fun onStart() {
-        super.onStart()
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
         _binding = FragmentJobsViewBinding.inflate(inflater, container, false)
-        val view = binding.root
+
+        binding.buttonAddJobJobFragment.setOnClickListener{
+            parentFragmentManager.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .add(android.R.id.content, JobAddFragmentView())
+                .addToBackStack(null)
+                .commit()
+        }
+
+
+
 
         viewModelJobs = ViewModelProvider(requireActivity()).get(JobsViewModel::class.java)
         setObserverForGetJobRequestJobs()
         setObserverForDeleteJob()
         setObserverForError()
 
-
-
         binding.recyclerViewJob.layoutManager = LinearLayoutManager(requireContext())
         jobAdapter = JobAdapter(recyclerViewUtilsInterface)
         binding.recyclerViewJob.adapter = jobAdapter
+        viewModelJobs.getJobs()
 
 
-
-        binding.buttonAddJobJobFragment.setOnClickListener{
-            val intent = Intent(requireContext(), AddJobActivity::class.java)
-            startActivity(intent)
+        parentFragmentManager.addOnBackStackChangedListener {
+            if(parentFragmentManager.backStackEntryCount == 0){
+                viewModelJobs.getJobs()
+            }
         }
 
         binding.buttonSearchJobJobFragment.setOnClickListener {
@@ -84,11 +86,22 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                hideSearchBarAndShowFullList()
+                TransitionManager.beginDelayedTransition(binding.root)
+                if(parentFragmentManager.backStackEntryCount == 0){
+                    when(binding.textFieldLayoutSearchJobJobFragment.visibility == View.VISIBLE){
+                        true -> hideSearchBarAndShowFullList()
+                        false -> requireActivity().finish()
+                    }
+                }else{
+                    parentFragmentManager.popBackStack()
+                }
+
+
             }
         })
 
-        return view
+
+        return binding.root
     }
 
     fun setObserverForGetJobRequestJobs(){
@@ -121,9 +134,12 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
 
     private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object : RecyclerViewUtilsInterface {
         override fun onClick(string: String) {
-            val intent = Intent(requireContext(), AddJobActivity::class.java)
-            intent.putExtra("jobObjectId",string)
-            startActivity(intent)
+            FragmentNavigationUtils.loadFragmentFadeWithOneStringBundleValue(
+                fragmentManager = parentFragmentManager,
+                fragment = JobAddFragmentView(),
+                argumentKey = "jobObjectId",
+                argumentValue = string
+            )
         }
 
         override fun onLongClick(string: String) {
@@ -131,9 +147,12 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
                 .setTitle(R.string.dialog_joblist_text_title)
                 .setMessage(R.string.dialog_joblist_text_message)
                 .setPositiveButton(R.string.dialog_joblist_positive_title) { dialog, which ->
-                    val intent = Intent(requireContext(), JobApplyToActivityView::class.java)
-                    intent.putExtra("jobId", string)
-                    startActivity(intent)
+                    FragmentNavigationUtils.loadFragmentOpenWithOneStringBundleValue(
+                        fragmentManager = parentFragmentManager,
+                        fragment = JobApplyToFragmentView(),
+                        argumentKey = "jobId",
+                        argumentValue = string
+                    )
                 }
                 .setNeutralButton(R.string.dialog_joblist_neutral_title) { dialog, which ->
                     dialog.dismiss()
@@ -148,13 +167,6 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
             materialDialog.show()
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        viewModelJobs.getJobs()
-    }
-
-
 
 
 }

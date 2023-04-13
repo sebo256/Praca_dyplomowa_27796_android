@@ -1,6 +1,7 @@
 package com.praca.dyplomowa.android.views
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.ActivityMainViewBinding
@@ -11,6 +12,7 @@ class MainActivityView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         supportFragmentManager.beginTransaction().replace(binding.fragmentContainerMainActivityView.id, JobsFragmentView()).commit()
 
@@ -31,5 +33,7 @@ class MainActivityView : AppCompatActivity() {
                 else -> false
             }
         }
+
     }
+
 }
