@@ -14,20 +14,21 @@ class MainActivityView : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        supportFragmentManager.beginTransaction().replace(binding.fragmentContainerMainActivityView.id, JobsFragmentView()).commit()
+        supportFragmentManager.beginTransaction().add(binding.fragmentContainerMainActivityView.id, JobsFragmentView(),"JobsFragmentView").commit()
+
 
         binding.navigationBar.setOnItemSelectedListener { item ->
             when(item.itemId){
                 R.id.menu_item_1 -> {
-                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainerMainActivityView.id, JobsFragmentView()).commit()
+                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainerMainActivityView.id, JobsFragmentView(),"JobsFragmentView").commit()
                     true
                 }
                 R.id.menu_item_2 -> {
-                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainerMainActivityView.id, CalendarFragmentView()).commit()
+                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainerMainActivityView.id, CalendarFragmentView(), "CalendarFragmentView").commit()
                     true
                 }
                 R.id.menu_item_3 -> {
-                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainerMainActivityView.id, ProfileFragmentView()).commit()
+                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainerMainActivityView.id, ProfileFragmentView(), "ProfileFragmentView").commit()
                     true
                 }
                 else -> false
@@ -35,5 +36,7 @@ class MainActivityView : AppCompatActivity() {
         }
 
     }
+
+
 
 }

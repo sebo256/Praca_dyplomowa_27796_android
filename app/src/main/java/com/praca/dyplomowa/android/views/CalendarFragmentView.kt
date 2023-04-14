@@ -20,6 +20,7 @@ import com.praca.dyplomowa.android.databinding.FragmentCalendarViewBinding
 import com.praca.dyplomowa.android.utils.CalendarViewContainersUtilsInterface
 import com.praca.dyplomowa.android.utils.DateRange
 import com.praca.dyplomowa.android.utils.ErrorDialogHandler
+import com.praca.dyplomowa.android.utils.FragmentNavigationUtils
 import com.praca.dyplomowa.android.viewmodels.CalendarViewModel
 import com.praca.dyplomowa.android.views.calendarContainers.DayViewContainer
 import com.praca.dyplomowa.android.views.calendarContainers.MonthViewContainer
@@ -53,25 +54,27 @@ class CalendarFragmentView : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
         _binding = FragmentCalendarViewBinding.inflate(inflater, container, false)
-        val view = binding.root
 
         viewModelCalendar = ViewModelProvider(requireActivity()).get(CalendarViewModel::class.java)
         setObserverForGetJobGetDatesAndInfoResponse()
         setObserverForError()
-//        setObserverForGetJobByLongDateBetween()
 
-        return view
+        return binding.root
     }
 
     fun checkIfDarkModeIsOn() =
         resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 
+    fun getJobDateAndInfo(){
+        viewModelCalendar.getJobDatesAndInfo()
+    }
+
     fun setObserverForGetJobGetDatesAndInfoResponse(){
         viewModelCalendar.jobDatesAndInfoResult.observe(viewLifecycleOwner){
             jobDatesAndInfoList = it.collection.toMutableList()
-            setupCalendar(binding)
+            setupCalendar()
         }
-        viewModelCalendar.getJobDatesAndInfo()
+        getJobDateAndInfo()
     }
 
     private fun setObserverForError() {
@@ -86,13 +89,17 @@ class CalendarFragmentView : Fragment() {
 
     private val calendarViewContainersUtilsInterface: CalendarViewContainersUtilsInterface = object : CalendarViewContainersUtilsInterface {
         override fun onClick(startLong: Long, endLong: Long) {
-            val intent = Intent(requireContext(), CalendarJobListView::class.java)
-            intent.putExtra("dateRange", Gson().toJson(DateRange(startLong = startLong, endLong = endLong)))
-            startActivity(intent)
+            FragmentNavigationUtils.addFragmentFadeWithOneStringBundleValueAndSourceFragment(
+                fragmentManager = parentFragmentManager,
+                fragment = CalendarJobListFragmentView(),
+                argumentKey = "dateRange",
+                argumentValue = Gson().toJson(DateRange(startLong = startLong, endLong = endLong)),
+                argumentSourceFragmentName = "CalendarFragmentView"
+            )
         }
     }
 
-    fun setupCalendar(binding: FragmentCalendarViewBinding){
+    fun setupCalendar(){
         binding.calendarView.setup(startMonth, endMonth, daysOfWeek.first())
         binding.calendarView.scrollToMonth(currentMonth)
         setupCalendarDayBinder(binding)
@@ -161,7 +168,7 @@ class CalendarFragmentView : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModelCalendar.getJobDatesAndInfo()
-        setupCalendar(binding)
+        setupCalendar()
     }
 
 

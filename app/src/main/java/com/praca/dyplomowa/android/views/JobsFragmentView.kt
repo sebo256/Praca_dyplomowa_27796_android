@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager.OnBackStackChangedListener
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -51,23 +48,18 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
 
 
 
-
         viewModelJobs = ViewModelProvider(requireActivity()).get(JobsViewModel::class.java)
         setObserverForGetJobRequestJobs()
         setObserverForDeleteJob()
         setObserverForError()
 
         binding.recyclerViewJob.layoutManager = LinearLayoutManager(requireContext())
-        jobAdapter = JobAdapter(recyclerViewUtilsInterface)
+        jobAdapter = JobAdapter(this.recyclerViewUtilsInterface)
         binding.recyclerViewJob.adapter = jobAdapter
         viewModelJobs.getJobs()
 
 
-        parentFragmentManager.addOnBackStackChangedListener {
-            if(parentFragmentManager.backStackEntryCount == 0){
-                viewModelJobs.getJobs()
-            }
-        }
+
 
         binding.buttonSearchJobJobFragment.setOnClickListener {
             TransitionManager.beginDelayedTransition(binding.root)
@@ -95,13 +87,14 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
                 }else{
                     parentFragmentManager.popBackStack()
                 }
-
-
             }
         })
 
-
         return binding.root
+    }
+
+    fun getJobs(){
+        viewModelJobs.getJobs()
     }
 
     fun setObserverForGetJobRequestJobs(){
@@ -134,11 +127,12 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
 
     private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object : RecyclerViewUtilsInterface {
         override fun onClick(string: String) {
-            FragmentNavigationUtils.loadFragmentFadeWithOneStringBundleValue(
+            FragmentNavigationUtils.addFragmentFadeWithOneStringBundleValueAndSourceFragment(
                 fragmentManager = parentFragmentManager,
                 fragment = JobAddFragmentView(),
                 argumentKey = "jobObjectId",
-                argumentValue = string
+                argumentValue = string,
+                argumentSourceFragmentName = "JobsFragmentView"
             )
         }
 
@@ -147,11 +141,12 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
                 .setTitle(R.string.dialog_joblist_text_title)
                 .setMessage(R.string.dialog_joblist_text_message)
                 .setPositiveButton(R.string.dialog_joblist_positive_title) { dialog, which ->
-                    FragmentNavigationUtils.loadFragmentOpenWithOneStringBundleValue(
+                    FragmentNavigationUtils.addFragmentOpenWithOneStringBundleValueAndSourceFragment(
                         fragmentManager = parentFragmentManager,
                         fragment = JobApplyToFragmentView(),
                         argumentKey = "jobId",
-                        argumentValue = string
+                        argumentValue = string,
+                        argumentSourceFragmentName = "JobsFragmentView"
                     )
                 }
                 .setNeutralButton(R.string.dialog_joblist_neutral_title) { dialog, which ->
@@ -167,6 +162,5 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
             materialDialog.show()
         }
     }
-
 
 }

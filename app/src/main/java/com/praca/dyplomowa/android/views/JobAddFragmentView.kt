@@ -180,6 +180,7 @@ class JobAddFragmentView : Fragment() {
 
     private fun addOrUpdateJob(){
         viewModelAddJobs.jobResult.observe(requireActivity()) {
+            updateRecyclerData()
             parentFragmentManager.popBackStack()
         }
         when(checkIfArgumentIsNull()){
@@ -190,6 +191,8 @@ class JobAddFragmentView : Fragment() {
 
     private fun addOrUpdateJobAndGoToJobApplyTo(){
         viewModelAddJobs.jobResult.observe(viewLifecycleOwner){
+            updateRecyclerData()
+
             parentFragmentManager.popBackStack()
             FragmentNavigationUtils.replaceFragmentWithOneStringBundleValue(
                 fragmentManager = parentFragmentManager,
@@ -203,7 +206,17 @@ class JobAddFragmentView : Fragment() {
             true -> viewModelAddJobs.addJob(getAllDataFromForm())
             false -> viewModelAddJobs.updateJob(getDataForUpdateJob())
         }
+    }
 
+    private fun updateRecyclerData(){
+        val sourceFragmentName = arguments?.getString("argumentSourceFragmentName")
+        if(sourceFragmentName == "JobsFragmentView"){
+            val fragment = parentFragmentManager.findFragmentByTag("JobsFragmentView") as JobsFragmentView
+            fragment.getJobs()
+        }else if(sourceFragmentName == "CalendarJobListFragmentView"){
+            val fragment = parentFragmentManager.findFragmentByTag("CalendarJobListFragmentView") as CalendarJobListFragmentView
+            fragment.getJobsAndUpdateRecyclerData()
+        }
     }
 
     private fun getDataToFillForm() {
