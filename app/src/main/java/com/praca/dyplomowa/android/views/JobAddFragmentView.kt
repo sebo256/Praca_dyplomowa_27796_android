@@ -216,6 +216,9 @@ class JobAddFragmentView : Fragment() {
         }else if(sourceFragmentName == "CalendarJobListFragmentView"){
             val fragment = parentFragmentManager.findFragmentByTag("CalendarJobListFragmentView") as CalendarJobListFragmentView
             fragment.getJobsAndUpdateRecyclerData()
+        }else if(sourceFragmentName == "ProfileJobListFragmentView"){
+            val fragment = parentFragmentManager.findFragmentByTag("ProfileJobListFragmentView") as ProfileJobListFragmentView
+            fragment.getJobsAndUpdateRecyclerData()
         }
     }
 

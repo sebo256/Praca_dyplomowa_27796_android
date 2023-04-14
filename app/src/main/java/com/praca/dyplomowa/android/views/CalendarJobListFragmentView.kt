@@ -63,7 +63,6 @@ class CalendarJobListFragmentView : Fragment() {
             }
         })
 
-
         return binding.root
     }
 
@@ -88,8 +87,6 @@ class CalendarJobListFragmentView : Fragment() {
             }
         }
     }
-
-    //TODO napisać callback na onbackpress żeby odświeżało kalendarz
 
     fun getJobsAndUpdateRecyclerData(){
         viewModelCalendarJobList.getJobByLongDateBetween(startLong = dateRange.startLong, endLong = dateRange.endLong)

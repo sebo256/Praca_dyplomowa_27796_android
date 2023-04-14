@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.FragmentProfileViewBinding
 import com.praca.dyplomowa.android.utils.ErrorDialogHandler
+import com.praca.dyplomowa.android.utils.FragmentNavigationUtils
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.ProfileViewModel
 
@@ -47,7 +48,7 @@ class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
         setObserverForCountTodoJobsAppliedToUser()
         setObserverForGetUser()
         setObserverForGetSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted()
-
+        setupProfileDataWithoutName()
 
         binding.buttonLogoutMainActivity.setOnClickListener {
             SessionManager.clearSharedPrefs(requireActivity().applicationContext)
@@ -63,8 +64,10 @@ class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
         }
 
         binding.buttonJobsTimeSpentProfileFragmentView.setOnClickListener {
-            val intent = Intent(requireContext(), ProfileTimeSpentListView::class.java)
-            startActivity(intent)
+            FragmentNavigationUtils.addFragmentFade(
+                fragmentManager = parentFragmentManager,
+                fragment = ProfileTimeSpentListFragmentView()
+            )
         }
 
 
@@ -76,13 +79,11 @@ class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
         viewModelProfile.jobCompletedCountResult.observe(viewLifecycleOwner){
             binding.textViewJobsCompletedNumberTextProfileFragmentView.setText(it.toString())
         }
-        viewModelProfile.countCompletedJobsAppliedToUser(SessionManager.getCurrentUserUsername(requireContext())!!)
     }
     private fun setObserverForCountTodoJobsAppliedToUser(){
         viewModelProfile.jobTodoCountResult.observe(viewLifecycleOwner){
             binding.textViewJobsTodoNumberTextProfileFragmentView.setText(it.toString())
         }
-        viewModelProfile.countTodoJobsAppliedToUser(SessionManager.getCurrentUserUsername(requireContext())!!)
     }
 
     private fun setObserverForGetUser(){
@@ -97,6 +98,11 @@ class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
         viewModelProfile.jobTimeSpentResult.observe(viewLifecycleOwner){
             binding.textViewJobsTimeSpentNumberTextProfileFragmentView.setText(it.toString() + "h")
         }
+    }
+
+    fun setupProfileDataWithoutName(){
+        viewModelProfile.countCompletedJobsAppliedToUser(SessionManager.getCurrentUserUsername(requireContext())!!)
+        viewModelProfile.countTodoJobsAppliedToUser(SessionManager.getCurrentUserUsername(requireContext())!!)
         viewModelProfile.getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted(
             startLong = viewModelProfile.getCurrentMonthBeginLong(),
             endLong = viewModelProfile.getCurrentMonthEndLong(),
@@ -115,9 +121,13 @@ class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
 
 
     private fun goToJobsList(title: String) {
-        val intent = Intent(requireContext(), ProfileJobListView::class.java)
-        intent.putExtra("title",title)
-        startActivity(intent)
+        FragmentNavigationUtils.addFragmentFadeWithOneStringBundleValueAndSourceFragment(
+            fragmentManager = parentFragmentManager,
+            fragment = ProfileJobListFragmentView(),
+            argumentKey = "title",
+            argumentValue = title,
+            argumentSourceFragmentName = "ProfileFragmentView"
+        )
     }
 
     private fun goToLogin() {

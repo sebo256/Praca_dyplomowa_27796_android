@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.praca.dyplomowa.android.databinding.FragmentProfileUsersListViewBinding
 import com.praca.dyplomowa.android.utils.ErrorDialogHandler
+import com.praca.dyplomowa.android.utils.FragmentNavigationUtils
 import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
 import com.praca.dyplomowa.android.viewmodels.ProfileUsersListViewModel
 import com.praca.dyplomowa.android.views.adapters.ProfileUsersListAdapter
@@ -64,15 +65,21 @@ class ProfileUsersListFragmentView : Fragment() {
     private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object :
         RecyclerViewUtilsInterface {
         override fun onClick(string: String) {
-            val intent = Intent(requireContext(), ProfileTimeSpentListView::class.java)
-            intent.putExtra("username",string)
-            startActivity(intent)
+            FragmentNavigationUtils.addFragmentFadeWithOneStringBundleValue(
+                fragmentManager = parentFragmentManager,
+                fragment = ProfileTimeSpentListFragmentView(),
+                argumentKey = "username",
+                argumentValue = string
+            )
         }
 
         override fun onLongClick(string: String) {
-            val intent = Intent(requireContext(), ProfileTimeSpentListView::class.java)
-            intent.putExtra("username",string)
-            startActivity(intent)
+            FragmentNavigationUtils.addFragmentFadeWithOneStringBundleValue(
+                fragmentManager = parentFragmentManager,
+                fragment = ProfileTimeSpentListFragmentView(),
+                argumentKey = "username",
+                argumentValue = string
+            )
         }
     }
 
