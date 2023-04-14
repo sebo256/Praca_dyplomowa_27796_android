@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.ActivityLoginViewBinding
 import com.praca.dyplomowa.android.utils.ErrorDialogHandler
+import com.praca.dyplomowa.android.utils.FragmentNavigationUtils
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.LoginViewModel
 
@@ -28,7 +29,12 @@ class LoginActivityView : AppCompatActivity() {
 
         binding.buttonLoginLoginActivity.setOnClickListener { loginUser() }
 
-        binding.buttonRegisterLoginActivity.setOnClickListener { startActivity(Intent(this, RegisterActivityView::class.java)) }
+        binding.buttonRegisterLoginActivity.setOnClickListener {
+            FragmentNavigationUtils.addFragmentFade(
+                fragmentManager = supportFragmentManager,
+                fragment = RegisterFragmentView()
+            )
+        }
 
     }
 

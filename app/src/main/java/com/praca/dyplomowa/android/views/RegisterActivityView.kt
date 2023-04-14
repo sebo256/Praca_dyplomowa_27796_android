@@ -15,6 +15,7 @@ class RegisterActivityView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         viewModelRegister = ViewModelProvider(this).get(RegisterViewModel::class.java)
         setObserverForError()
         binding.buttonRegisterRegisterActivity.setOnClickListener { registerUser() }
