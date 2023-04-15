@@ -48,11 +48,7 @@ class RegisterFragmentView : Fragment() {
     }
 
     private fun registerUser(){
-        val username = binding.textFieldUsernameRegisterFragment.text.toString()
-        val password = binding.textFieldPasswordRegisterFragment.text.toString()
-        val name = binding.textFieldNameRegisterFragment.text.toString()
-        val surname = binding.textFieldSurnameRegisterFragment.text.toString()
-        if(validateRegistrationData(username, password, name, surname)){
+        if(validateRegistrationData()){
             viewModelRegister.registerResult.observe(viewLifecycleOwner) {
                 if(it.account == null){
                     binding.textFieldLayoutUsernameRegisterFragment.error = getString(R.string.register_error_usernameExists_info)
@@ -60,55 +56,68 @@ class RegisterFragmentView : Fragment() {
                     parentFragmentManager.popBackStack()
                 }
             }
-            viewModelRegister.registerUser(username, password, name, surname)
+            viewModelRegister.registerUser(
+                username = binding.textFieldUsernameRegisterFragment.text.toString(),
+                password = binding.textFieldPasswordRegisterFragment.text.toString(),
+                name = binding.textFieldNameRegisterFragment.text.toString(),
+                surname= binding.textFieldSurnameRegisterFragment.text.toString())
         }
     }
 
-    private fun validateRegistrationData(username: String, password: String, name: String, surname: String): Boolean{
-        val PASSWORD_PATTERN = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%]).{8,30}\$".toRegex()
-        val USERNAME_PATTERN = "^[a-zA-Z0-9._-]{4,}\$".toRegex()
+    private fun validateName(name: String): Boolean {
         val NAME_PATTERN = "[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}['-]{0,2}[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}['-]{0,2}[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}".toRegex()
-        var validator: Boolean
-
-        if(name.length in 3 .. 25 && name.contains(NAME_PATTERN)){
-            validator = true
+        return if(name.length in 3 .. 25 && name.matches(NAME_PATTERN)){
             binding.textFieldLayoutNameRegisterFragment.error = null
+            true
         }else{
-            validator = false
             binding.textFieldLayoutNameRegisterFragment.error = getString(R.string.register_error_name_info)
+            false
         }
+    }
 
-        if(surname.length in 4 .. 25 && surname.contains(NAME_PATTERN)){
-            validator = true
+    private fun validateSurname(surname: String): Boolean {
+        val NAME_PATTERN = "[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}['-]{0,2}[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}['-]{0,2}[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}".toRegex()
+        return if(surname.length in 4 .. 25 && surname.matches(NAME_PATTERN)){
             binding.textFieldLayoutSurnameRegisterFragment.error = null
+            true
         }else{
-            validator = false
             binding.textFieldLayoutSurnameRegisterFragment.error = getString(R.string.register_error_surname_info)
+            false
         }
+    }
 
-        if(username.length in 4 .. 20 && name.contains(USERNAME_PATTERN)){
-            validator = true
+    private fun validateUsername(username: String): Boolean {
+        val USERNAME_PATTERN = "^[a-zA-Z0-9._-]{4,}\$".toRegex()
+        return if(username.length in 4 .. 20 && username.matches(USERNAME_PATTERN)){
             binding.textFieldLayoutUsernameRegisterFragment.error = null
+            true
         }else{
-            validator = false
             binding.textFieldLayoutUsernameRegisterFragment.error = getString(R.string.register_error_username_info)
+            false
         }
+    }
 
-        if(password.length in 8 .. 30 && password.contains(PASSWORD_PATTERN)){
-            validator = true
+    private fun validatePassword(password: String): Boolean {
+        val PASSWORD_PATTERN = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%]).{8,30}\$".toRegex()
+        return if(password.length in 8 .. 30 && password.matches(PASSWORD_PATTERN)){
             binding.textFieldLayoutPasswordRegisterFragment.error = null
             binding.textFieldLayoutPasswordRepeatRegisterFragment.error = null
+            true
         }else if(password != binding.textFieldPasswordRepeatRegisterFragment.text.toString()){
-            validator = false
             binding.textFieldLayoutPasswordRegisterFragment.error = getString(R.string.register_error_passwordReapeat_info)
             binding.textFieldLayoutPasswordRepeatRegisterFragment.error = getString(R.string.register_error_passwordReapeat_info)
+            false
         }else {
-            validator = false
             binding.textFieldLayoutPasswordRegisterFragment.error = getString(R.string.register_error_password_info)
             binding.textFieldLayoutPasswordRepeatRegisterFragment.error = getString(R.string.register_error_password_info)
+            false
         }
-
-        return validator
     }
 
+    private fun validateRegistrationData(): Boolean = listOf(
+        validateName(binding.textFieldNameRegisterFragment.text.toString()),
+        validateSurname(binding.textFieldSurnameRegisterFragment.text.toString()),
+        validateUsername(binding.textFieldUsernameRegisterFragment.text.toString()),
+        validatePassword(binding.textFieldPasswordRegisterFragment.text.toString())
+    ).all { it }
 }
