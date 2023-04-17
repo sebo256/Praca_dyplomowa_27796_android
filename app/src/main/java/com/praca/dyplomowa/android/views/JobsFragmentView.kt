@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -16,7 +15,7 @@ import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.FragmentJobsViewBinding
 import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.utils.FragmentNavigationUtils
-import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
+import com.praca.dyplomowa.android.utils.RecyclerViewJobsUtilsInterface
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.JobsViewModel
 import com.praca.dyplomowa.android.views.adapters.JobAdapter
@@ -54,7 +53,7 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         setObserverForError()
 
         binding.recyclerViewJob.layoutManager = LinearLayoutManager(requireContext())
-        jobAdapter = JobAdapter(this.recyclerViewUtilsInterface)
+        jobAdapter = JobAdapter(this.recyclerViewJobsUtilsInterface)
         binding.recyclerViewJob.adapter = jobAdapter
         viewModelJobs.getJobs()
 
@@ -125,7 +124,7 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         binding.textFieldLayoutSearchJobJobFragment.visibility = View.GONE
     }
 
-    private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object : RecyclerViewUtilsInterface {
+    private val recyclerViewJobsUtilsInterface: RecyclerViewJobsUtilsInterface = object : RecyclerViewJobsUtilsInterface {
         override fun onClick(string: String) {
             FragmentNavigationUtils.addFragmentFadeWithOneStringBundleValueAndSourceFragment(
                 fragmentManager = parentFragmentManager,

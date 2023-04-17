@@ -1,6 +1,5 @@
 package com.praca.dyplomowa.android.views
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,12 +9,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.Gson
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.FragmentProfileJobListViewBinding
-import com.praca.dyplomowa.android.utils.ErrorDialogHandler
-import com.praca.dyplomowa.android.utils.FragmentNavigationUtils
-import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
-import com.praca.dyplomowa.android.utils.SessionManager
+import com.praca.dyplomowa.android.utils.*
 import com.praca.dyplomowa.android.viewmodels.ProfileJobListViewModel
 import com.praca.dyplomowa.android.views.adapters.JobAdapter
 
@@ -25,6 +22,7 @@ class ProfileJobListFragmentView : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModelProfileJobList: ProfileJobListViewModel
     private lateinit var jobAdapter: JobAdapter
+    private lateinit var dateRange: DateRange
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +40,16 @@ class ProfileJobListFragmentView : Fragment() {
         setObserverForError()
         setObserverForGetCompletedJobsAppliedToUser()
         setObserverForGetTodoJobsAppliedToUser()
+        setObserverForGetJobsForSpecifiedMonthAndUserAndCheckCompleted()
         setObserverForDeleteJob()
+
+        if(arguments?.getString("dateRange") != null){
+            dateRange = Gson().fromJson(arguments?.getString("dateRange")!!, DateRange::class.java)
+        }
 
         binding.textViewTitleJobsListFragmentProfileView.setText(arguments?.getString("title"))
         binding.recyclerViewJobsListFragmentProfileView.layoutManager = LinearLayoutManager(requireContext())
-        jobAdapter = JobAdapter(recyclerViewUtilsInterface)
+        jobAdapter = JobAdapter(recyclerViewJobsUtilsInterface)
         binding.recyclerViewJobsListFragmentProfileView.adapter = jobAdapter
         getJobsAndUpdateRecyclerData()
 
@@ -77,6 +80,12 @@ class ProfileJobListFragmentView : Fragment() {
         }
     }
 
+    private fun setObserverForGetJobsForSpecifiedMonthAndUserAndCheckCompleted(){
+        viewModelProfileJobList.jobResult.observe(viewLifecycleOwner){
+            jobAdapter.setupData(it.collection.toList())
+        }
+    }
+
     private fun setObserverForDeleteJob(){
         viewModelProfileJobList.jobDeleteResult.observe(viewLifecycleOwner){
             getJobsAndUpdateRecyclerData()
@@ -93,14 +102,22 @@ class ProfileJobListFragmentView : Fragment() {
     }
 
     fun getJobsAndUpdateRecyclerData(){
-        when(arguments?.getString("title") == resources.getString(R.string.textview_list_jobs_completed)){
-            true -> viewModelProfileJobList.getCompletedJobsAppliedToUser(SessionManager.getCurrentUserUsername(requireContext())!!)
-            false -> viewModelProfileJobList.getTodoJobsAppliedToUser(SessionManager.getCurrentUserUsername(requireContext())!!)
+        if(arguments?.getString("title") == resources.getString(R.string.textview_list_jobs_completed)){
+            viewModelProfileJobList.getCompletedJobsAppliedToUser(SessionManager.getCurrentUserUsername(requireContext())!!)
+        }else if(arguments?.getString("title") == resources.getString(R.string.textview_list_jobs_todo)){
+            viewModelProfileJobList.getTodoJobsAppliedToUser(SessionManager.getCurrentUserUsername(requireContext())!!)
+        }else{
+            viewModelProfileJobList.getJobsForSpecifiedMonthAndUserAndCheckCompleted(
+                startLong = dateRange.startLong,
+                endLong = dateRange.endLong,
+                username = arguments?.getString("username")!!
+            )
         }
+
     }
 
-    private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object :
-        RecyclerViewUtilsInterface {
+    private val recyclerViewJobsUtilsInterface: RecyclerViewJobsUtilsInterface = object :
+        RecyclerViewJobsUtilsInterface {
         override fun onClick(string: String) {
             FragmentNavigationUtils.addFragmentFadeWithOneStringBundleValueAndSourceFragment(
                 fragmentManager = parentFragmentManager,

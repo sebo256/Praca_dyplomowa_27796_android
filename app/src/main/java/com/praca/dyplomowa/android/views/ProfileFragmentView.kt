@@ -64,9 +64,11 @@ class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
         }
 
         binding.buttonJobsTimeSpentProfileFragmentView.setOnClickListener {
-            FragmentNavigationUtils.addFragmentFade(
+            FragmentNavigationUtils.addFragmentFadeWithOneStringBundleValue(
                 fragmentManager = parentFragmentManager,
-                fragment = ProfileTimeSpentListFragmentView()
+                fragment = ProfileTimeSpentListFragmentView(),
+                argumentKey = "username",
+                argumentValue = SessionManager.getCurrentUserUsername(requireContext())!!
             )
         }
 

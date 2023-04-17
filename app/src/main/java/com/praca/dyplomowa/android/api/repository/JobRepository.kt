@@ -44,6 +44,9 @@ class JobRepository(val context: Context) {
     fun getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted(startLong: Long, endLong: Long, username: String, isCompleted: Boolean): Single<Response<Int>> =
         PDyplomowaAPI.getApi(context).getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted(startLong = startLong, endLong = endLong, username = username, isCompleted = isCompleted)
 
+    fun getJobsForSpecifiedMonthAndUserAndCheckCompleted(startLong: Long, endLong: Long, username: String): Single<Response<JobGetForListResponseCollection>> =
+        PDyplomowaAPI.getApi(context).getJobsForSpecifiedMonthAndUserAndCheckCompleted(startLong = startLong, endLong = endLong, username = username)
+
     fun getAllTimeSpentForUserPerMonth(username: String): Single<Response<JobTimeSpentResponseCollection>> =
         PDyplomowaAPI.getApi(context).getAllTimeSpentForUserPerMonth(username = username)
 

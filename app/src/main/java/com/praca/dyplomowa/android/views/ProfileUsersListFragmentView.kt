@@ -1,6 +1,5 @@
 package com.praca.dyplomowa.android.views
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.praca.dyplomowa.android.databinding.FragmentProfileUsersListViewBinding
 import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.utils.FragmentNavigationUtils
-import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
+import com.praca.dyplomowa.android.utils.RecyclerViewJobsUtilsInterface
 import com.praca.dyplomowa.android.viewmodels.ProfileUsersListViewModel
 import com.praca.dyplomowa.android.views.adapters.ProfileUsersListAdapter
 
@@ -40,7 +39,7 @@ class ProfileUsersListFragmentView : Fragment() {
         setObserverForError()
 
         binding.recyclewViewProfileUsersList.layoutManager = LinearLayoutManager(requireContext())
-        usersAdapter = ProfileUsersListAdapter(recyclerViewUtilsInterface)
+        usersAdapter = ProfileUsersListAdapter(recyclerViewJobsUtilsInterface)
         binding.recyclewViewProfileUsersList.adapter = usersAdapter
 
         return binding.root
@@ -62,8 +61,8 @@ class ProfileUsersListFragmentView : Fragment() {
         }
     }
 
-    private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object :
-        RecyclerViewUtilsInterface {
+    private val recyclerViewJobsUtilsInterface: RecyclerViewJobsUtilsInterface = object :
+        RecyclerViewJobsUtilsInterface {
         override fun onClick(string: String) {
             FragmentNavigationUtils.addFragmentFadeWithOneStringBundleValue(
                 fragmentManager = parentFragmentManager,

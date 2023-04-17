@@ -82,6 +82,20 @@ object FragmentNavigationUtils {
             .commit()
     }
 
+    fun addFragmentFadeWithThreeStringBundleValue(fragmentManager: FragmentManager, fragment: Fragment, firstArgumentKey: String, firstArgumentValue: String, secondArgumentKey: String, secondArgumentValue: String, thirdArgumentKey: String, thirdArgumentValue: String){
+        val bundle = Bundle()
+        bundle.putString(firstArgumentKey,firstArgumentValue)
+        bundle.putString(secondArgumentKey,secondArgumentValue)
+        bundle.putString(thirdArgumentKey,thirdArgumentValue)
+        fragment.arguments = bundle
+        fragmentManager.beginTransaction()
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .add(android.R.id.content, fragment, fragment::class.simpleName)
+            .addToBackStack(null)
+            .commit()
+    }
+
+
     fun addFragmentFadeWithOneStringBundleValueAndSourceFragment(fragmentManager: FragmentManager, fragment: Fragment, argumentKey: String, argumentValue: String, argumentSourceFragmentName: String){
         val bundle = Bundle()
         bundle.putString(argumentKey,argumentValue)

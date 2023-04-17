@@ -35,6 +35,14 @@ class ProfileJobListViewModel(application: Application): AndroidViewModel(applic
             .subscribe(getTodoJobsAppliedToUserListObserverRx())
     }
 
+    fun getJobsForSpecifiedMonthAndUserAndCheckCompleted(startLong: Long, endLong: Long, username: String){
+        jobRepository.getJobsForSpecifiedMonthAndUserAndCheckCompleted(startLong = startLong, endLong = endLong, username = username)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .retry(1)
+            .subscribe(getJobsForSpecifiedMonthAndUserAndCheckCompletedObserverRx())
+    }
+
     fun deleteJob(objectId: String){
         jobRepository.deleteJob(objectId = objectId)
             .subscribeOn(Schedulers.io())
@@ -61,6 +69,23 @@ class ProfileJobListViewModel(application: Application): AndroidViewModel(applic
     }
 
     private fun getTodoJobsAppliedToUserListObserverRx(): SingleObserver<Response<JobGetForListResponseCollection>> {
+        return object : SingleObserver<Response<JobGetForListResponseCollection>> {
+
+            override fun onError(e: Throwable) {
+                errorResult.postValue(true)
+            }
+
+            override fun onSubscribe(d: Disposable) {
+
+            }
+
+            override fun onSuccess(t: Response<JobGetForListResponseCollection>) {
+                jobResult.postValue(t.body())
+            }
+        }
+    }
+
+    private fun getJobsForSpecifiedMonthAndUserAndCheckCompletedObserverRx(): SingleObserver<Response<JobGetForListResponseCollection>> {
         return object : SingleObserver<Response<JobGetForListResponseCollection>> {
 
             override fun onError(e: Throwable) {

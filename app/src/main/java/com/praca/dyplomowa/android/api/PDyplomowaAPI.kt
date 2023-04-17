@@ -51,6 +51,9 @@ interface PDyplomowaAPI {
     @GET("job/getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompletion/?")
     fun getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted(@Query("startLong") startLong: Long, @Query("endLong") endLong: Long, @Query("username") username: String, @Query("isCompleted") isCompleted: Boolean): Single<Response<Int>>
 
+    @GET("job/getJobsForSpecifiedMonthAndUserAndCheckCompleted/?")
+    fun getJobsForSpecifiedMonthAndUserAndCheckCompleted(@Query("startLong") startLong: Long, @Query("endLong") endLong: Long, @Query("username") username: String): Single<Response<JobGetForListResponseCollection>>
+
     @GET("job/getAllTimeSpentForUserPerMonth/?")
     fun getAllTimeSpentForUserPerMonth(@Query("username") username: String): Single<Response<JobTimeSpentResponseCollection>>
 

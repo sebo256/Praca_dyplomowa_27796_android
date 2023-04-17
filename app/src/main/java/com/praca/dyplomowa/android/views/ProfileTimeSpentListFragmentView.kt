@@ -9,10 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.FragmentProfileTimeSpentListViewBinding
-import com.praca.dyplomowa.android.utils.ErrorDialogHandler
-import com.praca.dyplomowa.android.utils.SessionManager
+import com.praca.dyplomowa.android.utils.*
 import com.praca.dyplomowa.android.viewmodels.ProfileTimeSpentListViewModel
 import com.praca.dyplomowa.android.views.adapters.ProfileTimeSpentAdapter
+import com.google.gson.Gson
 
 class ProfileTimeSpentListFragmentView : Fragment() {
 
@@ -38,7 +38,7 @@ class ProfileTimeSpentListFragmentView : Fragment() {
         setObserverForGetAllTimeSpentForUserPerMonth()
 
         binding.recyclerTimeSpent.layoutManager = LinearLayoutManager(requireContext())
-        timeSpentAdapter = ProfileTimeSpentAdapter()
+        timeSpentAdapter = ProfileTimeSpentAdapter(recyclerViewJobsTimeUtilsInterface)
         binding.recyclerTimeSpent.adapter = timeSpentAdapter
 
         return binding.root
@@ -48,10 +48,7 @@ class ProfileTimeSpentListFragmentView : Fragment() {
         viewModelProfileTimeSpentList.jobTimeSpentResult.observe(viewLifecycleOwner){
             timeSpentAdapter.setupData(it.collection.toList())
         }
-        when(arguments?.getString("username") == null){
-            true -> viewModelProfileTimeSpentList.getAllTimeSpentForUserPerMonth(SessionManager.getCurrentUserUsername(requireContext())!!)
-            false -> viewModelProfileTimeSpentList.getAllTimeSpentForUserPerMonth(arguments?.getString("username")!!)
-        }
+        viewModelProfileTimeSpentList.getAllTimeSpentForUserPerMonth(arguments?.getString("username")!!)
     }
 
     private fun setObserverForError() {
@@ -61,6 +58,22 @@ class ProfileTimeSpentListFragmentView : Fragment() {
                 viewModelProfileTimeSpentList.errorResult.value = false
             }
         }
+    }
+
+    private val recyclerViewJobsTimeUtilsInterface: RecyclerViewJobsTimeUtilsInterface = object : RecyclerViewJobsTimeUtilsInterface{
+        override fun onClick(dateRange: DateRange, monthYearString: String) {
+            FragmentNavigationUtils.addFragmentFadeWithThreeStringBundleValue(
+                fragmentManager = parentFragmentManager,
+                fragment = ProfileJobListFragmentView(),
+                firstArgumentKey = "title",
+                firstArgumentValue = monthYearString,
+                secondArgumentKey = "dateRange",
+                secondArgumentValue = Gson().toJson(dateRange),
+                thirdArgumentKey = "username",
+                thirdArgumentValue = arguments?.getString("username") ?: SessionManager.getCurrentUserUsername(requireContext())!!
+            )
+        }
+
     }
 
 }

@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.api.response.JobGetForListResponse
 import com.praca.dyplomowa.android.databinding.RecyclerJobsItemLayoutBinding
-import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
+import com.praca.dyplomowa.android.utils.RecyclerViewJobsUtilsInterface
 
 class JobAdapter(
-    private var recyclerViewUtilsInterface: RecyclerViewUtilsInterface
+    private var recyclerViewJobsUtilsInterface: RecyclerViewJobsUtilsInterface
 ) : RecyclerView.Adapter<JobAdapter.ViewHolder>(), Filterable {
 
     private var actualFullList: List<JobGetForListResponse> = mutableListOf()
@@ -36,10 +36,10 @@ class JobAdapter(
 
 
         viewHolder.binding.recyclerItem.setOnClickListener {
-            recyclerViewUtilsInterface.onClick(dataDiffer.currentList.elementAt(viewHolder.bindingAdapterPosition).id)
+            recyclerViewJobsUtilsInterface.onClick(dataDiffer.currentList.elementAt(viewHolder.bindingAdapterPosition).id)
         }
         viewHolder.binding.recyclerItem.setOnLongClickListener {
-            recyclerViewUtilsInterface.onLongClick(dataDiffer.currentList.elementAt(viewHolder.bindingAdapterPosition).id)
+            recyclerViewJobsUtilsInterface.onLongClick(dataDiffer.currentList.elementAt(viewHolder.bindingAdapterPosition).id)
             true
         }
 

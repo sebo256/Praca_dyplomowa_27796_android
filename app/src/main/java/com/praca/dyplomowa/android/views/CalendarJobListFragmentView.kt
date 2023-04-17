@@ -46,7 +46,7 @@ class CalendarJobListFragmentView : Fragment() {
 
         binding.textViewDateCalendarJobListActivityView.setText(viewModelCalendarJobList.calculateDate(dateRange.startLong+1))
         binding.recyclerViewCalendarJobListActivity.layoutManager = LinearLayoutManager(requireContext())
-        jobAdapter = JobAdapter(recyclerViewUtilsInterface)
+        jobAdapter = JobAdapter(recyclerViewJobsUtilsInterface)
         binding.recyclerViewCalendarJobListActivity.adapter = jobAdapter
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -92,8 +92,8 @@ class CalendarJobListFragmentView : Fragment() {
         viewModelCalendarJobList.getJobByLongDateBetween(startLong = dateRange.startLong, endLong = dateRange.endLong)
     }
 
-    private val recyclerViewUtilsInterface: RecyclerViewUtilsInterface = object :
-        RecyclerViewUtilsInterface {
+    private val recyclerViewJobsUtilsInterface: RecyclerViewJobsUtilsInterface = object :
+        RecyclerViewJobsUtilsInterface {
         override fun onClick(string: String) {
             FragmentNavigationUtils.addFragmentFadeWithOneStringBundleValueAndSourceFragment(
                 fragmentManager = parentFragmentManager,

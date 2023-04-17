@@ -1,6 +1,6 @@
 package com.praca.dyplomowa.android.utils
 
-interface RecyclerViewUtilsInterface {
+interface RecyclerViewJobsUtilsInterface {
     fun onClick(string: String)
 
     fun onLongClick(string: String)

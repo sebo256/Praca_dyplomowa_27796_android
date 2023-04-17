@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.praca.dyplomowa.android.api.response.UserGetAllResponse
 import com.praca.dyplomowa.android.databinding.RecyclerProfileUsersListLayoutBinding
-import com.praca.dyplomowa.android.utils.RecyclerViewUtilsInterface
+import com.praca.dyplomowa.android.utils.RecyclerViewJobsUtilsInterface
 
 class ProfileUsersListAdapter(
-    private var recyclerViewUtilsInterface: RecyclerViewUtilsInterface
+    private var recyclerViewJobsUtilsInterface: RecyclerViewJobsUtilsInterface
 ): RecyclerView.Adapter<ProfileUsersListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val binding = RecyclerProfileUsersListLayoutBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
@@ -22,10 +22,10 @@ class ProfileUsersListAdapter(
             viewHolder.binding.textViewRecyclerProfileUsersListSurname.text = dataDiffer.currentList.elementAt(position).surname
 
         viewHolder.binding.recyclerProfileUsersListItem.setOnClickListener {
-            recyclerViewUtilsInterface.onClick(dataDiffer.currentList.elementAt(viewHolder.bindingAdapterPosition).username)
+            recyclerViewJobsUtilsInterface.onClick(dataDiffer.currentList.elementAt(viewHolder.bindingAdapterPosition).username)
         }
         viewHolder.binding.recyclerProfileUsersListItem.setOnLongClickListener {
-            recyclerViewUtilsInterface.onLongClick(dataDiffer.currentList.elementAt(viewHolder.bindingAdapterPosition).username)
+            recyclerViewJobsUtilsInterface.onLongClick(dataDiffer.currentList.elementAt(viewHolder.bindingAdapterPosition).username)
             true
         }
     }
