@@ -25,7 +25,6 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
         userRepository.login(LoginRequest(username = username, password = password))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(1)
             .subscribe(getLoginListObserverRx())
     }
 
@@ -33,7 +32,6 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
         userRepository.refreshToken(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .retry(1)
             .subscribe(getNewAccessTokenUsingRefreshObserverRX())
 
     }
@@ -64,7 +62,7 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
             )
             SessionManager.saveIsAdmin(
                 context = getApplication<Application>().applicationContext,
-                isAdmin = t.body()?.roles!!.contains("ROLE_ADMIN")
+                isAdmin = t.body()?.roles?.contains("ROLE_ADMIN") ?: false
             )
             loginResult.postValue(t.body())
         }
