@@ -39,11 +39,11 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         _binding = FragmentJobsViewBinding.inflate(inflater, container, false)
 
         binding.buttonAddJobJobFragment.setOnClickListener{
-            parentFragmentManager.beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .add(android.R.id.content, JobAddFragmentView())
-                .addToBackStack(null)
-                .commit()
+            FragmentNavigationUtils.addFragmentOpenWithSourceFragment(
+                fragmentManager = parentFragmentManager,
+                fragment = JobAddFragmentView(),
+                argumentSourceFragmentName = "JobsFragmentView"
+            )
         }
 
 

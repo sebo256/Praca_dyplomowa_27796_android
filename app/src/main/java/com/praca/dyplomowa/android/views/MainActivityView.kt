@@ -3,6 +3,7 @@ package com.praca.dyplomowa.android.views
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.ActivityMainViewBinding
 
@@ -14,21 +15,21 @@ class MainActivityView : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        supportFragmentManager.beginTransaction().add(binding.fragmentContainerMainActivityView.id, JobsFragmentView(),"JobsFragmentView").commit()
+        supportFragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).replace(binding.fragmentContainerMainActivityView.id, JobsFragmentView(),"JobsFragmentView").commit()
 
 
         binding.navigationBar.setOnItemSelectedListener { item ->
             when(item.itemId){
                 R.id.menu_item_1 -> {
-                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainerMainActivityView.id, JobsFragmentView(),"JobsFragmentView").commit()
+                    supportFragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).replace(binding.fragmentContainerMainActivityView.id, JobsFragmentView(),"JobsFragmentView").commit()
                     true
                 }
                 R.id.menu_item_2 -> {
-                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainerMainActivityView.id, CalendarFragmentView(), "CalendarFragmentView").commit()
+                    supportFragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).replace(binding.fragmentContainerMainActivityView.id, CalendarFragmentView(), "CalendarFragmentView").commit()
                     true
                 }
                 R.id.menu_item_3 -> {
-                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainerMainActivityView.id, ProfileFragmentView(), "ProfileFragmentView").commit()
+                    supportFragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).replace(binding.fragmentContainerMainActivityView.id, ProfileFragmentView(), "ProfileFragmentView").commit()
                     true
                 }
                 else -> false

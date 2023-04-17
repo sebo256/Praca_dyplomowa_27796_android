@@ -247,7 +247,7 @@ class JobAddFragmentView : Fragment() {
             postalCode = binding.textFieldPostalCodeJobAddFragment.text.toString(),
             city = binding.textFieldCityJobAddFragment.text.toString(),
             phoneNumber = binding.textFieldPhoneNumberJobAddFragment.text.toString(),
-            email = binding.textFieldSubjectJobAddFragment.text.toString(),
+            email = binding.textFieldEmailJobAddFragment.text.toString(),
             subject = binding.textFieldSubjectJobAddFragment.text.toString(),
             jobType = binding.textFieldDropdownJobTypeJobAddFragment.text.toString(),
             dateOfCreation = System.currentTimeMillis(),
