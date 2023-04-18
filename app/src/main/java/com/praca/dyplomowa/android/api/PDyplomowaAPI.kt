@@ -57,12 +57,14 @@ interface PDyplomowaAPI {
     @GET("job/getAllTimeSpentForUserPerMonth/?")
     fun getAllTimeSpentForUserPerMonth(@Query("username") username: String): Single<Response<JobTimeSpentResponseCollection>>
 
+    @GET("jobType")
+    fun getJobTypes(): Single<Response<JobTypeGetAllResponseCollection>>
+
     @GET("user")
     fun getUsers(): Single<Response<UserGetAllResponseCollection>>
 
     @GET("user/{username}")
     fun getUser(@Path("username") username: String): Single<Response<UserGetAllResponse>>
-
 
     @PUT("job/addJobApplyTo")
     fun addJobApplyTo(@Body jobApplyToRequest: JobApplyToRequest): Single<Response<JobResponse>>

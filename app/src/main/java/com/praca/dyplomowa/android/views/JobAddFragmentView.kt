@@ -13,11 +13,14 @@ import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.api.request.JobRequest
 import com.praca.dyplomowa.android.api.request.JobRequestUpdate
 import com.praca.dyplomowa.android.api.response.JobGetAllResponse
+import com.praca.dyplomowa.android.api.response.JobTypeGetAllResponse
 import com.praca.dyplomowa.android.databinding.FragmentJobAddViewBinding
 import com.praca.dyplomowa.android.utils.ErrorDialogHandler
 import com.praca.dyplomowa.android.utils.FragmentNavigationUtils
+import com.praca.dyplomowa.android.utils.RecyclerViewJobsUtilsInterface
 import com.praca.dyplomowa.android.utils.SessionManager
 import com.praca.dyplomowa.android.viewmodels.AddJobsViewModel
+import com.praca.dyplomowa.android.views.adapters.JobAddJobTypeAdapter
 
 class JobAddFragmentView : Fragment() {
 
@@ -25,6 +28,10 @@ class JobAddFragmentView : Fragment() {
     private val binding get() = _binding!!
     lateinit var viewModelAddJobs: AddJobsViewModel
     private var dateLong: Long? = null
+    private var jobTypeId: String? = null
+    private var jobTypes: MutableList<JobTypeGetAllResponse> = ArrayList()
+    private lateinit var jobAddJobTypeAdapter: JobAddJobTypeAdapter
+
     val datePicker = MaterialDatePicker.Builder.datePicker()
         .setTitleText(R.string.datepicker_textfield_text)
         .build()
@@ -42,12 +49,14 @@ class JobAddFragmentView : Fragment() {
         _binding = FragmentJobAddViewBinding.inflate(inflater, container, false)
         viewModelAddJobs = ViewModelProvider(this).get(AddJobsViewModel::class.java)
         setObserverForError()
+        setObserverForGetJobTypes()
 
         if(checkIfArgumentIsNull()){
             setupForm()
         } else {
             getDataToFillForm()
         }
+
         return binding.root
     }
     private fun setupForm(){
@@ -88,8 +97,9 @@ class JobAddFragmentView : Fragment() {
 
     private fun fillForm(jobGetAllResponse: JobGetAllResponse){
         dateLong = jobGetAllResponse.plannedDate
+        jobTypeId = jobGetAllResponse.jobType.id
         binding.textFieldSubjectJobAddFragment.setText(jobGetAllResponse.subject)
-        binding.textFieldDropdownJobTypeJobAddFragment.setText(jobGetAllResponse.jobType, false)
+        binding.textFieldDropdownJobTypeJobAddFragment.setText(jobGetAllResponse.jobType.jobType, false)
         binding.textFieldCompanyNameJobAddFragment.setText(jobGetAllResponse.companyName)
         binding.textFieldNameJobAddFragment.setText(jobGetAllResponse.name)
         binding.textFieldSurnameJobAddFragment.setText(jobGetAllResponse.surname)
@@ -238,6 +248,19 @@ class JobAddFragmentView : Fragment() {
         }
     }
 
+    private fun setObserverForGetJobTypes(){
+        viewModelAddJobs.jobTypeResult.observe(viewLifecycleOwner){
+            jobTypes = it.collection.toMutableList()
+            binding.textFieldDropdownJobTypeJobAddFragment.setAdapter(JobAddJobTypeAdapter(
+                context = requireContext(),
+                layout = R.layout.dropdown_job_types_layout,
+                list = jobTypes,
+                recyclerViewJobsUtilsInterface = recyclerViewJobsUtilsInterface
+            ))
+        }
+        viewModelAddJobs.getJobTypes()
+    }
+
     fun getAllDataFromForm() =
         JobRequest(
             companyName = binding.textFieldCompanyNameJobAddFragment.text.toString(),
@@ -249,7 +272,7 @@ class JobAddFragmentView : Fragment() {
             phoneNumber = binding.textFieldPhoneNumberJobAddFragment.text.toString(),
             email = binding.textFieldEmailJobAddFragment.text.toString(),
             subject = binding.textFieldSubjectJobAddFragment.text.toString(),
-            jobType = binding.textFieldDropdownJobTypeJobAddFragment.text.toString(),
+            jobType = jobTypeId!!,
             dateOfCreation = System.currentTimeMillis(),
             plannedDate = dateLong,
             timeSpent = binding.textFieldTimeSpentJobAddFragment.text.toString().toIntOrNull() ?: 0,
@@ -270,7 +293,7 @@ class JobAddFragmentView : Fragment() {
             phoneNumber = binding.textFieldPhoneNumberJobAddFragment.text.toString(),
             email = binding.textFieldEmailJobAddFragment.text.toString(),
             subject = binding.textFieldSubjectJobAddFragment.text.toString(),
-            jobType = binding.textFieldDropdownJobTypeJobAddFragment.text.toString(),
+            jobType = jobTypeId!!,
             plannedDate = dateLong,
             timeSpent = binding.textFieldTimeSpentJobAddFragment.text.toString().toIntOrNull() ?: 0,
             note = binding.textFieldNoteJobAddFragment.text.toString(),
@@ -298,4 +321,13 @@ class JobAddFragmentView : Fragment() {
 
     private fun getObjectIdFromArgument(): String =
         arguments?.getString("jobObjectId").toString()
+
+    private val recyclerViewJobsUtilsInterface: RecyclerViewJobsUtilsInterface = object :
+        RecyclerViewJobsUtilsInterface {
+        override fun onClick(stringFirst: String, stringSecond: String) {
+            binding.textFieldDropdownJobTypeJobAddFragment.setText(stringFirst)
+            jobTypeId = stringSecond
+            binding.textFieldDropdownJobTypeJobAddFragment.dismissDropDown()
+        }
+    }
 }

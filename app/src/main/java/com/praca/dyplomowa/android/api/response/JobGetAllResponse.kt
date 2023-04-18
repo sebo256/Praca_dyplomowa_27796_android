@@ -1,5 +1,7 @@
 package com.praca.dyplomowa.android.api.response
 
+import com.praca.dyplomowa.android.models.JobType
+
 data class JobGetAllResponse(
     val id: String,
     val companyName: String,
@@ -11,7 +13,7 @@ data class JobGetAllResponse(
     val phoneNumber: String,
     val email: String,
     val subject: String,
-    val jobType: String,
+    val jobType: JobType,
     val dateOfCreation: Long,
     val plannedDate: Long,
     val timeSpent: Int,

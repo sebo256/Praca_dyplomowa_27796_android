@@ -4,10 +4,12 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.praca.dyplomowa.android.api.repository.JobRepository
+import com.praca.dyplomowa.android.api.repository.JobTypeRepository
 import com.praca.dyplomowa.android.api.request.JobRequest
 import com.praca.dyplomowa.android.api.request.JobRequestUpdate
 import com.praca.dyplomowa.android.api.response.JobGetAllResponse
 import com.praca.dyplomowa.android.api.response.JobResponse
+import com.praca.dyplomowa.android.api.response.JobTypeGetAllResponseCollection
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
@@ -19,8 +21,10 @@ import java.util.*
 class AddJobsViewModel(application: Application): AndroidViewModel(application) {
 
     val jobRepository = JobRepository(application.baseContext)
+    val jobTypeRepository = JobTypeRepository(application.baseContext)
     val jobResult: MutableLiveData<JobResponse> = MutableLiveData()
     val jobGetByIdResult: MutableLiveData<JobGetAllResponse> = MutableLiveData()
+    val jobTypeResult: MutableLiveData<JobTypeGetAllResponseCollection> = MutableLiveData()
     val errorResult: MutableLiveData<Boolean> = MutableLiveData()
 
     fun addJob(jobRequest: JobRequest){
@@ -45,6 +49,14 @@ class AddJobsViewModel(application: Application): AndroidViewModel(application) 
             .observeOn(AndroidSchedulers.mainThread())
             .retry(1)
             .subscribe(updateJobObserverRx())
+    }
+
+    fun getJobTypes(){
+        jobTypeRepository.getJobTypes()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .retry(1)
+            .subscribe(getJobTypesObserverRx())
     }
 
     private fun getAddedJobListObserverRx(): SingleObserver<Response<JobResponse>> {
@@ -95,6 +107,23 @@ class AddJobsViewModel(application: Application): AndroidViewModel(application) 
 
             override fun onSuccess(t: Response<JobResponse>) {
                 jobResult.postValue(t.body())
+            }
+        }
+    }
+
+    private fun getJobTypesObserverRx(): SingleObserver<Response<JobTypeGetAllResponseCollection>> {
+        return object : SingleObserver<Response<JobTypeGetAllResponseCollection>> {
+
+            override fun onError(e: Throwable) {
+                errorResult.postValue(true)
+            }
+
+            override fun onSubscribe(d: Disposable) {
+
+            }
+
+            override fun onSuccess(t: Response<JobTypeGetAllResponseCollection>) {
+                jobTypeResult.postValue(t.body())
             }
         }
     }
