@@ -64,7 +64,10 @@ class JobsViewModel(application: Application): AndroidViewModel(application) {
              }
 
              override fun onSuccess(t: Response<JobResponse>) {
-                 jobDeleteResult.postValue(t.body())
+                 when(t.code() == 200) {
+                     true -> jobDeleteResult.postValue(t.body())
+                     false -> getJobs()
+                 }
              }
          }
     }

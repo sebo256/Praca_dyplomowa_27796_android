@@ -24,6 +24,9 @@ interface PDyplomowaAPI {
     @POST("job")
     fun addJob(@Body jobRequest: JobRequest): Single<Response<JobResponse>>
 
+    @POST("client")
+    fun addClient(@Body clientRequest: ClientRequest): Single<Response<ClientResponse>>
+
     @GET("job")
     fun getJobs(): Single<Response<JobGetAllResponseCollection>>
 
@@ -60,6 +63,12 @@ interface PDyplomowaAPI {
     @GET("jobType")
     fun getJobTypes(): Single<Response<JobTypeGetAllResponseCollection>>
 
+    @GET("client")
+    fun getClients(): Single<Response<ClientGetAllResponseCollection>>
+
+    @GET("client/getById/{objectId}")
+    fun getClientById(@Path("objectId") objectId: String): Single<Response<ClientGetAllResponse>>
+
     @GET("user")
     fun getUsers(): Single<Response<UserGetAllResponseCollection>>
 
@@ -72,8 +81,14 @@ interface PDyplomowaAPI {
     @PUT("job")
     fun updateJob(@Body jobRequestUpdate: JobRequestUpdate): Single<Response<JobResponse>>
 
+    @PUT("client")
+    fun updateClient(@Body clientRequestUpdate: ClientRequestUpdate): Single<Response<ClientResponse>>
+
     @DELETE("job/{objectId}")
     fun deleteJob(@Path("objectId") objectId: String): Single<Response<JobResponse>>
+
+    @DELETE("client/{objectId}")
+    fun deleteClient(@Path("objectId") objectId: String): Single<Response<ClientResponse>>
 
     companion object {
         fun getApi(context: Context): PDyplomowaAPI{

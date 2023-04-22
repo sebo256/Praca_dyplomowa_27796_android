@@ -3,6 +3,7 @@
     <string name="username_text_label">Nazwa użytkownika</string>
     <string name="password_text_label">Hasło</string>
     <string name="name_text_label">Imię</string>
+    <string name="client_text_label">Klient</string>
     <string name="surname_text_label">Nazwisko</string>
     <string name="companyName_text_label">Firma</string>
     <string name="street_text_label">Ulica</string>
@@ -27,6 +28,7 @@
     <string name="logout_button_text">Wyloguj</string>
     <string name="save_button_text">Zapisz</string>
     <string name="continue_button_text">Dalej</string>
+    <string name="add_client_button_text">Zapisz klienta</string>
     <string name="datepicker_textfield_text">Wybierz datę</string>
     <string name="timepicker_textfield_text">Wybierz czas</string>
     <string name="textview_text_jobs_completed">Liczba zakończonych zleceń:</string>
@@ -46,8 +48,10 @@
     <string name="register_error_password_info">Hasło jest za słabe</string>
     <string name="register_error_passwordReapeat_info">Hasło nie jest takie samo</string>
     <string name="error_empty_info">Pole nie może być puste</string>
+    <string name="error_short_empty_info">Puste pole</string>
     <string name="error_timeSpentZero_info">Podany błędny czas</string>
     <string name="error_name_surname_validator_info">Wprowadzono niepoprawne dane</string>
+    <string name="error_postalcode_validator_info">Zły format</string>
     <string name="menu_item_jobs">Zlecenia</string>
     <string name="menu_item_calendar">Kalendarz</string>
     <string name="menu_item_profile">Profil</string>
@@ -63,8 +67,13 @@
     <string name="dialog_joblist_neutral_title">Wróć</string>
     <string name="dialog_joblist_text_title">Wybierz</string>
     <string name="dialog_joblist_text_message">Wybierz co chcesz zrobić</string>
+    <string name="dialog_clients_text_message">Wybierz co chcesz zrobić</string>
+    <string name="dialog_clients_positive_title">Edytuj klienta</string>
+    <string name="dialog_clients_negative_title">Usuń klienta</string>
+    <string name="dialog_clients_neutral_title">Wróć</string>
     <string name="dialog_error_text_title">Wystąpił błąd</string>
     <string name="dialog_error_text_message">Wystąpił błąd, sprawdź swoje połączenie z internetem i spróbuj ponownie. Jeśli problem wciąż występuje skontaktuj się z administratorem</string>
+    <string name="dialog_delete_error_text_message">Nie można usunąć klienta który jest przydzielony do co najmniej jednego zlecenia</string>
     <string name="dialog_error_positive_title">OK</string>
     <string-array name="job_types_dropdown">
         <item>Budowa</item>
@@ -72,8 +81,4 @@
         <item>Malowanie</item>
         <item>Inne</item>
     </string-array>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 </resources>

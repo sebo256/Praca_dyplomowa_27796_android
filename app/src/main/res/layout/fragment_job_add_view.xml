@@ -5,13 +5,13 @@
     android:id="@+id/scrollViewJobAddFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
     android:background="?android:attr/colorBackground"
     tools:context=".views.JobAddFragmentView">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textFieldLayoutSubjectJobAddFragment"
@@ -61,176 +61,29 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textFieldLayoutCompanyNameJobAddFragment"
+        android:id="@+id/textFieldLayoutClientJobAddFragment"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:hint="@string/companyName_text_label"
+        android:hint="@string/client_text_label"
+        app:helperText="@string/required_text_label"
+        app:helperTextTextColor="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textFieldLayoutJobTypeJobAddFragment">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textFieldCompanyNameJobAddFragment"
+            android:id="@+id/textFieldClientJobAddFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:maxLines="1" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textFieldLayoutNameJobAddFragment"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/name_text_label"
-        app:helperText="@string/required_text_label"
-        app:helperTextTextColor="@android:color/darker_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textFieldLayoutCompanyNameJobAddFragment">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textFieldNameJobAddFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLines="1" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textFieldLayoutSurnameJobAddFragment"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/surname_text_label"
-        app:helperText="@string/required_text_label"
-        app:helperTextTextColor="@android:color/darker_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textFieldLayoutNameJobAddFragment">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textFieldSurnameJobAddFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLines="1" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textFieldLayoutStreetJobAddFragment"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/street_text_label"
-        app:helperText="@string/required_text_label"
-        app:helperTextTextColor="@android:color/darker_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textFieldLayoutSurnameJobAddFragment">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textFieldStreetJobAddFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLines="1" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textFieldLayoutPostalCodeJobAddFragment"
-        android:layout_width="120dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:hint="@string/postalCode_text_label"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textFieldLayoutStreetJobAddFragment">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textFieldPostalCodeJobAddFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLines="1" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textFieldLayoutCityJobAddFragment"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/city_text_label"
-        app:helperText="@string/required_text_label"
-        app:helperTextTextColor="@android:color/darker_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textFieldLayoutPostalCodeJobAddFragment"
-        app:layout_constraintTop_toBottomOf="@+id/textFieldLayoutStreetJobAddFragment">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textFieldCityJobAddFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLines="1" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textFieldLayoutPhoneNumberJobAddFragment"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/phoneNumber_text_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textFieldLayoutCityJobAddFragment">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textFieldPhoneNumberJobAddFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLines="1" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textFieldLayoutEmailJobAddFragment"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/email_text_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textFieldLayoutPhoneNumberJobAddFragment">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textFieldEmailJobAddFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:cursorVisible="false"
+            android:enabled="true"
+            android:focusable="false"
+            android:longClickable="false"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -244,7 +97,7 @@
         android:hint="@string/note_text_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textFieldLayoutEmailJobAddFragment">
+        app:layout_constraintTop_toBottomOf="@+id/textFieldLayoutClientJobAddFragment">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textFieldNoteJobAddFragment"
@@ -321,17 +174,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp"
         android:text="@string/save_button_text"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textFieldLayoutTimeSpentJobAddFragment" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

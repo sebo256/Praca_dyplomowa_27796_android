@@ -22,8 +22,8 @@ class JobAddJobTypeAdapter(
             true -> binding = DropdownJobTypesLayoutBinding.inflate(LayoutInflater.from(context), parent, false)
             false -> binding = DropdownJobTypesLayoutBinding.bind(convertView)
         }
-        binding.textViewTest.text = list.elementAt(position).jobType
-        binding.textViewTest.setOnClickListener {
+        binding.textViewJobTypeAdapter.text = list.elementAt(position).jobType
+        binding.textViewJobTypeAdapter.setOnClickListener {
             recyclerViewJobsUtilsInterface.onClick(list.elementAt(position).jobType,list.elementAt(position).id)
         }
         return binding.root

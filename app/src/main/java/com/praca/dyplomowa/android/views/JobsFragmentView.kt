@@ -10,6 +10,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.FragmentJobsViewBinding
@@ -37,28 +38,27 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         savedInstanceState: Bundle?): View? {
         _binding = FragmentJobsViewBinding.inflate(inflater, container, false)
 
-        binding.buttonAddJobJobFragment.setOnClickListener{
-            FragmentNavigationUtils.addFragmentOpenWithSourceFragment(
-                fragmentManager = parentFragmentManager,
-                fragment = JobAddFragmentView(),
-                argumentSourceFragmentName = "JobsFragmentView"
-            )
-        }
 
 
+        binding.recyclerViewJob.layoutManager = LinearLayoutManager(requireContext())
+        jobAdapter = JobAdapter(this.recyclerViewJobsUtilsInterface)
+        binding.recyclerViewJob.adapter = jobAdapter
 
         viewModelJobs = ViewModelProvider(requireActivity()).get(JobsViewModel::class.java)
         setObserverForGetJobRequestJobs()
         setObserverForDeleteJob()
         setObserverForError()
-
-        binding.recyclerViewJob.layoutManager = LinearLayoutManager(requireContext())
-        jobAdapter = JobAdapter(this.recyclerViewJobsUtilsInterface)
-        binding.recyclerViewJob.adapter = jobAdapter
-        viewModelJobs.getJobs()
+        setObserverForScrollingToNewItem()
+        getJobs()
 
 
-
+        binding.buttonAddJobJobFragment.setOnClickListener{
+            FragmentNavigationUtils.addFragmentFadeWithSourceFragment(
+                fragmentManager = parentFragmentManager,
+                fragment = JobAddFragmentView(),
+                argumentSourceFragmentName = "JobsFragmentView"
+            )
+        }
 
         binding.buttonSearchJobJobFragment.setOnClickListener {
             TransitionManager.beginDelayedTransition(binding.root)
@@ -116,6 +116,14 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
                 viewModelJobs.errorResult.value = false
             }
         }
+    }
+
+    private fun setObserverForScrollingToNewItem() {
+        jobAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionToScroll: Int, count: Int) {
+                binding.recyclerViewJob.smoothScrollToPosition(positionToScroll)
+            }
+        })
     }
 
     private fun hideSearchBarAndShowFullList(){

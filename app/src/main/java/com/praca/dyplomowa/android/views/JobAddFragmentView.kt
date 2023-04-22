@@ -1,18 +1,23 @@
 package com.praca.dyplomowa.android.views
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.api.request.JobRequest
 import com.praca.dyplomowa.android.api.request.JobRequestUpdate
 import com.praca.dyplomowa.android.api.response.JobGetAllResponse
+import com.praca.dyplomowa.android.api.response.JobGetForListResponse
 import com.praca.dyplomowa.android.api.response.JobTypeGetAllResponse
 import com.praca.dyplomowa.android.databinding.FragmentJobAddViewBinding
 import com.praca.dyplomowa.android.utils.ErrorDialogHandler
@@ -29,8 +34,9 @@ class JobAddFragmentView : Fragment() {
     lateinit var viewModelAddJobs: AddJobsViewModel
     private var dateLong: Long? = null
     private var jobTypeId: String? = null
+    private var clientId: String? = null
     private var jobTypes: MutableList<JobTypeGetAllResponse> = ArrayList()
-    private lateinit var jobAddJobTypeAdapter: JobAddJobTypeAdapter
+
 
     val datePicker = MaterialDatePicker.Builder.datePicker()
         .setTitleText(R.string.datepicker_textfield_text)
@@ -39,6 +45,12 @@ class JobAddFragmentView : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.windowToken,0)
+        view.requestFocus()
     }
 
     override fun onCreateView(
@@ -50,11 +62,11 @@ class JobAddFragmentView : Fragment() {
         viewModelAddJobs = ViewModelProvider(this).get(AddJobsViewModel::class.java)
         setObserverForError()
         setObserverForGetJobTypes()
+        setClientFragmentResultListener()
 
-        if(checkIfArgumentIsNull()){
-            setupForm()
-        } else {
-            getDataToFillForm()
+        when(checkIfArgumentIsNull()){
+            true -> setupForm()
+            false -> getDataToFillForm()
         }
 
         return binding.root
@@ -62,6 +74,14 @@ class JobAddFragmentView : Fragment() {
     private fun setupForm(){
         binding.textFieldPlannedDateJobAddFragment.setOnClickListener {
             datePicker.show(parentFragmentManager, "plannedDate")
+        }
+
+        binding.textFieldClientJobAddFragment.setOnClickListener {
+            FragmentNavigationUtils.addFragmentOpenWithSourceFragment(
+                fragmentManager = parentFragmentManager,
+                fragment = JobClientsFragmentView(),
+                argumentSourceFragmentName = "JobAddFragmentView"
+            )
         }
 
         datePicker.addOnPositiveButtonClickListener {
@@ -84,30 +104,29 @@ class JobAddFragmentView : Fragment() {
             if(validateAddJobData(
                     subject = binding.textFieldSubjectJobAddFragment.text.toString(),
                     jobType = binding.textFieldDropdownJobTypeJobAddFragment.text.toString(),
-                    name = binding.textFieldNameJobAddFragment.text.toString(),
-                    surname = binding.textFieldSurnameJobAddFragment.text.toString(),
-                    street = binding.textFieldStreetJobAddFragment.text.toString(),
-                    city = binding.textFieldCityJobAddFragment.text.toString(),
+                    client = binding.textFieldClientJobAddFragment.text.toString(),
                     timeSpent = binding.textFieldTimeSpentJobAddFragment.text.toString().toIntOrNull() ?: 0
                 )) {
                 assignUsersDialog()
             }
         }
+
     }
 
     private fun fillForm(jobGetAllResponse: JobGetAllResponse){
         dateLong = jobGetAllResponse.plannedDate
         jobTypeId = jobGetAllResponse.jobType.id
+        clientId = jobGetAllResponse.client.id
         binding.textFieldSubjectJobAddFragment.setText(jobGetAllResponse.subject)
         binding.textFieldDropdownJobTypeJobAddFragment.setText(jobGetAllResponse.jobType.jobType, false)
-        binding.textFieldCompanyNameJobAddFragment.setText(jobGetAllResponse.companyName)
-        binding.textFieldNameJobAddFragment.setText(jobGetAllResponse.name)
-        binding.textFieldSurnameJobAddFragment.setText(jobGetAllResponse.surname)
-        binding.textFieldStreetJobAddFragment.setText(jobGetAllResponse.street)
-        binding.textFieldPostalCodeJobAddFragment.setText(jobGetAllResponse.postalCode)
-        binding.textFieldCityJobAddFragment.setText(jobGetAllResponse.city)
-        binding.textFieldPhoneNumberJobAddFragment.setText(jobGetAllResponse.phoneNumber)
-        binding.textFieldEmailJobAddFragment.setText(jobGetAllResponse.email)
+        when(jobGetAllResponse.client.companyName.isNullOrBlank()){
+            true -> binding.textFieldClientJobAddFragment.setText(
+                jobGetAllResponse.client.name + " " + jobGetAllResponse.client.surname
+            )
+            false -> binding.textFieldClientJobAddFragment.setText(
+                jobGetAllResponse.client.companyName + ", " + jobGetAllResponse.client.name + " " + jobGetAllResponse.client.surname
+            )
+        }
         binding.textFieldNoteJobAddFragment.setText(jobGetAllResponse.note)
         binding.textFieldPlannedDateJobAddFragment.setText(viewModelAddJobs.calculateSimpleDateFromLong(dateLong))
         binding.checkboxIsCompletedJobAddFragment.isChecked = jobGetAllResponse.isCompleted
@@ -118,13 +137,10 @@ class JobAddFragmentView : Fragment() {
         setupForm()
     }
 
-    private fun validateAddJobData(subject: String, jobType: String, name: String, surname: String, street: String, city: String, timeSpent: Int): Boolean = listOf(
+    private fun validateAddJobData(subject: String, jobType: String, client: String, timeSpent: Int): Boolean = listOf(
         validateAddJobDataNullOrBlanks(subject, binding.textFieldLayoutSubjectJobAddFragment),
         validateJobType(jobType, binding.textFieldLayoutJobTypeJobAddFragment),
-        validateAddJobDataNameOrSurnameWithBlanks(name, binding.textFieldLayoutNameJobAddFragment),
-        validateAddJobDataNameOrSurnameWithBlanks(surname, binding.textFieldLayoutSurnameJobAddFragment),
-        validateAddJobDataNullOrBlanks(street, binding.textFieldLayoutStreetJobAddFragment),
-        validateAddJobDataNullOrBlanks(city, binding.textFieldLayoutCityJobAddFragment),
+        validateAddJobDataClientWithBlanks(client, binding.textFieldLayoutClientJobAddFragment),
         validateAddJobDataTimeSpent(timeSpent, binding.textFieldLayoutTimeSpentJobAddFragment),
     ).all { it }
 
@@ -132,7 +148,6 @@ class JobAddFragmentView : Fragment() {
         return if(data.isNullOrBlank()){
             field.error = getString(R.string.error_empty_info)
             field.helperText = null
-            binding.scrollViewJobAddFragment.scrollTo(field.top,field.top)
             false
         }else{
             field.error = null
@@ -141,21 +156,14 @@ class JobAddFragmentView : Fragment() {
         }
     }
 
-    private fun validateAddJobDataNameOrSurnameWithBlanks(data: String, field: TextInputLayout): Boolean {
-        val NAME_PATTERN = "[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}['-]{0,2}[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}['-]{0,2}[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}".toRegex()
-        return if(data.length in 3 .. 25 && data.contains(NAME_PATTERN)){
+    private fun validateAddJobDataClientWithBlanks(data: String, field: TextInputLayout): Boolean {
+        return if(!data.isNullOrBlank() && !clientId.isNullOrBlank()) {
             field.error = null
             field.helperText = getString(R.string.required_text_label)
             true
-        }else if(data.isNullOrBlank()){
+        }else{
             field.error = getString(R.string.error_empty_info)
             field.helperText = null
-            binding.scrollViewJobAddFragment.scrollTo(field.top,field.top)
-            false
-        }else{
-            field.error = getString(R.string.error_name_surname_validator_info)
-            field.helperText = null
-            binding.scrollViewJobAddFragment.scrollTo(field.top,field.top)
             false
         }
     }
@@ -164,7 +172,6 @@ class JobAddFragmentView : Fragment() {
         return if(data == 0 && binding.checkboxIsCompletedJobAddFragment.isChecked){
             field.error = getString(R.string.error_timeSpentZero_info)
             field.helperText = null
-            binding.scrollViewJobAddFragment.scrollTo(field.top, field.top)
             false
         }else if(data != 0 && binding.checkboxIsCompletedJobAddFragment.isChecked){
             field.error = null
@@ -179,7 +186,6 @@ class JobAddFragmentView : Fragment() {
         return if(data.isNullOrBlank()){
             field.error = getString(R.string.error_empty_info)
             field.helperText = null
-            binding.scrollViewJobAddFragment.scrollTo(field.top, field.top)
             false
         }else{
             field.error = null
@@ -263,14 +269,7 @@ class JobAddFragmentView : Fragment() {
 
     fun getAllDataFromForm() =
         JobRequest(
-            companyName = binding.textFieldCompanyNameJobAddFragment.text.toString(),
-            name = binding.textFieldNameJobAddFragment.text.toString(),
-            surname = binding.textFieldSurnameJobAddFragment.text.toString(),
-            street = binding.textFieldStreetJobAddFragment.text.toString(),
-            postalCode = binding.textFieldPostalCodeJobAddFragment.text.toString(),
-            city = binding.textFieldCityJobAddFragment.text.toString(),
-            phoneNumber = binding.textFieldPhoneNumberJobAddFragment.text.toString(),
-            email = binding.textFieldEmailJobAddFragment.text.toString(),
+            client = clientId!!,
             subject = binding.textFieldSubjectJobAddFragment.text.toString(),
             jobType = jobTypeId!!,
             dateOfCreation = System.currentTimeMillis(),
@@ -284,14 +283,7 @@ class JobAddFragmentView : Fragment() {
     fun getDataForUpdateJob() =
         JobRequestUpdate(
             objectId = getObjectIdFromArgument(),
-            companyName = binding.textFieldCompanyNameJobAddFragment.text.toString(),
-            name = binding.textFieldNameJobAddFragment.text.toString(),
-            surname = binding.textFieldSurnameJobAddFragment.text.toString(),
-            street = binding.textFieldStreetJobAddFragment.text.toString(),
-            postalCode = binding.textFieldPostalCodeJobAddFragment.text.toString(),
-            city = binding.textFieldCityJobAddFragment.text.toString(),
-            phoneNumber = binding.textFieldPhoneNumberJobAddFragment.text.toString(),
-            email = binding.textFieldEmailJobAddFragment.text.toString(),
+            client = clientId!!,
             subject = binding.textFieldSubjectJobAddFragment.text.toString(),
             jobType = jobTypeId!!,
             plannedDate = dateLong,
@@ -316,6 +308,21 @@ class JobAddFragmentView : Fragment() {
             .show()
     }
 
+    private fun setClientFragmentResultListener(){
+        parentFragmentManager.setFragmentResultListener("pickedClientResult", viewLifecycleOwner) { requestKey, bundle ->
+            val clientData = Gson().fromJson(bundle.getString("pickedClient"), JobGetForListResponse::class.java)
+            clientId = clientData.id
+            when(clientData.companyName.isNullOrBlank()){
+                true -> binding.textFieldClientJobAddFragment.setText(
+                    clientData.name + " " + clientData.surname
+                )
+                false -> binding.textFieldClientJobAddFragment.setText(
+                    clientData.companyName + ", " + clientData.name + " " + clientData.surname
+                )
+            }
+        }
+    }
+
     private fun checkIfArgumentIsNull(): Boolean =
         arguments?.getString("jobObjectId").isNullOrBlank()
 
@@ -325,7 +332,7 @@ class JobAddFragmentView : Fragment() {
     private val recyclerViewJobsUtilsInterface: RecyclerViewJobsUtilsInterface = object :
         RecyclerViewJobsUtilsInterface {
         override fun onClick(stringFirst: String, stringSecond: String) {
-            binding.textFieldDropdownJobTypeJobAddFragment.setText(stringFirst)
+            binding.textFieldDropdownJobTypeJobAddFragment.setText(stringFirst, false)
             jobTypeId = stringSecond
             binding.textFieldDropdownJobTypeJobAddFragment.dismissDropDown()
         }

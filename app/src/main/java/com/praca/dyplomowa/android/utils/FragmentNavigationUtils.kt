@@ -39,6 +39,17 @@ object FragmentNavigationUtils {
             .commit()
     }
 
+    fun addFragmentFadeWithSourceFragment(fragmentManager: FragmentManager, fragment: Fragment, argumentSourceFragmentName: String){
+        val bundle = Bundle()
+        bundle.putString("argumentSourceFragmentName", argumentSourceFragmentName)
+        fragment.arguments = bundle
+        fragmentManager.beginTransaction()
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .add(android.R.id.content, fragment, fragment::class.simpleName)
+            .addToBackStack(null)
+            .commit()
+    }
+
     fun addFragmentOpenWithSourceFragment(fragmentManager: FragmentManager, fragment: Fragment, argumentSourceFragmentName: String){
         val bundle = Bundle()
         bundle.putString("argumentSourceFragmentName", argumentSourceFragmentName)
@@ -49,6 +60,7 @@ object FragmentNavigationUtils {
             .addToBackStack(null)
             .commit()
     }
+
 
     fun replaceFragmentWithOneStringBundleValue(fragmentManager: FragmentManager, fragment: Fragment, argumentKey: String, argumentValue: String){
         val bundle = Bundle()
