@@ -105,29 +105,31 @@ class CalendarJobListFragmentView : Fragment() {
         }
 
         override fun onLongClick(string: String) {
-            val materialDialog = MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.dialog_joblist_text_title)
-                .setMessage(R.string.dialog_joblist_text_message)
-                .setPositiveButton(R.string.dialog_joblist_positive_title) { dialog, which ->
-                    FragmentNavigationUtils.addFragmentOpenWithOneStringBundleValueAndSourceFragment(
-                        fragmentManager = parentFragmentManager,
-                        fragment = JobApplyToFragmentView(),
-                        argumentKey = "jobId",
-                        argumentValue = string,
-                        argumentSourceFragmentName = "CalendarJobListFragmentView"
-                    )
-                }
-                .setNeutralButton(R.string.dialog_joblist_neutral_title) { dialog, which ->
-                    dialog.dismiss()
-                }
-                .setNegativeButton(R.string.dialog_joblist_negative_title) { dialog, which ->
-                    viewModelCalendarJobList.deleteJob(string)
-                }
+            if(SessionManager.getIsAdmin(requireContext())){
+                val materialDialog = MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.dialog_joblist_text_title)
+                    .setMessage(R.string.dialog_joblist_text_message)
+                    .setPositiveButton(R.string.dialog_joblist_positive_title) { dialog, which ->
+                        FragmentNavigationUtils.addFragmentOpenWithOneStringBundleValueAndSourceFragment(
+                            fragmentManager = parentFragmentManager,
+                            fragment = JobApplyToFragmentView(),
+                            argumentKey = "jobId",
+                            argumentValue = string,
+                            argumentSourceFragmentName = "CalendarJobListFragmentView"
+                        )
+                    }
+                    .setNeutralButton(R.string.dialog_joblist_neutral_title) { dialog, which ->
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton(R.string.dialog_joblist_negative_title) { dialog, which ->
+                        viewModelCalendarJobList.deleteJob(string)
+                    }
 
-            if(!SessionManager.getIsAdmin(requireContext())) {
-                materialDialog.setNegativeButton("") { dialog, which -> }
+                if(!SessionManager.getIsAdmin(requireContext())) {
+                    materialDialog.setNegativeButton("") { dialog, which -> }
+                }
+                materialDialog.show()
             }
-            materialDialog.show()
         }
     }
 

@@ -6,7 +6,6 @@ data class JobRequestUpdate(
     val subject: String,
     val jobType: String,
     val plannedDate: Long?,
-    val timeSpent: Int,
     val note: String?,
     val isCompleted: Boolean,
 )

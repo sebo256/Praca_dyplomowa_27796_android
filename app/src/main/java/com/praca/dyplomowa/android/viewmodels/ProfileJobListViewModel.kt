@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.praca.dyplomowa.android.api.repository.JobRepository
+import com.praca.dyplomowa.android.api.response.JobGetForListHoursResponseCollection
 import com.praca.dyplomowa.android.api.response.JobGetForListResponseCollection
 import com.praca.dyplomowa.android.api.response.JobResponse
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -16,6 +17,7 @@ class ProfileJobListViewModel(application: Application): AndroidViewModel(applic
 
     val jobRepository = JobRepository(application.baseContext)
     val jobResult: MutableLiveData<JobGetForListResponseCollection> = MutableLiveData()
+    val jobHoursResult: MutableLiveData<JobGetForListHoursResponseCollection> = MutableLiveData()
     val jobDeleteResult: MutableLiveData<JobResponse> = MutableLiveData()
     val errorResult: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -35,12 +37,12 @@ class ProfileJobListViewModel(application: Application): AndroidViewModel(applic
             .subscribe(getTodoJobsAppliedToUserListObserverRx())
     }
 
-    fun getJobsForSpecifiedMonthAndUserAndCheckCompleted(startLong: Long, endLong: Long, username: String){
-        jobRepository.getJobsForSpecifiedMonthAndUserAndCheckCompleted(startLong = startLong, endLong = endLong, username = username)
+    fun getJobsForSpecifiedMonthAndUser(startLong: Long, endLong: Long, username: String){
+        jobRepository.getJobsForSpecifiedMonthAndUser(startLong = startLong, endLong = endLong, username = username)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .retry(1)
-            .subscribe(getJobsForSpecifiedMonthAndUserAndCheckCompletedObserverRx())
+            .subscribe(getJobsForSpecifiedMonthAndUserObserverRx())
     }
 
     fun deleteJob(objectId: String){
@@ -85,8 +87,8 @@ class ProfileJobListViewModel(application: Application): AndroidViewModel(applic
         }
     }
 
-    private fun getJobsForSpecifiedMonthAndUserAndCheckCompletedObserverRx(): SingleObserver<Response<JobGetForListResponseCollection>> {
-        return object : SingleObserver<Response<JobGetForListResponseCollection>> {
+    private fun getJobsForSpecifiedMonthAndUserObserverRx(): SingleObserver<Response<JobGetForListHoursResponseCollection>> {
+        return object : SingleObserver<Response<JobGetForListHoursResponseCollection>> {
 
             override fun onError(e: Throwable) {
                 errorResult.postValue(true)
@@ -96,8 +98,8 @@ class ProfileJobListViewModel(application: Application): AndroidViewModel(applic
 
             }
 
-            override fun onSuccess(t: Response<JobGetForListResponseCollection>) {
-                jobResult.postValue(t.body())
+            override fun onSuccess(t: Response<JobGetForListHoursResponseCollection>) {
+                jobHoursResult.postValue(t.body())
             }
         }
     }

@@ -49,7 +49,7 @@ class ProfileViewModel(application: Application): AndroidViewModel(application) 
     }
 
     fun getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted(startLong: Long, endLong: Long, username: String){
-        jobRepository.getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted(startLong = startLong, endLong = endLong, username = username, isCompleted = true)
+        jobRepository.getSumOfTimeSpentForSpecifiedMonthAndUser(startLong = startLong, endLong = endLong, username = username)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .retry(1)
