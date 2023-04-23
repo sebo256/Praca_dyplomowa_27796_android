@@ -2,13 +2,13 @@ package com.praca.dyplomowa.android.views
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputLayout
@@ -44,19 +44,6 @@ class JobApplyToFragmentView : Fragment() {
         binding.buttonSaveJobApplyTo.setOnClickListener {
             setObserverForApplyJobToAndGetHours()
         }
-//        binding.buttonSaveJobApplyTo.setOnClickListener {
-//            for(i in jobApplyToAdapter.dataDiffer.currentList.indices){
-//                if(!(binding.recyclerViewJobApplyTo.getChildAt(i).findViewById<View>(R.id.textFieldTextTimeJobApplyToFragment) as EditText).text.isNullOrEmpty()){
-//                    hoursMap.put(
-//                        key = jobApplyToAdapter.dataDiffer.currentList.elementAt(i).username,
-//                        value = (binding.recyclerViewJobApplyTo.getChildAt(i).findViewById<View>(R.id.textFieldTextTimeJobApplyToFragment) as EditText).text.toString().toInt()
-//                    )
-//                    println(hoursMap)
-//                }
-//            }
-//            setObserverForApplyJobTo()
-//        }
-//TODO To jest opis na jutro, w sumie to można to dać do jakiejś listy par zamiast mapy, a mapę robić na backendzie i będzie git
         return binding.root
     }
 

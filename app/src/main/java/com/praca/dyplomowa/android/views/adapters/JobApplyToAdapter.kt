@@ -3,21 +3,13 @@ package com.praca.dyplomowa.android.views.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.api.response.JobAppliedToResponse
 import com.praca.dyplomowa.android.api.response.UserGetAllResponse
 import com.praca.dyplomowa.android.databinding.RecyclerJobApplyToLayoutBinding
-import com.praca.dyplomowa.android.utils.FragmentNavigationUtils
-import com.praca.dyplomowa.android.utils.RecyclerViewJobsUtilsInterface
 import com.praca.dyplomowa.android.utils.SessionManager
-import com.praca.dyplomowa.android.views.JobAddFragmentView
-import com.praca.dyplomowa.android.views.JobApplyToFragmentView
 
 class JobApplyToAdapter(
     private var jobAppliedToResponse: JobAppliedToResponse

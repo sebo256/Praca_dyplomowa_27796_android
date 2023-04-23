@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.praca.dyplomowa.android.api.response.ClientGetAllResponse
 import com.praca.dyplomowa.android.databinding.RecyclerClientsItemLayoutBinding
-import com.praca.dyplomowa.android.databinding.RecyclerJobsItemLayoutBinding
 import com.praca.dyplomowa.android.utils.RecyclerViewJobsUtilsInterface
 
 class JobClientAdapter(
