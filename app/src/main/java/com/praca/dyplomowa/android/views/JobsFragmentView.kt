@@ -61,7 +61,6 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         }
 
         binding.buttonSearchJobJobFragment.setOnClickListener {
-            TransitionManager.beginDelayedTransition(binding.root)
             when(binding.textFieldLayoutSearchJobJobFragment.visibility == View.GONE){
                 true -> binding.textFieldLayoutSearchJobJobFragment.visibility = View.VISIBLE
                 false -> hideSearchBarAndShowFullList()
@@ -77,7 +76,6 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                TransitionManager.beginDelayedTransition(binding.root)
                 if(parentFragmentManager.backStackEntryCount == 0){
                     when(binding.textFieldLayoutSearchJobJobFragment.visibility == View.VISIBLE){
                         true -> hideSearchBarAndShowFullList()
