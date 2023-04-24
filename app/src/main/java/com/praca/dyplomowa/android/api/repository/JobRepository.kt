@@ -2,6 +2,7 @@ package com.praca.dyplomowa.android.api.repository
 
 import android.content.Context
 import com.praca.dyplomowa.android.api.PDyplomowaAPI
+import com.praca.dyplomowa.android.api.request.JobAddTimeSpentRequest
 import com.praca.dyplomowa.android.api.request.JobApplyToRequest
 import com.praca.dyplomowa.android.api.request.JobRequest
 import com.praca.dyplomowa.android.api.request.JobRequestUpdate
@@ -41,14 +42,17 @@ class JobRepository(val context: Context) {
     fun getJobByLongDateBetween(startLong: Long, endLong: Long): Single<JobGetForListResponseCollection> =
         PDyplomowaAPI.getApi(context).getJobByLongDateBetween(startLong = startLong, endLong = endLong)
 
-    fun getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted(startLong: Long, endLong: Long, username: String, isCompleted: Boolean): Single<Response<Int>> =
-        PDyplomowaAPI.getApi(context).getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted(startLong = startLong, endLong = endLong, username = username, isCompleted = isCompleted)
+    fun getSumOfTimeSpentForSpecifiedMonthAndUser(startLong: Long, endLong: Long, username: String): Single<Response<Int>> =
+        PDyplomowaAPI.getApi(context).getSumOfTimeSpentForSpecifiedMonthAndUser(startLong = startLong, endLong = endLong, username = username)
 
-    fun getJobsForSpecifiedMonthAndUserAndCheckCompleted(startLong: Long, endLong: Long, username: String): Single<Response<JobGetForListResponseCollection>> =
-        PDyplomowaAPI.getApi(context).getJobsForSpecifiedMonthAndUserAndCheckCompleted(startLong = startLong, endLong = endLong, username = username)
+    fun getJobsForSpecifiedMonthAndUser(startLong: Long, endLong: Long, username: String): Single<Response<JobGetForListHoursResponseCollection>> =
+        PDyplomowaAPI.getApi(context).getJobsForSpecifiedMonthAndUser(startLong = startLong, endLong = endLong, username = username)
 
     fun getAllTimeSpentForUserPerMonth(username: String): Single<Response<JobTimeSpentResponseCollection>> =
         PDyplomowaAPI.getApi(context).getAllTimeSpentForUserPerMonth(username = username)
+
+    fun addTimeSpent(jobAddTimeSpentRequest: JobAddTimeSpentRequest): Single<Response<JobResponse>> =
+        PDyplomowaAPI.getApi(context).addTimeSpent(jobAddTimeSpentRequest)
 
     fun updateJob(jobRequestUpdate: JobRequestUpdate): Single<Response<JobResponse>> =
         PDyplomowaAPI.getApi(context).updateJob(jobRequestUpdate = jobRequestUpdate)

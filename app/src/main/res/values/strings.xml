@@ -18,6 +18,7 @@
     <string name="note_text_label">Notatka</string>
     <string name="isCompleted_text_label">Zakończone</string>
     <string name="search_text_label">Szukaj</string>
+    <string name="hours_text_label">Godziny</string>
     <string name="passwordRepeat_text_label">Powtórz hasło</string>
     <string name="timeSpent_text_label">Czas pracy</string>
     <string name="required_text_label">wymagane</string>

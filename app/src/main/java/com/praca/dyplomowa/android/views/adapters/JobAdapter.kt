@@ -68,7 +68,10 @@ class JobAdapter(
             } else {
                 val charsToFind = p0.toString().lowercase().trim()
                 actualFullList.forEach {
-                    if(it.subject.lowercase().contains(charsToFind)){
+                    if(it.subject.lowercase().contains(charsToFind) ||
+                        it.companyName!!.lowercase().contains(charsToFind) ||
+                        it.name.lowercase().contains(charsToFind) ||
+                        it.surname.lowercase().contains(charsToFind)){
                         filteringList.add(it)
                     }
                 }

@@ -1,18 +1,17 @@
 package com.praca.dyplomowa.android.views
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.praca.dyplomowa.android.R
+import com.google.gson.Gson
 import com.praca.dyplomowa.android.databinding.FragmentProfileTimeSpentListViewBinding
 import com.praca.dyplomowa.android.utils.*
 import com.praca.dyplomowa.android.viewmodels.ProfileTimeSpentListViewModel
 import com.praca.dyplomowa.android.views.adapters.ProfileTimeSpentAdapter
-import com.google.gson.Gson
 
 class ProfileTimeSpentListFragmentView : Fragment() {
 

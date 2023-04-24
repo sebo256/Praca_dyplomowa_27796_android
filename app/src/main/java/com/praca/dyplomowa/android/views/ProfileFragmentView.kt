@@ -47,7 +47,7 @@ class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
         setObserverForCountCompletedJobsAppliedToUser()
         setObserverForCountTodoJobsAppliedToUser()
         setObserverForGetUser()
-        setObserverForGetSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted()
+        setObserverForGetSumOfTimeSpentForSpecifiedMonthAndUser()
         setupProfileDataWithoutName()
 
         binding.buttonLogoutMainActivity.setOnClickListener {
@@ -96,7 +96,7 @@ class ProfileFragmentView : Fragment(R.layout.fragment_profile_view) {
         viewModelProfile.getUser(SessionManager.getCurrentUserUsername(requireContext())!!)
     }
 
-    private fun setObserverForGetSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted(){
+    private fun setObserverForGetSumOfTimeSpentForSpecifiedMonthAndUser(){
         viewModelProfile.jobTimeSpentResult.observe(viewLifecycleOwner){
             binding.textViewJobsTimeSpentNumberTextProfileFragmentView.setText(it.toString() + "h")
         }

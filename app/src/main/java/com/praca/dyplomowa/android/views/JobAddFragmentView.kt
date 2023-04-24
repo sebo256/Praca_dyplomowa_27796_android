@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -89,25 +88,16 @@ class JobAddFragmentView : Fragment() {
             dateLong = datePicker.selection
         }
 
-        binding.checkboxIsCompletedJobAddFragment.setOnCheckedChangeListener { compoundButton, isChecked ->
-            if(isChecked) {
-                binding.textFieldLayoutTimeSpentJobAddFragment.isEnabled = true
-                binding.textFieldLayoutTimeSpentJobAddFragment.helperText = getString(R.string.required_text_label)
-            }else{
-                binding.textFieldLayoutTimeSpentJobAddFragment.isEnabled = false
-                binding.textFieldTimeSpentJobAddFragment.text = null
-                binding.textFieldLayoutTimeSpentJobAddFragment.helperText = null
-            }
-        }
-
         binding.buttonSaveJobJobAddFragment.setOnClickListener {
             if(validateAddJobData(
                     subject = binding.textFieldSubjectJobAddFragment.text.toString(),
                     jobType = binding.textFieldDropdownJobTypeJobAddFragment.text.toString(),
                     client = binding.textFieldClientJobAddFragment.text.toString(),
-                    timeSpent = binding.textFieldTimeSpentJobAddFragment.text.toString().toIntOrNull() ?: 0
                 )) {
-                assignUsersDialog()
+                when(SessionManager.getIsAdmin(requireContext())){
+                    true -> assignUsersDialog()
+                    false -> addOrUpdateJob()
+                }
             }
         }
 
@@ -130,18 +120,13 @@ class JobAddFragmentView : Fragment() {
         binding.textFieldNoteJobAddFragment.setText(jobGetAllResponse.note)
         binding.textFieldPlannedDateJobAddFragment.setText(viewModelAddJobs.calculateSimpleDateFromLong(dateLong))
         binding.checkboxIsCompletedJobAddFragment.isChecked = jobGetAllResponse.isCompleted
-        if ( binding.checkboxIsCompletedJobAddFragment.isChecked || jobGetAllResponse.isCompleted) {
-            binding.textFieldTimeSpentJobAddFragment.isEnabled = true
-            binding.textFieldTimeSpentJobAddFragment.setText(jobGetAllResponse.timeSpent.toString())
-        }
         setupForm()
     }
 
-    private fun validateAddJobData(subject: String, jobType: String, client: String, timeSpent: Int): Boolean = listOf(
+    private fun validateAddJobData(subject: String, jobType: String, client: String): Boolean = listOf(
         validateAddJobDataNullOrBlanks(subject, binding.textFieldLayoutSubjectJobAddFragment),
         validateJobType(jobType, binding.textFieldLayoutJobTypeJobAddFragment),
-        validateAddJobDataClientWithBlanks(client, binding.textFieldLayoutClientJobAddFragment),
-        validateAddJobDataTimeSpent(timeSpent, binding.textFieldLayoutTimeSpentJobAddFragment),
+        validateAddJobDataClientWithBlanks(client, binding.textFieldLayoutClientJobAddFragment)
     ).all { it }
 
     private fun validateAddJobDataNullOrBlanks(data: String, field: TextInputLayout): Boolean{
@@ -272,9 +257,7 @@ class JobAddFragmentView : Fragment() {
             client = clientId!!,
             subject = binding.textFieldSubjectJobAddFragment.text.toString(),
             jobType = jobTypeId!!,
-            dateOfCreation = System.currentTimeMillis(),
             plannedDate = dateLong,
-            timeSpent = binding.textFieldTimeSpentJobAddFragment.text.toString().toIntOrNull() ?: 0,
             note = binding.textFieldNoteJobAddFragment.text.toString(),
             isCompleted = binding.checkboxIsCompletedJobAddFragment.isChecked,
             createdBy = SessionManager.getCurrentUserUsername(requireContext())!!
@@ -287,7 +270,6 @@ class JobAddFragmentView : Fragment() {
             subject = binding.textFieldSubjectJobAddFragment.text.toString(),
             jobType = jobTypeId!!,
             plannedDate = dateLong,
-            timeSpent = binding.textFieldTimeSpentJobAddFragment.text.toString().toIntOrNull() ?: 0,
             note = binding.textFieldNoteJobAddFragment.text.toString(),
             isCompleted = binding.checkboxIsCompletedJobAddFragment.isChecked,
         )

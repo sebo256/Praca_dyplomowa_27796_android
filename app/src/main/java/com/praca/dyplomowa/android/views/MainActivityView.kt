@@ -1,7 +1,6 @@
 package com.praca.dyplomowa.android.views
 
 import android.os.Bundle
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.praca.dyplomowa.android.R

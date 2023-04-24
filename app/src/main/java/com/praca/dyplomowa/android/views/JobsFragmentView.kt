@@ -61,7 +61,6 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         }
 
         binding.buttonSearchJobJobFragment.setOnClickListener {
-            TransitionManager.beginDelayedTransition(binding.root)
             when(binding.textFieldLayoutSearchJobJobFragment.visibility == View.GONE){
                 true -> binding.textFieldLayoutSearchJobJobFragment.visibility = View.VISIBLE
                 false -> hideSearchBarAndShowFullList()
@@ -77,7 +76,6 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                TransitionManager.beginDelayedTransition(binding.root)
                 if(parentFragmentManager.backStackEntryCount == 0){
                     when(binding.textFieldLayoutSearchJobJobFragment.visibility == View.VISIBLE){
                         true -> hideSearchBarAndShowFullList()
@@ -144,29 +142,31 @@ class JobsFragmentView : Fragment(R.layout.fragment_jobs_view) {
         }
 
         override fun onLongClick(string: String) {
-            val materialDialog = MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.dialog_joblist_text_title)
-                .setMessage(R.string.dialog_joblist_text_message)
-                .setPositiveButton(R.string.dialog_joblist_positive_title) { dialog, which ->
-                    FragmentNavigationUtils.addFragmentOpenWithOneStringBundleValueAndSourceFragment(
-                        fragmentManager = parentFragmentManager,
-                        fragment = JobApplyToFragmentView(),
-                        argumentKey = "jobId",
-                        argumentValue = string,
-                        argumentSourceFragmentName = "JobsFragmentView"
-                    )
-                }
-                .setNeutralButton(R.string.dialog_joblist_neutral_title) { dialog, which ->
-                    dialog.dismiss()
-                }
-                .setNegativeButton(R.string.dialog_joblist_negative_title) { dialog, which ->
-                    viewModelJobs.deleteJob(string)
-                }
+            if(SessionManager.getIsAdmin(requireContext())){
+                val materialDialog = MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.dialog_joblist_text_title)
+                    .setMessage(R.string.dialog_joblist_text_message)
+                    .setPositiveButton(R.string.dialog_joblist_positive_title) { dialog, which ->
+                        FragmentNavigationUtils.addFragmentOpenWithOneStringBundleValueAndSourceFragment(
+                            fragmentManager = parentFragmentManager,
+                            fragment = JobApplyToFragmentView(),
+                            argumentKey = "jobId",
+                            argumentValue = string,
+                            argumentSourceFragmentName = "JobsFragmentView"
+                        )
+                    }
+                    .setNeutralButton(R.string.dialog_joblist_neutral_title) { dialog, which ->
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton(R.string.dialog_joblist_negative_title) { dialog, which ->
+                        viewModelJobs.deleteJob(string)
+                    }
 
-            if(!SessionManager.getIsAdmin(requireContext())) {
-                materialDialog.setNegativeButton("") { dialog, which -> }
+                if(!SessionManager.getIsAdmin(requireContext())) {
+                    materialDialog.setNegativeButton("") { dialog, which -> }
+                }
+                materialDialog.show()
             }
-            materialDialog.show()
         }
     }
 

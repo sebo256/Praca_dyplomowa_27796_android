@@ -1,10 +1,10 @@
 package com.praca.dyplomowa.android.views
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.praca.dyplomowa.android.R
 import com.praca.dyplomowa.android.databinding.FragmentRegisterViewBinding
@@ -66,7 +66,7 @@ class RegisterFragmentView : Fragment() {
 
     private fun validateName(name: String): Boolean {
         val NAME_PATTERN = "[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}['-]{0,2}[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}['-]{0,2}[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}".toRegex()
-        return if(name.length in 3 .. 25 && name.matches(NAME_PATTERN)){
+        return if(name.length in 2 .. 25 && name.matches(NAME_PATTERN)){
             binding.textFieldLayoutNameRegisterFragment.error = null
             true
         }else{
@@ -77,7 +77,7 @@ class RegisterFragmentView : Fragment() {
 
     private fun validateSurname(surname: String): Boolean {
         val NAME_PATTERN = "[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}['-]{0,2}[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}['-]{0,2}[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{1,25}".toRegex()
-        return if(surname.length in 4 .. 25 && surname.matches(NAME_PATTERN)){
+        return if(surname.length in 2 .. 25 && surname.matches(NAME_PATTERN)){
             binding.textFieldLayoutSurnameRegisterFragment.error = null
             true
         }else{

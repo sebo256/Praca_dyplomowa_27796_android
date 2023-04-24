@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import com.praca.dyplomowa.android.api.repository.ClientRepository
 import com.praca.dyplomowa.android.api.response.ClientGetAllResponseCollection
 import com.praca.dyplomowa.android.api.response.ClientResponse
-import com.praca.dyplomowa.android.api.response.ObjectId
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable

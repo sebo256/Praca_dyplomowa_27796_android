@@ -21,7 +21,6 @@ class CalendarJobListViewModel(application: Application): AndroidViewModel(appli
     val jobDeleteResult: MutableLiveData<JobResponse> = MutableLiveData()
     val errorResult: MutableLiveData<Boolean> = MutableLiveData()
 
-
     fun getJobByLongDateBetween(startLong: Long, endLong: Long){
         jobRepository.getJobByLongDateBetween(startLong = startLong, endLong = endLong)
             .subscribeOn(Schedulers.io())

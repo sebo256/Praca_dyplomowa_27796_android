@@ -51,11 +51,11 @@ interface PDyplomowaAPI {
     @GET("job/getByLongDateBetween/?")
     fun getJobByLongDateBetween(@Query("startLong") startLong: Long, @Query("endLong") endLong: Long): Single<JobGetForListResponseCollection>
 
-    @GET("job/getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompletion/?")
-    fun getSumOfTimeSpentForSpecifiedMonthAndUserAndCheckCompleted(@Query("startLong") startLong: Long, @Query("endLong") endLong: Long, @Query("username") username: String, @Query("isCompleted") isCompleted: Boolean): Single<Response<Int>>
+    @GET("job/getSumOfTimeSpentForSpecifiedMonthAndUser/?")
+    fun getSumOfTimeSpentForSpecifiedMonthAndUser(@Query("startLong") startLong: Long, @Query("endLong") endLong: Long, @Query("username") username: String): Single<Response<Int>>
 
-    @GET("job/getJobsForSpecifiedMonthAndUserAndCheckCompleted/?")
-    fun getJobsForSpecifiedMonthAndUserAndCheckCompleted(@Query("startLong") startLong: Long, @Query("endLong") endLong: Long, @Query("username") username: String): Single<Response<JobGetForListResponseCollection>>
+    @GET("job/getJobsForSpecifiedMonthAndUser/?")
+    fun getJobsForSpecifiedMonthAndUser(@Query("startLong") startLong: Long, @Query("endLong") endLong: Long, @Query("username") username: String): Single<Response<JobGetForListHoursResponseCollection>>
 
     @GET("job/getAllTimeSpentForUserPerMonth/?")
     fun getAllTimeSpentForUserPerMonth(@Query("username") username: String): Single<Response<JobTimeSpentResponseCollection>>
@@ -77,6 +77,9 @@ interface PDyplomowaAPI {
 
     @PUT("job/addJobApplyTo")
     fun addJobApplyTo(@Body jobApplyToRequest: JobApplyToRequest): Single<Response<JobResponse>>
+
+    @PUT("job/addTime")
+    fun addTimeSpent(@Body jobAddTimeSpentRequest: JobAddTimeSpentRequest): Single<Response<JobResponse>>
 
     @PUT("job")
     fun updateJob(@Body jobRequestUpdate: JobRequestUpdate): Single<Response<JobResponse>>
