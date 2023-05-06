@@ -14,18 +14,20 @@ object ApiClient {
 
     fun getInstance(context: Context): Retrofit {
 
-
-
         var httpLoggingInterceptor = HttpLoggingInterceptor()
             .setLevel(HttpLoggingInterceptor.Level.BODY)
 
         var okHttpClient = OkHttpClient
             .Builder()
             .authenticator { route, response ->
-                if (response.code == 401 && response.request.url.toString() != "http://localhost:8080/auth/login") {
+                if (response.code == 401 && response.request.url.toString() != Constants.BASE_URL + "/auth/login") {
                     SessionManager.refreshToken(token = SessionManager.getRefreshToken(context)!!, context = context)
-                    response.request.newBuilder().removeHeader("Authorization").addHeader("Authorization", "Bearer ${SessionManager.getAccessToken(context)}").build()
-                } else if(response.code == 401 && response.request.url.toString() == "http://localhost:8080/auth/login"){
+                    response.request
+                        .newBuilder()
+                        .removeHeader("Authorization")
+                        .addHeader("Authorization", "Bearer ${SessionManager.getAccessToken(context)}")
+                        .build()
+                } else if(response.code == 401 && response.request.url.toString() == Constants.BASE_URL + "/auth/login"){
                     null
                 } else {
                     response.request

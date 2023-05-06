@@ -33,10 +33,10 @@
     <string name="datepicker_textfield_text">Wybierz datę</string>
     <string name="timepicker_textfield_text">Wybierz czas</string>
     <string name="textview_text_jobs_completed">Liczba zakończonych zleceń:</string>
-    <string name="button_text_jobs_completed">Liczba zakończonych zleceń</string>
+    <string name="button_text_jobs_completed">Zakończone zlecenia</string>
     <string name="textview_list_jobs_completed">Zakończone zlecenia</string>
     <string name="textview_text_jobs_todo">Liczba zleceń do wykonania:</string>
-    <string name="button_text_jobs_todo">Liczba zleceń do wykonania</string>
+    <string name="button_text_jobs_todo">Zlecenia do wykonania</string>
     <string name="textview_list_jobs_todo">Zlecenia do wykonania</string>
     <string name="textview_list_timeSpent">Godziny pracy w tym miesiącu:</string>
     <string name="button_list_timeSpent">Godziny pracy</string>
