@@ -41,9 +41,7 @@ class JobApplyToAdapter(
             binding.checkBoxRecyclerJobApplyTo.setOnCheckedChangeListener { compoundButton, isChecked ->
                 if(isChecked){
                     checkedUsers.add(dataDiffer.currentList.elementAt(bindingAdapterPosition).username)
-                    if(SessionManager.getIsAdmin(itemView.context)){
-                        binding.textFieldLayoutTimeJobApplyToFragment.visibility = View.VISIBLE
-                    }
+                    binding.textFieldLayoutTimeJobApplyToFragment.visibility = View.VISIBLE
                 }else {
                     checkedUsers.remove(dataDiffer.currentList.elementAt(bindingAdapterPosition).username)
                     binding.textFieldLayoutTimeJobApplyToFragment.visibility = View.INVISIBLE

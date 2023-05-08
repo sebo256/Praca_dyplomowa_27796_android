@@ -37,8 +37,6 @@ class CalendarFragmentView : Fragment() {
     private lateinit var viewModelCalendar: CalendarViewModel
     var jobDatesAndInfoList: MutableList<JobGetDatesAndInfoResponse> = mutableListOf()
     var currentMonth = YearMonth.now()
-    val startMonth = currentMonth.minusMonths(60)
-    val endMonth = currentMonth.plusMonths(60)
     val firstDayOfWeek = firstDayOfWeekFromLocale()
     val daysOfWeek: List<DayOfWeek> = daysOfWeek(firstDayOfWeek)
 
@@ -99,7 +97,7 @@ class CalendarFragmentView : Fragment() {
     }
 
     fun setupCalendar(){
-        binding.calendarView.setup(startMonth, endMonth, daysOfWeek.first())
+        binding.calendarView.setup(currentMonth.minusMonths(120), currentMonth.plusMonths(120), daysOfWeek.first())
         binding.calendarView.scrollToMonth(currentMonth)
         setupCalendarDayBinder(binding)
         setupCalendarMonthBinder(binding)

@@ -14,6 +14,7 @@ import com.praca.dyplomowa.android.api.response.JobGetForListResponse
 import com.praca.dyplomowa.android.databinding.RecyclerJobsItemLayoutBinding
 import com.praca.dyplomowa.android.utils.RecyclerViewJobsUtilsInterface
 
+@Suppress("UNCHECKED_CAST")
 class JobAdapter(
     private var recyclerViewJobsUtilsInterface: RecyclerViewJobsUtilsInterface
 ) : RecyclerView.Adapter<JobAdapter.ViewHolder>(), Filterable {

@@ -109,11 +109,14 @@ class JobApplyToFragmentView : Fragment() {
                              (binding.recyclerViewJobApplyTo.getChildAt(i).findViewById<View>(R.id.textFieldTextTimeJobApplyToFragment) as EditText).text.toString(),
                              (binding.recyclerViewJobApplyTo.getChildAt(i).findViewById<View>(R.id.textFieldLayoutTimeJobApplyToFragment) as TextInputLayout)
                     ))
-
                 }else{
                     hoursMap.put(
                         key = jobApplyToAdapter.dataDiffer.currentList.elementAt(i).username,
-                        value = (binding.recyclerViewJobApplyTo.getChildAt(i).findViewById<View>(R.id.textFieldTextTimeJobApplyToFragment) as EditText).text.toString().toInt()
+                        value = (binding
+                            .recyclerViewJobApplyTo
+                            .getChildAt(i)
+                            .findViewById<View>(R.id.textFieldTextTimeJobApplyToFragment) as EditText)
+                            .text.toString().toInt()
                     )
                 }
             }
